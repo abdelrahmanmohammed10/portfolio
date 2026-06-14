@@ -408,6 +408,19 @@ document.addEventListener('DOMContentLoaded', () => {
       mobileNav.classList.add('active');
       mobileNav.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
+
+      // Stagger link entrance animations
+      mobileLinks.forEach((link, idx) => {
+        link.style.opacity = '0';
+        link.style.transform = 'translateY(30px)';
+        link.style.transition = 'none'; // reset
+
+        setTimeout(() => {
+          link.style.transition = 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+          link.style.opacity = '1';
+          link.style.transform = 'translateY(0)';
+        }, 120 + idx * 60);
+      });
     });
 
     const closeMobileNav = () => {
@@ -426,6 +439,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
   glassCards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
+      if (window.innerWidth <= 900) return; // Disable tilt on mobile/tablets for smooth scrolling
+
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
