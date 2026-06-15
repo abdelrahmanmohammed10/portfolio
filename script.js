@@ -344,6 +344,16 @@ document.addEventListener('DOMContentLoaded', () => {
           spineProgress.style.height = percent + '%';
         }
 
+        // 4. Scroll to Top Button Visibility
+        const scrollTopBtn = document.getElementById('scroll-to-top');
+        if (scrollTopBtn) {
+          if (scrollTop > 600) {
+            scrollTopBtn.classList.add('visible');
+          } else {
+            scrollTopBtn.classList.remove('visible');
+          }
+        }
+
         tickingScroll = false;
       });
       tickingScroll = true;
@@ -488,5 +498,97 @@ document.addEventListener('DOMContentLoaded', () => {
       card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
     });
   });
+
+
+  /* ----- 13. SCROLL TO TOP CLICK FUNCTIONALITY ----- */
+  const scrollTopBtn = document.getElementById('scroll-to-top');
+  if (scrollTopBtn) {
+    scrollTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  }
+
+
+  /* ----- 14. AJAX CONTACT FORM HANDLING ----- */
+  const contactForm = document.getElementById('contact-form');
+  const formContentArea = document.querySelector('.form-content-area');
+  const formSuccessState = document.querySelector('.form-success-state');
+  const successUsername = document.getElementById('success-username');
+  const resetFormBtn = document.querySelector('.btn-reset-form');
+  const submitBtn = contactForm ? contactForm.querySelector('.btn-submit-form') : null;
+  const submitBtnSpan = submitBtn ? submitBtn.querySelector('span') : null;
+
+  if (contactForm && formContentArea && formSuccessState) {
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const nameVal = document.getElementById('name').value;
+      
+      // Set submit button loading state
+      if (submitBtn) {
+        submitBtn.classList.add('loading');
+        if (submitBtnSpan) submitBtnSpan.textContent = 'Transmitting...';
+      }
+
+      const formData = new FormData(contactForm);
+
+      fetch(contactForm.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => {
+        if (response.ok) {
+          // Animate out the form area
+          formContentArea.classList.add('fade-out');
+          setTimeout(() => {
+            formContentArea.style.display = 'none';
+            
+            // Customize success message with sender's name
+            if (successUsername) {
+              successUsername.textContent = nameVal ? nameVal.trim() : 'Friend';
+            }
+            
+            // Show success state
+            formSuccessState.style.display = 'flex';
+          }, 500);
+        } else {
+          throw new Error('Server returned an error');
+        }
+      })
+      .catch(err => {
+        console.error('Submission error:', err);
+        alert('Transmission failed. Please check your connection or contact abdelrahman.abdelhafez10@gmail.com directly.');
+      })
+      .finally(() => {
+        // Reset submit button state
+        if (submitBtn) {
+          submitBtn.classList.remove('loading');
+          if (submitBtnSpan) submitBtnSpan.textContent = 'Send Message';
+        }
+      });
+    });
+  }
+
+  if (resetFormBtn && contactForm) {
+    resetFormBtn.addEventListener('click', () => {
+      // Clear fields
+      contactForm.reset();
+      
+      // Hide success state
+      formSuccessState.style.display = 'none';
+      
+      // Show form area
+      formContentArea.style.display = 'block';
+      setTimeout(() => {
+        formContentArea.classList.remove('fade-out');
+      }, 50);
+    });
+  }
 
 });

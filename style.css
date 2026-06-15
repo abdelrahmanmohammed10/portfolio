@@ -67,6 +67,16 @@ body {
   background: var(--color-cyan);
 }
 
+/* Custom Text Selection Highlight */
+::selection {
+  background-color: rgba(6, 182, 212, 0.3);
+  color: #ffffff;
+}
+::-moz-selection {
+  background-color: rgba(6, 182, 212, 0.3);
+  color: #ffffff;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -1300,6 +1310,126 @@ button, input, textarea {
   box-shadow: 0 0 20px rgba(6, 182, 212, 0.25);
 }
 
+/* Form Success & Loading States */
+.form-content-area {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.form-content-area.fade-out {
+  opacity: 0;
+  transform: scale(0.96) translateY(-12px);
+  pointer-events: none;
+}
+
+.form-success-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 30px 10px 10px;
+  animation: successReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes successReveal {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.success-icon-wrap {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: rgba(6, 182, 212, 0.08);
+  border: 1.5px solid var(--color-cyan);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-cyan);
+  margin-bottom: 20px;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.2);
+}
+
+.success-icon-wrap svg {
+  width: 32px;
+  height: 32px;
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: drawCheck 0.6s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes drawCheck {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.success-title {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 10px;
+  letter-spacing: 0.02em;
+}
+
+.success-desc {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 380px;
+  margin-bottom: 24px;
+}
+
+.btn-reset-form {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 28px;
+  border-radius: 30px;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.btn-reset-form:hover {
+  border-color: var(--color-purple);
+  background: rgba(124, 58, 237, 0.08);
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.25);
+}
+
+/* Button Loading State */
+.btn-submit-form.loading {
+  pointer-events: none;
+  background: rgba(6, 182, 212, 0.08) !important;
+  border-color: rgba(6, 182, 212, 0.4) !important;
+  color: var(--color-cyan) !important;
+  box-shadow: none !important;
+}
+
+.btn-submit-form.loading span {
+  opacity: 0.6;
+}
+
+.btn-submit-form.loading svg {
+  animation: btnSpin 1s linear infinite;
+}
+
+@keyframes btnSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 /* ----- 12b. CV DOWNLOAD BUTTON ----- */
 .btn-cv-download {
   display: inline-flex;
@@ -1967,6 +2097,71 @@ button, input, textarea {
   .btn-full-download {
     width: 100%;
     justify-content: center;
+  }
+}
+
+/* Scroll-to-Top Button */
+.scroll-to-top-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(8, 12, 24, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px) scale(0.9);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.3s ease,
+              border-color 0.3s ease,
+              color 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.scroll-to-top-btn.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.scroll-to-top-btn svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.scroll-to-top-btn:hover {
+  background: rgba(6, 182, 212, 0.1);
+  border-color: var(--color-cyan);
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.25);
+  color: var(--color-cyan);
+}
+
+.scroll-to-top-btn:hover svg {
+  transform: translateY(-3px);
+}
+
+/* Adjust scroll-to-top button on mobile */
+@media (max-width: 1024px) {
+  .scroll-to-top-btn {
+    bottom: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(12, 16, 26, 0.96);
   }
 }
 

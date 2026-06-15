@@ -8,8 +8,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=3.1.0" />
+  <link rel="stylesheet" href="style.css?v=3.2.0" />
   <link rel="icon" type="image/png" href="logo.png" />
+
+  <!-- Open Graph / Facebook / LinkedIn -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://abdelrahmanmohammed10.github.io/Abdelrahman-portfolio/">
+  <meta property="og:title" content="Abdelrahman Abdelhafez — Digital Marketing Strategist">
+  <meta property="og:description" content="Blending analytical precision with creative strategy — building brands, driving growth, and turning data into compelling stories.">
+  <meta property="og:image" content="https://abdelrahmanmohammed10.github.io/Abdelrahman-portfolio/logo.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://abdelrahmanmohammed10.github.io/Abdelrahman-portfolio/">
+  <meta property="twitter:title" content="Abdelrahman Abdelhafez — Digital Marketing Strategist">
+  <meta property="twitter:description" content="Blending analytical precision with creative strategy — building brands, driving growth, and turning data into compelling stories.">
+  <meta property="twitter:image" content="https://abdelrahmanmohammed10.github.io/Abdelrahman-portfolio/logo.png">
 </head>
 <body>
   <div id="preloader" aria-hidden="true">
@@ -344,18 +358,28 @@
             <div class="detail-item"><div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div><div class="info"><span class="label">Resume</span><a href="Abdelrahman_CV_Final.pdf" download target="_blank" class="val link-effect">Download CV (PDF)</a></div></div>
           </div>
           <div class="contact-form-card reveal-card">
-            <h3 class="form-title">Send a Transmission</h3>
-            <p class="form-desc">Typically responding within 24 hours.</p>
-            <form action="https://formsubmit.co/abdelrahman.abdelhafez10@gmail.com" method="POST" target="_blank">
-              <!-- Hidden settings for formsubmit -->
-              <input type="hidden" name="_captcha" value="false">
-              <input type="hidden" name="_subject" value="New Contact Form Submission from Portfolio!">
-              
-              <div class="form-group"><label for="name">Your Name</label><input type="text" id="name" name="name" placeholder="Enter your name" required /></div>
-              <div class="form-group"><label for="email">Email Address</label><input type="email" id="email" name="email" placeholder="your@email.com" required /></div>
-              <div class="form-group"><label for="message">Message</label><textarea id="message" name="message" placeholder="Tell me about your project..." required></textarea></div>
-              <button type="submit" class="btn-submit-form magnetic-button"><span>Send Message</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
-            </form>
+            <div class="form-content-area">
+              <h3 class="form-title">Send a Transmission</h3>
+              <p class="form-desc">Typically responding within 24 hours.</p>
+              <form id="contact-form" action="https://formsubmit.co/abdelrahman.abdelhafez10@gmail.com" method="POST">
+                <!-- Hidden settings for formsubmit -->
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_subject" value="New Contact Form Submission from Portfolio!">
+                
+                <div class="form-group"><label for="name">Your Name</label><input type="text" id="name" name="name" placeholder="Enter your name" required /></div>
+                <div class="form-group"><label for="email">Email Address</label><input type="email" id="email" name="email" placeholder="your@email.com" required /></div>
+                <div class="form-group"><label for="message">Message</label><textarea id="message" name="message" placeholder="Tell me about your project..." required></textarea></div>
+                <button type="submit" class="btn-submit-form magnetic-button"><span>Send Message</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+              </form>
+            </div>
+            <div class="form-success-state" style="display: none;">
+              <div class="success-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <h3 class="success-title">Transmission Received!</h3>
+              <p class="success-desc">Thank you, <strong id="success-username">Friend</strong>. Your inquiry has been routed successfully. Abdelrahman will contact you within 24 hours.</p>
+              <button class="btn-reset-form magnetic-button"><span>Send another transmission</span></button>
+            </div>
           </div>
         </div>
       </section>
@@ -378,6 +402,14 @@
 
   <div class="project-drawer" id="drawer-hosting" aria-hidden="true"><div class="drawer-overlay"></div><div class="drawer-panel"><button class="drawer-close" aria-label="Close Case Study"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="drawer-inner"><div class="drawer-header"><span class="drawer-badge">Website Audit</span><h3 class="drawer-title">HostingWDomain — UX &amp; Content Audit</h3><p class="drawer-meta">Tech / SaaS</p></div><div class="drawer-body"><p class="drawer-intro-desc">Structured UX and content audit for a hosting &amp; domain provider, identifying brand identity gaps, content quality issues, and conversion friction points.</p><div class="drawer-tags-list"><span>UX Audit</span><span>Site Architecture</span><span>Conversion Optimization</span><span>A/B Testing</span></div><div class="drawer-highlights-section"><h4 class="section-sub-title">Strategic Highlights</h4><div class="highlight-cards-row"><div class="highlight-mini-card"><h5>Audit Scope</h5><p>Site architecture review, brand identity gap analysis, content quality assessment, landing page friction mapping.</p></div><div class="highlight-mini-card"><h5>Recommendations</h5><p>6-point execution roadmap — UX improvements, content restructuring, landing page optimization, A/B testing strategy.</p></div></div></div><div class="drawer-cta-center"><a href="HOSTING W DOMAIN REPORT.pdf" class="btn-drawer-download magnetic-button" download target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Download Audit Report (PDF)</span></a></div></div></div></div></div>
 
-  <script src="script.js?v=3.1.0"></script>
+  <!-- Scroll to Top Button -->
+  <button id="scroll-to-top" class="scroll-to-top-btn magnetic-button" aria-label="Scroll to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="19" x2="12" y2="5"></line>
+      <polyline points="5 12 12 5 19 12"></polyline>
+    </svg>
+  </button>
+
+  <script src="script.js?v=3.2.0"></script>
 </body>
 </html>
