@@ -974,6 +974,8 @@ button, input, textarea {
 .timeline-company {
   font-size: 0.9rem;
   color: var(--text-muted);
+  display: block;
+  margin-bottom: 12px;
 }
 
 .timeline-body {
@@ -1739,7 +1741,7 @@ button, input, textarea {
 }
 
 /* ----- 15b. PREMIUM MULTI-COLUMN LAYOUTS (DESKTOP) ----- */
-@media (min-width: 901px) {
+@media (min-width: 1025px) {
   /* General desktop layout alignment: left-aligned sections sit on left, right-aligned on right */
   .content-section {
     align-items: flex-start;
@@ -1859,7 +1861,7 @@ button, input, textarea {
   }
 }
 
-@media (min-width: 901px) {
+@media (min-width: 1025px) {
   /* Journey Split/Staggered Timeline */
   #journey {
     max-width: 1150px;
@@ -1941,7 +1943,7 @@ button, input, textarea {
 }
 
 /* Tablets and Mobile Devices */
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .app-container {
     flex-direction: column;
     padding: 0 20px;

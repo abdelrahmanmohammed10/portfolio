@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const coord = coordinates[activeSec] || coordinates['hero'];
 
     // Dynamic panning based on text layout alignment (desktop only)
-    const isMobile = window.innerWidth <= 900;
+    const isMobile = window.innerWidth <= 1024;
     let xOffset = 0;
     if (!isMobile) {
       // Offset planet to the left (text on right) or right (text on left)
@@ -445,7 +445,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   glassCards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
-      if (window.innerWidth <= 900) return; // Disable tilt on mobile/tablets for smooth scrolling
+      if (window.innerWidth <= 1024) return; // Disable tilt on mobile/tablets for smooth scrolling
 
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
