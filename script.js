@@ -285,9 +285,36 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  /* ----- 8. ACTIVE NAV LINK TRACKING ----- */
+  /* ----- 8. ACTIVE NAV LINK TRACKING & BACKGROUND PLANETS ----- */
   const sections = document.querySelectorAll('section[id]');
   const navItems = document.querySelectorAll('.sidebar-nav .nav-item');
+  const planetElements = document.querySelectorAll('.bg-planet');
+  let lastActiveSection = '';
+
+  const updateActivePlanet = (activeSec) => {
+    if (activeSec === lastActiveSection) return;
+    lastActiveSection = activeSec;
+
+    let activeIdx = -1;
+    planetElements.forEach((p, idx) => {
+      if (p.getAttribute('data-sec') === activeSec) {
+        activeIdx = idx;
+      }
+    });
+
+    if (activeIdx !== -1) {
+      planetElements.forEach((p, idx) => {
+        p.classList.remove('active', 'previous', 'next');
+        if (idx === activeIdx) {
+          p.classList.add('active');
+        } else if (idx < activeIdx) {
+          p.classList.add('previous');
+        } else {
+          p.classList.add('next');
+        }
+      });
+    }
+  };
 
   window.addEventListener('scroll', () => {
     let currentActive = '';
@@ -301,6 +328,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Default to about section planet near the top
+    if (window.scrollY < 120) {
+      currentActive = 'about';
+    }
+
     if (currentActive) {
       navItems.forEach(item => {
         item.classList.remove('active');
@@ -308,6 +340,7 @@ document.addEventListener('DOMContentLoaded', () => {
           item.classList.add('active');
         }
       });
+      updateActivePlanet(currentActive);
     }
 
     // Spine timeline progress drawing

@@ -333,6 +333,17 @@ button, input, textarea {
 }
 
 /* SIDEBAR FOOTER & SOCIALS */
+.sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar-cv .btn-cv-download {
+  width: 100%;
+  justify-content: center;
+}
+
 .social-links {
   display: flex;
   gap: 16px;
@@ -373,11 +384,15 @@ button, input, textarea {
 
 .content-section {
   padding: 100px 0;
-  border-bottom: 1px solid var(--border-color);
 }
 
-.content-section:last-of-type {
-  border-bottom: none;
+/* Section breaks replace borders between sections */
+.content-section + .section-break {
+  border-top: none;
+}
+
+.section-break + .content-section {
+  padding-top: 60px;
 }
 
 /* MOBILE HEADER & NAVIGATION (HIDDEN ON DESKTOP) */
@@ -646,8 +661,22 @@ button, input, textarea {
   margin-bottom: 16px;
 }
 
-.category-header .icon {
-  font-size: 1.5rem;
+.cat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(46, 196, 182, 0.08);
+  border: 1px solid rgba(46, 196, 182, 0.15);
+  color: var(--color-cyan);
+  flex-shrink: 0;
+}
+
+.cat-icon svg {
+  width: 18px;
+  height: 18px;
 }
 
 .category-header h4 {
@@ -1279,6 +1308,141 @@ button, input, textarea {
   box-shadow: 0 0 20px rgba(6, 182, 212, 0.25);
 }
 
+/* ----- 12b. CV DOWNLOAD BUTTON ----- */
+.btn-cv-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--bg-primary);
+  background: linear-gradient(135deg, var(--color-gold), var(--color-cyan));
+  border: none;
+  padding: 12px 24px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  text-decoration: none;
+  letter-spacing: 0.03em;
+}
+
+.btn-cv-download svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.btn-cv-download:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(46, 196, 182, 0.35);
+  color: var(--bg-primary);
+}
+
+/* ----- 12c. BACKGROUND PLANET SPINE ----- */
+.bg-planet-stage {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: calc(100vw - var(--sidebar-width));
+  height: 100vh;
+  z-index: -3; /* Behind text (z-index 1) but above mesh (z-index -5) and particles (z-index -4) */
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bg-planet {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 580px;
+  height: 580px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: transform 1.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.4s ease-in-out;
+}
+
+/* Base image styling */
+.planet-img-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+  filter: brightness(0.9) contrast(1.05);
+  animation: planetSpinBackground 240s linear infinite;
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.6);
+}
+
+@keyframes planetSpinBackground {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Atmospheric Glowing Rings */
+.planet-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 130%;
+  height: 130%;
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  filter: blur(20px);
+  animation: glowBreathe 8s ease-in-out infinite alternate;
+}
+
+@keyframes glowBreathe {
+  0% { opacity: 0.45; transform: translate(-50%, -50%) scale(0.95); }
+  100% { opacity: 0.75; transform: translate(-50%, -50%) scale(1.05); }
+}
+
+/* Color Palette Glows based on Color Theory */
+.cyan-glow {
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.25) 0%, rgba(6, 182, 212, 0.05) 55%, transparent 70%);
+}
+
+.purple-glow {
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.25) 0%, rgba(124, 58, 237, 0.05) 55%, transparent 70%);
+}
+
+.gold-glow {
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.25) 0%, rgba(245, 158, 11, 0.05) 55%, transparent 70%);
+}
+
+.orange-glow {
+  background: radial-gradient(circle, rgba(239, 68, 68, 0.22) 0%, rgba(239, 68, 68, 0.04) 55%, transparent 70%);
+}
+
+.gold-cyan-glow {
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.18) 0%, rgba(245, 158, 11, 0.15) 45%, transparent 70%);
+}
+
+/* 3D Curved Spine Orbit States */
+/* .active: Show centered behind content */
+.bg-planet.active {
+  opacity: 0.22; /* High readability, gorgeous subtle background texture */
+  transform: translate(-50%, -50%) scale(1.0) rotate(0deg);
+  z-index: 2;
+}
+
+/* .previous: Scrolled past (moves up and left, scales down, rotates out) */
+.bg-planet.previous {
+  opacity: 0;
+  transform: translate(-85%, -110%) scale(0.48) rotate(-45deg);
+  z-index: 1;
+}
+
+/* .next: Not yet scrolled to (moves down and right, scales down, rotates in) */
+.bg-planet.next {
+  opacity: 0;
+  transform: translate(-15%, 10%) scale(0.48) rotate(45deg);
+  z-index: 1;
+}
+
 /* ----- 13. FOOTER ----- */
 .footer-system {
   margin-top: 100px;
@@ -1720,18 +1884,28 @@ button, input, textarea {
     line-height: 1.6;
   }
 
+  .mobile-cta-row {
+    margin-top: 10px;
+  }
+
+  .mobile-cta-row .btn-cv-download {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.9rem;
+  }
+
   .mobile-social-links {
     display: flex;
     gap: 16px;
-    margin-top: 10px;
+    margin-top: 16px;
   }
 
   .mobile-social-links a {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: 1px solid var(--border-color);
     background: rgba(255, 255, 255, 0.02);
@@ -1747,8 +1921,35 @@ button, input, textarea {
   }
 
   .mobile-social-links svg {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Planet stage adjustments on mobile */
+  .bg-planet-stage {
+    width: 100vw;
+    left: 0;
+    right: 0;
+  }
+
+  .bg-planet {
+    width: 80vw;
+    height: 80vw;
+    max-width: 380px;
+    max-height: 380px;
+  }
+
+  .bg-planet.active {
+    opacity: 0.14; /* Slightly lower opacity on mobile for readability */
+    transform: translate(-50%, -50%) scale(1.0) rotate(0deg);
+  }
+
+  .bg-planet.previous {
+    transform: translate(-50%, -100%) scale(0.5) rotate(-45deg);
+  }
+
+  .bg-planet.next {
+    transform: translate(-50%, 0%) scale(0.5) rotate(45deg);
   }
   
   .content-section {

@@ -5,32 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Abdelrahman Abdelhafez — Digital Marketing Strategist</title>
   <meta name="description" content="Portfolio of Abdelrahman Mohammed Abdelhafez — Digital Marketer, Marketing Strategist, and Content Planner." />
-  <!-- Premium Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2.0.1" />
+  <link rel="stylesheet" href="style.css?v=3.0.0" />
 </head>
 <body>
-
-  <!-- ===== PRELOADER ===== -->
   <div id="preloader" aria-hidden="true">
     <div class="preloader-content">
-      <div class="logo-anim">
-        <img src="logo.png" alt="Logo" class="preloader-logo" />
-      </div>
-      <div class="preloader-bar-wrap">
-        <div class="preloader-bar"></div>
-      </div>
+      <div class="logo-anim"><img src="logo.png" alt="Logo" class="preloader-logo" /></div>
+      <div class="preloader-bar-wrap"><div class="preloader-bar"></div></div>
     </div>
   </div>
 
-  <!-- ===== BACKGROUND ATMOSPHERE ===== -->
   <canvas id="particle-canvas" aria-hidden="true"></canvas>
   <div class="gradient-mesh" aria-hidden="true"></div>
   <div class="cursor-spotlight" aria-hidden="true"></div>
 
-  <!-- ===== MOBILE MENU OVERLAY ===== -->
+  <div class="bg-planet-stage" aria-hidden="true">
+    <div class="bg-planet active" data-sec="about">
+      <img src="earth.png" alt="" class="planet-img-bg" />
+      <div class="planet-glow cyan-glow"></div>
+    </div>
+    <div class="bg-planet next" data-sec="work">
+      <img src="neptune.jpg" alt="" class="planet-img-bg" />
+      <div class="planet-glow purple-glow"></div>
+    </div>
+    <div class="bg-planet next" data-sec="campaigns">
+      <img src="sun.png" alt="" class="planet-img-bg" />
+      <div class="planet-glow gold-glow"></div>
+    </div>
+    <div class="bg-planet next" data-sec="journey">
+      <img src="mars.png" alt="" class="planet-img-bg" />
+      <div class="planet-glow orange-glow"></div>
+    </div>
+    <div class="bg-planet next" data-sec="credentials">
+      <img src="saturn.jpg" alt="" class="planet-img-bg" />
+      <div class="planet-glow gold-cyan-glow"></div>
+    </div>
+    <div class="bg-planet next" data-sec="contact">
+      <img src="earth.png" alt="" class="planet-img-bg" style="transform: rotate(180deg);" />
+      <div class="planet-glow cyan-glow"></div>
+    </div>
+  </div>
+
   <div class="mobile-nav-overlay" id="mobile-nav-overlay">
     <button class="mobile-close" id="mobile-close" aria-label="Close Menu">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -45,69 +63,34 @@
     </nav>
   </div>
 
-  <!-- ===== APP WRAPPER ===== -->
   <div class="app-container">
-
-    <!-- ===== LEFT SIDEBAR (Sticky) ===== -->
     <aside class="sidebar">
       <div class="sidebar-header">
-        <div class="logo-wrap">
-          <img src="logo.png" alt="Logo" class="site-logo" />
-        </div>
-        <div class="badge-status">
-          <span class="status-dot"></span>
-          <span>Open to Opportunities</span>
-        </div>
+        <div class="logo-wrap"><img src="logo.png" alt="Logo" class="site-logo" /></div>
+        <div class="badge-status"><span class="status-dot"></span><span>Open to Opportunities</span></div>
       </div>
-
       <div class="sidebar-intro">
         <h1 class="site-name magnetic-text">Abdelrahman<br>Mohammed</h1>
         <p class="site-title">Digital Marketer <span class="sep">·</span> Marketing Strategist <span class="sep">·</span> Content Planner</p>
         <p class="site-bio">Blending analytical precision with creative strategy — building brands, driving growth, and turning data into compelling stories.</p>
       </div>
-
       <nav class="sidebar-nav" aria-label="Main Navigation">
         <ul class="nav-list">
-          <li>
-            <a href="#about" class="nav-item active">
-              <span class="nav-line"></span>
-              <span class="nav-text">01 // ABOUT</span>
-            </a>
-          </li>
-          <li>
-            <a href="#work" class="nav-item">
-              <span class="nav-line"></span>
-              <span class="nav-text">02 // FEATURED WORK</span>
-            </a>
-          </li>
-          <li>
-            <a href="#campaigns" class="nav-item">
-              <span class="nav-line"></span>
-              <span class="nav-text">03 // CAMPAIGNS</span>
-            </a>
-          </li>
-          <li>
-            <a href="#journey" class="nav-item">
-              <span class="nav-line"></span>
-              <span class="nav-text">04 // JOURNEY</span>
-            </a>
-          </li>
-          <li>
-            <a href="#credentials" class="nav-item">
-              <span class="nav-line"></span>
-              <span class="nav-text">05 // CREDENTIALS</span>
-            </a>
-          </li>
-          <li>
-            <a href="#contact" class="nav-item">
-              <span class="nav-line"></span>
-              <span class="nav-text">06 // CONTACT</span>
-            </a>
-          </li>
+          <li><a href="#about" class="nav-item active"><span class="nav-line"></span><span class="nav-text">01 // ABOUT</span></a></li>
+          <li><a href="#work" class="nav-item"><span class="nav-line"></span><span class="nav-text">02 // FEATURED WORK</span></a></li>
+          <li><a href="#campaigns" class="nav-item"><span class="nav-line"></span><span class="nav-text">03 // CAMPAIGNS</span></a></li>
+          <li><a href="#journey" class="nav-item"><span class="nav-line"></span><span class="nav-text">04 // JOURNEY</span></a></li>
+          <li><a href="#credentials" class="nav-item"><span class="nav-line"></span><span class="nav-text">05 // CREDENTIALS</span></a></li>
+          <li><a href="#contact" class="nav-item"><span class="nav-line"></span><span class="nav-text">06 // CONTACT</span></a></li>
         </ul>
       </nav>
-
       <div class="sidebar-footer">
+        <div class="sidebar-cv">
+          <a href="Abdelrahman_CV_Final.pdf" download target="_blank" class="btn-cv-download magnetic-button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Download CV</span>
+          </a>
+        </div>
         <div class="social-links">
           <a href="https://www.linkedin.com/in/abdelrahman-abdelhafez-994932167/" target="_blank" rel="noopener" aria-label="LinkedIn" class="magnetic-button">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
@@ -122,573 +105,189 @@
       </div>
     </aside>
 
-    <!-- ===== MOBILE HEADER ===== -->
     <header class="mobile-header">
-      <div class="logo-wrap">
-        <img src="logo.png" alt="Logo" class="site-logo" />
-      </div>
-      <button class="burger" id="burger" aria-label="Open Menu">
-        <span></span><span></span><span></span>
-      </button>
+      <div class="logo-wrap"><img src="logo.png" alt="Logo" class="site-logo" /></div>
+      <button class="burger" id="burger" aria-label="Open Menu"><span></span><span></span><span></span></button>
     </header>
 
-    <!-- ===== RIGHT COLUMN (Scrollable) ===== -->
     <main class="main-content">
 
-      <!-- ===== MOBILE HERO (Visible only on mobile) ===== -->
       <section class="mobile-hero">
-        <div class="badge-status">
-          <span class="status-dot"></span>
-          <span>Open to Opportunities</span>
-        </div>
+        <div class="badge-status"><span class="status-dot"></span><span>Open to Opportunities</span></div>
         <h1 class="mobile-site-name">Abdelrahman<br>Mohammed</h1>
         <p class="mobile-site-title">Digital Marketer <span class="sep">·</span> Marketing Strategist <span class="sep">·</span> Content Planner</p>
         <p class="mobile-site-bio">Blending analytical precision with creative strategy — building brands, driving growth, and turning data into compelling stories.</p>
-        
+        <div class="mobile-cta-row">
+          <a href="Abdelrahman_CV_Final.pdf" download target="_blank" class="btn-cv-download magnetic-button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Download CV</span>
+          </a>
+        </div>
         <div class="mobile-social-links">
-          <a href="https://www.linkedin.com/in/abdelrahman-abdelhafez-994932167/" target="_blank" rel="noopener" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-          </a>
-          <a href="mailto:abdelrahman.abdelhafez10@gmail.com" aria-label="Email">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          </a>
-          <a href="tel:+201157265599" aria-label="Phone">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.88.37 1.85.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.96.33 1.93.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          </a>
+          <a href="https://www.linkedin.com/in/abdelrahman-abdelhafez-994932167/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+          <a href="mailto:abdelrahman.abdelhafez10@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+          <a href="tel:+201157265599" aria-label="Phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.88.37 1.85.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.96.33 1.93.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
         </div>
       </section>
 
-      <!-- ==================== ABOUT SECTION ==================== -->
       <section id="about" class="content-section">
-        <div class="eyebrow-split">
-          <span class="line"></span>
-          <span class="text">ABOUT ME</span>
-        </div>
+        <div class="eyebrow-split"><span class="line"></span><span class="text">ABOUT ME</span></div>
         <h2 class="split-reveal-heading">The <em>Strategist</em> Behind the Brand</h2>
         <div class="about-text">
-          <p class="reveal-paragraph">
-            I'm <strong>Abdelrahman</strong> — a digital marketer who believes every brand has a story worth telling, and every campaign should be built on real data, not guesswork.
-          </p>
-          <p class="reveal-paragraph">
-            With hands-on experience in <strong>content strategy, social media management, brand development, and customer retention</strong>, I've helped Egyptian brands build their digital presence from scratch — from creating full marketing plans and buyer personas to executing multi-platform content campaigns.
-          </p>
-          <p class="reveal-paragraph">
-            I bring <strong>structured thinking to creative work</strong> — measuring, iterating, and optimizing until the results speak for themselves.
-          </p>
+          <p class="reveal-paragraph">I am <strong>Abdelrahman</strong> — a digital marketer who believes every brand has a story worth telling, and every campaign should be built on real data, not guesswork.</p>
+          <p class="reveal-paragraph">With hands-on experience in <strong>content strategy, social media management, brand development, and customer retention</strong>, I have helped Egyptian brands build their digital presence from scratch — from creating full marketing plans and buyer personas to executing multi-platform content campaigns.</p>
+          <p class="reveal-paragraph">I bring <strong>structured thinking to creative work</strong> — measuring, iterating, and optimizing until the results speak for themselves.</p>
         </div>
-
         <div class="stats-grid">
-          <div class="stat-card reveal-card">
-            <span class="stat-num" data-val="4">0</span><span class="stat-plus">+</span>
-            <span class="stat-label">Years Experience</span>
-          </div>
-          <div class="stat-card reveal-card">
-            <span class="stat-num" data-val="7">0</span><span class="stat-plus">+</span>
-            <span class="stat-label">Certifications</span>
-          </div>
-          <div class="stat-card reveal-card">
-            <span class="stat-num" data-val="3">0</span>
-            <span class="stat-label">Major Projects</span>
-          </div>
+          <div class="stat-card reveal-card"><span class="stat-num" data-val="4">0</span><span class="stat-plus">+</span><span class="stat-label">Years Experience</span></div>
+          <div class="stat-card reveal-card"><span class="stat-num" data-val="7">0</span><span class="stat-plus">+</span><span class="stat-label">Certifications</span></div>
+          <div class="stat-card reveal-card"><span class="stat-num" data-val="3">0</span><span class="stat-label">Major Projects</span></div>
         </div>
-
         <div class="skills-showcase">
           <h3 class="skills-title">Core Competencies</h3>
           <div class="skills-grid">
             <div class="skill-category reveal-card">
-              <div class="category-header">
-                <span class="icon">🎯</span>
-                <h4>Strategy &amp; Planning</h4>
-              </div>
-              <div class="tags-list">
-                <span class="tag">SWOT</span>
-                <span class="tag">SMART Goals</span>
-                <span class="tag">4Ps</span>
-                <span class="tag">Blue Ocean</span>
-                <span class="tag">Buyer Personas</span>
-                <span class="tag">Business Model Canvas</span>
-              </div>
+              <div class="category-header"><span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span><h4>Strategy &amp; Planning</h4></div>
+              <div class="tags-list"><span class="tag">SWOT</span><span class="tag">SMART Goals</span><span class="tag">4Ps</span><span class="tag">Blue Ocean</span><span class="tag">Buyer Personas</span><span class="tag">Business Model Canvas</span></div>
             </div>
             <div class="skill-category reveal-card">
-              <div class="category-header">
-                <span class="icon">✍️</span>
-                <h4>Content &amp; Copywriting</h4>
-              </div>
-              <div class="tags-list">
-                <span class="tag">AR/EN Copy</span>
-                <span class="tag">Content Calendars</span>
-                <span class="tag">Hero/Hub/Hygiene</span>
-                <span class="tag">Brand Voice</span>
-                <span class="tag">Content Audits</span>
-              </div>
+              <div class="category-header"><span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span><h4>Content &amp; Copywriting</h4></div>
+              <div class="tags-list"><span class="tag">AR/EN Copy</span><span class="tag">Content Calendars</span><span class="tag">Hero/Hub/Hygiene</span><span class="tag">Brand Voice</span><span class="tag">Content Audits</span></div>
             </div>
             <div class="skill-category reveal-card">
-              <div class="category-header">
-                <span class="icon">📈</span>
-                <h4>Growth &amp; Analytics</h4>
-              </div>
-              <div class="tags-list">
-                <span class="tag">KPI Frameworks</span>
-                <span class="tag">Meta Insights</span>
-                <span class="tag">Competitor Analysis</span>
-                <span class="tag">Conversion Optimization</span>
-              </div>
+              <div class="category-header"><span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><h4>Growth &amp; Analytics</h4></div>
+              <div class="tags-list"><span class="tag">KPI Frameworks</span><span class="tag">Meta Insights</span><span class="tag">Competitor Analysis</span><span class="tag">Conversion Optimization</span></div>
             </div>
             <div class="skill-category reveal-card">
-              <div class="category-header">
-                <span class="icon">⚡</span>
-                <h4>Digital Tools</h4>
-              </div>
-              <div class="tags-list">
-                <span class="tag">Meta Ads</span>
-                <span class="tag">TikTok Ads</span>
-                <span class="tag">Canva</span>
-                <span class="tag">Odoo CMS</span>
-                <span class="tag">AI Tools</span>
-                <span class="tag">Office 365</span>
-              </div>
+              <div class="category-header"><span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span><h4>Digital Tools</h4></div>
+              <div class="tags-list"><span class="tag">Meta Ads</span><span class="tag">TikTok Ads</span><span class="tag">Canva</span><span class="tag">Odoo CMS</span><span class="tag">AI Tools</span><span class="tag">Office 365</span></div>
             </div>
             <div class="skill-category reveal-card">
-              <div class="category-header">
-                <span class="icon">🚀</span>
-                <h4>Leadership</h4>
-              </div>
-              <div class="tags-list">
-                <span class="tag">Team Lead (8+)</span>
-                <span class="tag">Corporate Trainer</span>
-                <span class="tag">Public Speaking</span>
-                <span class="tag">Bilingual</span>
-              </div>
+              <div class="category-header"><span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><h4>Leadership</h4></div>
+              <div class="tags-list"><span class="tag">Team Lead (8+)</span><span class="tag">Corporate Trainer</span><span class="tag">Public Speaking</span><span class="tag">Bilingual</span></div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ==================== WORK SECTION ==================== -->
+
       <section id="work" class="content-section">
-        <div class="eyebrow-split">
-          <span class="line"></span>
-          <span class="text">FEATURED WORK</span>
-        </div>
+        <div class="eyebrow-split"><span class="line"></span><span class="text">FEATURED WORK</span></div>
         <h2 class="split-reveal-heading">Mission <em>Log</em></h2>
         <p class="section-lead">Strategic marketing projects — end-to-end brand development, market research, and growth planning.</p>
-
         <div class="projects-stack">
-          <!-- Kyoko Card -->
           <article class="project-glass-card reveal-card border-purple" data-drawer="drawer-kyoko">
-            <div class="card-glow"></div>
-            <div class="card-accent-line bg-purple"></div>
+            <div class="card-glow"></div><div class="card-accent-line bg-purple"></div>
             <div class="card-content">
               <div class="project-tag-badge">Flagship Project</div>
               <h3 class="project-card-title">Kyoko Gifts — Full Marketing Plan</h3>
               <p class="project-card-meta">2026 · Gift &amp; E-commerce · Cairo</p>
               <p class="project-card-desc">Built a comprehensive marketing plan for an Egyptian gifting brand covering brand positioning, customer research, content planning, marketing funnels, and growth-focused KPIs.</p>
-              <div class="project-card-tags">
-                <span>Business Model Canvas</span>
-                <span>Blue Ocean Strategy</span>
-                <span>Buyer Personas</span>
-                <span>Meta &amp; TikTok Ads</span>
-                <span>KPI Framework</span>
-              </div>
-              <button class="project-btn-reveal magnetic-button">
-                <span>View Detailed Strategy</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-              </button>
+              <div class="project-card-tags"><span>Business Model Canvas</span><span>Blue Ocean Strategy</span><span>Buyer Personas</span><span>Meta &amp; TikTok Ads</span><span>KPI Framework</span></div>
+              <button class="project-btn-reveal magnetic-button"><span>View Detailed Strategy</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
             </div>
           </article>
-
-          <!-- New Direction Card -->
           <article class="project-glass-card reveal-card border-cyan" data-drawer="drawer-new-direction">
-            <div class="card-glow"></div>
-            <div class="card-accent-line bg-cyan"></div>
+            <div class="card-glow"></div><div class="card-accent-line bg-cyan"></div>
             <div class="card-content">
               <div class="project-tag-badge">Brand Strategy</div>
               <h3 class="project-card-title">New Direction English Academy</h3>
               <p class="project-card-meta">2020–2022 · EdTech · Egypt</p>
               <p class="project-card-desc">Led full brand identity creation and marketing strategy for an Egyptian EdTech startup — from logo direction and tone of voice to content campaigns and competitive analysis.</p>
-              <div class="project-card-tags">
-                <span>Brand Identity</span>
-                <span>SWOT Analysis</span>
-                <span>Content Campaigns</span>
-                <span>Competitor Research</span>
-                <span>Buyer Persona</span>
-              </div>
-              <button class="project-btn-reveal magnetic-button">
-                <span>View Detailed Strategy</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-              </button>
+              <div class="project-card-tags"><span>Brand Identity</span><span>SWOT Analysis</span><span>Content Campaigns</span><span>Competitor Research</span><span>Buyer Persona</span></div>
+              <button class="project-btn-reveal magnetic-button"><span>View Detailed Strategy</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
             </div>
           </article>
-
-          <!-- HostingWDomain Card -->
           <article class="project-glass-card reveal-card border-gold" data-drawer="drawer-hosting">
-            <div class="card-glow"></div>
-            <div class="card-accent-line bg-gold"></div>
+            <div class="card-glow"></div><div class="card-accent-line bg-gold"></div>
             <div class="card-content">
               <div class="project-tag-badge">Website Audit</div>
               <h3 class="project-card-title">HostingWDomain — UX &amp; Content Audit</h3>
               <p class="project-card-meta">Tech / SaaS</p>
               <p class="project-card-desc">Structured UX and content audit for a hosting &amp; domain provider, identifying brand identity gaps, content quality issues, and conversion friction points.</p>
-              <div class="project-card-tags">
-                <span>UX Audit</span>
-                <span>Site Architecture</span>
-                <span>Conversion Optimization</span>
-                <span>A/B Testing</span>
-              </div>
-              <button class="project-btn-reveal magnetic-button">
-                <span>View Detailed Strategy</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-              </button>
+              <div class="project-card-tags"><span>UX Audit</span><span>Site Architecture</span><span>Conversion Optimization</span><span>A/B Testing</span></div>
+              <button class="project-btn-reveal magnetic-button"><span>View Detailed Strategy</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
             </div>
           </article>
         </div>
       </section>
 
-      <!-- ==================== CAMPAIGNS SECTION ==================== -->
+
       <section id="campaigns" class="content-section">
-        <div class="eyebrow-split">
-          <span class="line"></span>
-          <span class="text">CAMPAIGNS</span>
-        </div>
+        <div class="eyebrow-split"><span class="line"></span><span class="text">CAMPAIGNS</span></div>
         <h2 class="split-reveal-heading">Content &amp; <em>Copywriting</em></h2>
         <p class="section-lead">Every caption is a small strategic decision. Fluent in Arabic and English, bridging customer psychology with persuasive copywriting.</p>
-
         <div class="posts-grid-system">
-          <!-- Post 1 -->
-          <article class="campaign-glass-card reveal-card">
-            <div class="campaign-header">
-              <span class="post-num">AR POST · 01</span>
-              <span class="post-obj">Awareness / Launch</span>
-            </div>
-            <p class="post-caption" dir="rtl">أول بوست في الحملة — افتتاحية تأسيسية بنبرة هادئة، تعرّف الجمهور بفلسفة New Direction قبل ما تتكلم عن الخدمات.</p>
-            <div class="campaign-meta">
-              <strong>Objective:</strong> بناء وعي أولي + تحديد الـ tone of voice للبراند.
-            </div>
-            <a href="https://www.facebook.com/106349791202286/photos/a.107843024386296/109443580892907/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button">
-              <span>View original post</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-            </a>
-          </article>
-
-          <!-- Post 2 -->
-          <article class="campaign-glass-card reveal-card">
-            <div class="campaign-header">
-              <span class="post-num">AR POST · 02</span>
-              <span class="post-obj">Educational</span>
-            </div>
-            <p class="post-caption" dir="rtl">محتوى تعليمي قصير — يقدّم فكرة عملية واحدة لطلاب الثانوية، الهدف يخلق قيمة فورية بدون ما يبيع.</p>
-            <div class="campaign-meta">
-              <strong>Objective:</strong> زيادة الـ Saves والـ Shares كمؤشر مبكر للثقة.
-            </div>
-            <a href="https://www.facebook.com/106349791202286/photos/a.108469704323628/194898819014049/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button">
-              <span>View original post</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-            </a>
-          </article>
-
-          <!-- Post 3 -->
-          <article class="campaign-glass-card reveal-card">
-            <div class="campaign-header">
-              <span class="post-num">AR POST · 03</span>
-              <span class="post-obj">Emotional Insight</span>
-            </div>
-            <p class="post-caption" dir="rtl">بوست تحفيزي مبني على insight حقيقي من الـ buyer persona: قلق الطالب من الاختيار الخطأ.</p>
-            <div class="campaign-meta">
-              <strong>Objective:</strong> اللعب على Pain Point لتوليد تفاعل عاطفي وتعليقات.
-            </div>
-            <a href="https://www.facebook.com/106349791202286/photos/a.108469704323628/402849314885664/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button">
-              <span>View original post</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-            </a>
-          </article>
-
-          <!-- Post 4 -->
-          <article class="campaign-glass-card reveal-card">
-            <div class="campaign-header">
-              <span class="post-num">AR POST · 04</span>
-              <span class="post-obj">Awareness Dialogue</span>
-            </div>
-            <p class="post-caption" dir="rtl">محتوى Awareness عن خدمة محددة — مكتوب كحوار قصير بدل ما يكون إعلان مباشر.</p>
-            <div class="campaign-meta">
-              <strong>Objective:</strong> تعريف الجمهور بالخدمة بدون ما يحس إنه بيتباع له.
-            </div>
-            <a href="https://www.facebook.com/106349791202286/photos/a.107843024386296/397460562091206/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button">
-              <span>View original post</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-            </a>
-          </article>
-
-          <!-- Post 5 -->
-          <article class="campaign-glass-card reveal-card">
-            <div class="campaign-header">
-              <span class="post-num">AR POST · 05</span>
-              <span class="post-obj">Interactive Ask</span>
-            </div>
-            <p class="post-caption" dir="rtl">بوست تفاعلي بسؤال مفتوح — مصمم يخلق تعليقات تساعد الـ Algorithm + يدّينا data عن الجمهور.</p>
-            <div class="campaign-meta">
-              <strong>Objective:</strong> Engagement مع جمع insights للحملات الجاية.
-            </div>
-            <a href="https://www.facebook.com/106349791202286/photos/a.108469704323628/111795970657668/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button">
-              <span>View original post</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-            </a>
-          </article>
-
-          <!-- Post 6 -->
-          <article class="campaign-glass-card reveal-card">
-            <div class="campaign-header">
-              <span class="post-num">AR POST · 06</span>
-              <span class="post-obj">Conversion Funnel</span>
-            </div>
-            <p class="post-caption" dir="rtl">بوست ختامي للحملة الأولى — يلخّص رسالة البراند ويفتح الباب للـ conversion في المرحلة الجاية.</p>
-            <div class="campaign-meta">
-              <strong>Objective:</strong> تحضير الجمهور للانتقال من Awareness إلى Consideration.
-            </div>
-            <a href="https://www.facebook.com/106349791202286/photos/a.108469704323628/411974437306485/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button">
-              <span>View original post</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-            </a>
-          </article>
+          <article class="campaign-glass-card reveal-card"><div class="campaign-header"><span class="post-num">AR POST · 01</span><span class="post-obj">Awareness / Launch</span></div><p class="post-caption" dir="rtl">أول بوست في الحملة — افتتاحية تأسيسية بنبرة هادئة، تعرّف الجمهور بفلسفة New Direction قبل ما تتكلم عن الخدمات.</p><div class="campaign-meta"><strong>Objective:</strong> بناء وعي أولي + تحديد الـ tone of voice للبراند.</div><a href="https://www.facebook.com/106349791202286/photos/a.107843024386296/109443580892907/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button"><span>View original post</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a></article>
+          <article class="campaign-glass-card reveal-card"><div class="campaign-header"><span class="post-num">AR POST · 02</span><span class="post-obj">Educational</span></div><p class="post-caption" dir="rtl">محتوى تعليمي قصير — يقدّم فكرة عملية واحدة لطلاب الثانوية، الهدف يخلق قيمة فورية بدون ما يبيع.</p><div class="campaign-meta"><strong>Objective:</strong> زيادة الـ Saves والـ Shares كمؤشر مبكر للثقة.</div><a href="https://www.facebook.com/106349791202286/photos/a.108469704323628/194898819014049/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button"><span>View original post</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a></article>
+          <article class="campaign-glass-card reveal-card"><div class="campaign-header"><span class="post-num">AR POST · 03</span><span class="post-obj">Emotional Insight</span></div><p class="post-caption" dir="rtl">بوست تحفيزي مبني على insight حقيقي من الـ buyer persona: قلق الطالب من الاختيار الخطأ.</p><div class="campaign-meta"><strong>Objective:</strong> اللعب على Pain Point لتوليد تفاعل عاطفي وتعليقات.</div><a href="https://www.facebook.com/106349791202286/photos/a.108469704323628/402849314885664/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button"><span>View original post</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a></article>
+          <article class="campaign-glass-card reveal-card"><div class="campaign-header"><span class="post-num">AR POST · 04</span><span class="post-obj">Awareness Dialogue</span></div><p class="post-caption" dir="rtl">محتوى Awareness عن خدمة محددة — مكتوب كحوار قصير بدل ما يكون إعلان مباشر.</p><div class="campaign-meta"><strong>Objective:</strong> تعريف الجمهور بالخدمة بدون ما يحس إنه بيتباع له.</div><a href="https://www.facebook.com/106349791202286/photos/a.107843024386296/397460562091206/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button"><span>View original post</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a></article>
+          <article class="campaign-glass-card reveal-card"><div class="campaign-header"><span class="post-num">AR POST · 05</span><span class="post-obj">Interactive Ask</span></div><p class="post-caption" dir="rtl">بوست تفاعلي بسؤال مفتوح — مصمم يخلق تعليقات تساعد الـ Algorithm + يدّينا data عن الجمهور.</p><div class="campaign-meta"><strong>Objective:</strong> Engagement مع جمع insights للحملات الجاية.</div><a href="https://www.facebook.com/106349791202286/photos/a.108469704323628/111795970657668/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button"><span>View original post</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a></article>
+          <article class="campaign-glass-card reveal-card"><div class="campaign-header"><span class="post-num">AR POST · 06</span><span class="post-obj">Conversion Funnel</span></div><p class="post-caption" dir="rtl">بوست ختامي للحملة الأولى — يلخّص رسالة البراند ويفتح الباب للـ conversion في المرحلة الجاية.</p><div class="campaign-meta"><strong>Objective:</strong> تحضير الجمهور للانتقال من Awareness إلى Consideration.</div><a href="https://www.facebook.com/106349791202286/photos/a.108469704323628/411974437306485/" target="_blank" rel="noopener" class="campaign-link-btn magnetic-button"><span>View original post</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a></article>
         </div>
       </section>
 
-      <!-- ==================== JOURNEY (Timeline) ==================== -->
+
       <section id="journey" class="content-section">
-        <div class="eyebrow-split">
-          <span class="line"></span>
-          <span class="text">JOURNEY</span>
-        </div>
+        <div class="eyebrow-split"><span class="line"></span><span class="text">JOURNEY</span></div>
         <h2 class="split-reveal-heading">Professional <em>Path</em></h2>
-
         <div class="timeline-container">
-          <div class="timeline-spine">
-            <div class="spine-progress"></div>
-          </div>
-          
+          <div class="timeline-spine"><div class="spine-progress"></div></div>
           <div class="timeline-items">
-            <!-- Item 1 -->
-            <div class="timeline-item reveal-card">
-              <div class="timeline-dot bg-gold"></div>
-              <div class="timeline-header">
-                <span class="timeline-date">Aug 2025 — Present</span>
-                <h3 class="timeline-role">Customer Retention &amp; Sales Specialist</h3>
-                <span class="timeline-company">Concentrix (Boost Mobile Account) · Cairo</span>
-              </div>
-              <div class="timeline-body">
-                <p>Awarded the prestigious **1st Enterprise Loyalty Award (2026)** for top-tier retention performance. Drive client loyalty and Lifetime Value (CLV) consulting high-risk customers, resolving conflicts, and building retention strategies.</p>
-              </div>
-            </div>
-
-            <!-- Item 2 -->
-            <div class="timeline-item reveal-card">
-              <div class="timeline-dot bg-cyan"></div>
-              <div class="timeline-header">
-                <span class="timeline-date">Apr 2025 — Aug 2025</span>
-                <h3 class="timeline-role">Customer Service Ambassador</h3>
-                <span class="timeline-company">Tabby Technologies (Fintech / BNPL) · Cairo</span>
-              </div>
-              <div class="timeline-body">
-                <p>Developed deep e-commerce buyer understanding. Improved FAQ self-service content layouts to systematically reduce repeat contacts.</p>
-              </div>
-            </div>
-
-            <!-- Item 3 -->
-            <div class="timeline-item reveal-card">
-              <div class="timeline-dot bg-purple"></div>
-              <div class="timeline-header">
-                <span class="timeline-date">Sep 2020 — May 2022</span>
-                <h3 class="timeline-role">Digital Marketer</h3>
-                <span class="timeline-company">New Direction English Academy · Remote</span>
-              </div>
-              <div class="timeline-body">
-                <p>Established complete brand identity, positioning, voice, and monthly creative social campaigns. Crafted long-term marketing strategy packs containing customer personas and journeys.</p>
-              </div>
-            </div>
-
-            <!-- Item 4 -->
-            <div class="timeline-item reveal-card">
-              <div class="timeline-dot bg-gold"></div>
-              <div class="timeline-header">
-                <span class="timeline-date">Jul 2019 — Feb 2020</span>
-                <h3 class="timeline-role">Website Editor &amp; Content Coordinator</h3>
-                <span class="timeline-company">Fine Stone (UnionAire Group) · Egypt</span>
-              </div>
-              <div class="timeline-body">
-                <p>Managed and optimized product content layouts on Odoo CMS. Boosted traffic conversions and maintained content calendars for tech/hosting domains.</p>
-              </div>
-            </div>
-
-            <!-- Item 5 -->
-            <div class="timeline-item reveal-card">
-              <div class="timeline-dot bg-cyan"></div>
-              <div class="timeline-header">
-                <span class="timeline-date">May 2019 — Oct 2022</span>
-                <h3 class="timeline-role">Marketing Team Lead (Volunteer)</h3>
-                <span class="timeline-company">Resala Charity · Zagazig</span>
-              </div>
-              <div class="timeline-body">
-                <p>Guided an active marketing team of 8+ members coordinating community events. Recognized with the official Presentation &amp; Public Speaking award.</p>
-              </div>
-            </div>
+            <div class="timeline-item reveal-card"><div class="timeline-dot bg-gold"></div><div class="timeline-header"><span class="timeline-date">Aug 2025 — Present</span><h3 class="timeline-role">Customer Retention &amp; Sales Specialist</h3><span class="timeline-company">Concentrix (Boost Mobile Account) · Cairo</span></div><div class="timeline-body"><p>Awarded the 1st Enterprise Loyalty Award (2026) for top-tier retention performance. Drive client loyalty and Lifetime Value consulting high-risk customers, resolving conflicts, and building retention strategies.</p></div></div>
+            <div class="timeline-item reveal-card"><div class="timeline-dot bg-cyan"></div><div class="timeline-header"><span class="timeline-date">Apr 2025 — Aug 2025</span><h3 class="timeline-role">Customer Service Ambassador</h3><span class="timeline-company">Tabby Technologies (Fintech / BNPL) · Cairo</span></div><div class="timeline-body"><p>Developed deep e-commerce buyer understanding. Improved FAQ self-service content layouts to systematically reduce repeat contacts.</p></div></div>
+            <div class="timeline-item reveal-card"><div class="timeline-dot bg-purple"></div><div class="timeline-header"><span class="timeline-date">Sep 2020 — May 2022</span><h3 class="timeline-role">Digital Marketer</h3><span class="timeline-company">New Direction English Academy · Remote</span></div><div class="timeline-body"><p>Established complete brand identity, positioning, voice, and monthly creative social campaigns. Crafted long-term marketing strategy packs containing customer personas and journeys.</p></div></div>
+            <div class="timeline-item reveal-card"><div class="timeline-dot bg-gold"></div><div class="timeline-header"><span class="timeline-date">Jul 2019 — Feb 2020</span><h3 class="timeline-role">Website Editor &amp; Content Coordinator</h3><span class="timeline-company">Fine Stone (UnionAire Group) · Egypt</span></div><div class="timeline-body"><p>Managed and optimized product content layouts on Odoo CMS. Boosted traffic conversions and maintained content calendars for tech/hosting domains.</p></div></div>
+            <div class="timeline-item reveal-card"><div class="timeline-dot bg-cyan"></div><div class="timeline-header"><span class="timeline-date">May 2019 — Oct 2022</span><h3 class="timeline-role">Marketing Team Lead (Volunteer)</h3><span class="timeline-company">Resala Charity · Zagazig</span></div><div class="timeline-body"><p>Guided an active marketing team of 8+ members coordinating community events. Recognized with the official Presentation &amp; Public Speaking award.</p></div></div>
           </div>
         </div>
       </section>
 
-      <!-- ==================== CREDENTIALS SECTION ==================== -->
+
       <section id="credentials" class="content-section">
-        <div class="eyebrow-split">
-          <span class="line"></span>
-          <span class="text">CREDENTIALS</span>
-        </div>
+        <div class="eyebrow-split"><span class="line"></span><span class="text">CREDENTIALS</span></div>
         <h2 class="split-reveal-heading">Verified <em>Skills</em></h2>
         <p class="section-lead">The top 4 most impactful credentials driving results in the Egyptian marketing and corporate sector.</p>
-
         <div class="certificates-grid">
-          <!-- Cert 1 -->
-          <div class="certificate-glass-card reveal-card border-gold" data-img="certificates/photo_24_2026-06-14_15-50-40.jpg">
-            <div class="cert-glow"></div>
-            <div class="cert-card-header">
-              <span class="cert-type-tag">Marketing Diploma</span>
-              <span class="cert-year">2026</span>
-            </div>
-            <h3 class="cert-card-title">Professional Diploma in Digital Marketing</h3>
-            <p class="cert-card-issuer">BSA (Business Studies Academy)</p>
-            <p class="cert-card-reason">40 hours of intensive training in Performance Marketing, content strategy, media buying, and a graduation project. Holds significant corporate value.</p>
-            <span class="cert-view-prompt">Click to View Certificate ↗</span>
-          </div>
-
-          <!-- Cert 2 -->
-          <div class="certificate-glass-card reveal-card border-cyan" data-img="certificates/photo_23_2026-06-14_15-50-40.jpg">
-            <div class="cert-glow"></div>
-            <div class="cert-card-header">
-              <span class="cert-type-tag">Corporate Award</span>
-              <span class="cert-year">2026</span>
-            </div>
-            <h3 class="cert-card-title">1st Enterprise Loyalty Award</h3>
-            <p class="cert-card-issuer">Concentrix / Boost Mobile</p>
-            <p class="cert-card-reason">Official recognition for real-world excellence in churn reduction, customer retention, sales consulting, and lifetime value optimization.</p>
-            <span class="cert-view-prompt">Click to View Certificate ↗</span>
-          </div>
-
-          <!-- Cert 3 -->
-          <div class="certificate-glass-card reveal-card border-purple" data-img="certificates/photo_1_2026-06-14_15-50-39.jpg">
-            <div class="cert-glow"></div>
-            <div class="cert-card-header">
-              <span class="cert-type-tag">Trainer Diploma</span>
-              <span class="cert-year">2024</span>
-            </div>
-            <h3 class="cert-card-title">Certified Corporate Trainer (CCT)</h3>
-            <p class="cert-card-issuer">CTCHD / Dr. Ibrahim Elfiky</p>
-            <p class="cert-card-reason">Demonstrated competence in corporate onboarding, leadership alignment, speech delivery, and executive communication structures.</p>
-            <span class="cert-view-prompt">Click to View Certificate ↗</span>
-          </div>
-
-          <!-- Cert 4 -->
-          <div class="certificate-glass-card reveal-card border-gold" data-img="certificates/photo_fwd.jpg">
-            <div class="cert-glow"></div>
-            <div class="cert-card-header">
-              <span class="cert-type-tag">Tech Credential</span>
-              <span class="cert-year">2020</span>
-            </div>
-            <h3 class="cert-card-title">Digital Marketing Challenger Track</h3>
-            <p class="cert-card-issuer">Egypt FWD — Udacity + ITIDA</p>
-            <p class="cert-card-reason">Government-backed international credential focusing on digital analytics, target personas, social media funnels, and marketing metrics.</p>
-            <span class="cert-view-prompt">Click to View Certificate ↗</span>
-          </div>
+          <div class="certificate-glass-card reveal-card border-gold" data-img="certificates/photo_24_2026-06-14_15-50-40.jpg"><div class="cert-glow"></div><div class="cert-card-header"><span class="cert-type-tag">Marketing Diploma</span><span class="cert-year">2026</span></div><h3 class="cert-card-title">Professional Diploma in Digital Marketing</h3><p class="cert-card-issuer">BSA (Business Studies Academy)</p><p class="cert-card-reason">40 hours of intensive training in Performance Marketing, content strategy, media buying, and a graduation project. Holds significant corporate value.</p><span class="cert-view-prompt">Click to View Certificate</span></div>
+          <div class="certificate-glass-card reveal-card border-cyan" data-img="certificates/photo_23_2026-06-14_15-50-40.jpg"><div class="cert-glow"></div><div class="cert-card-header"><span class="cert-type-tag">Corporate Award</span><span class="cert-year">2026</span></div><h3 class="cert-card-title">1st Enterprise Loyalty Award</h3><p class="cert-card-issuer">Concentrix / Boost Mobile</p><p class="cert-card-reason">Official recognition for real-world excellence in churn reduction, customer retention, sales consulting, and lifetime value optimization.</p><span class="cert-view-prompt">Click to View Certificate</span></div>
+          <div class="certificate-glass-card reveal-card border-purple" data-img="certificates/photo_1_2026-06-14_15-50-39.jpg"><div class="cert-glow"></div><div class="cert-card-header"><span class="cert-type-tag">Trainer Diploma</span><span class="cert-year">2024</span></div><h3 class="cert-card-title">Certified Corporate Trainer (CCT)</h3><p class="cert-card-issuer">CTCHD / Dr. Ibrahim Elfiky</p><p class="cert-card-reason">Demonstrated competence in corporate onboarding, leadership alignment, speech delivery, and executive communication structures.</p><span class="cert-view-prompt">Click to View Certificate</span></div>
+          <div class="certificate-glass-card reveal-card border-gold" data-img="certificates/photo_fwd.jpg"><div class="cert-glow"></div><div class="cert-card-header"><span class="cert-type-tag">Tech Credential</span><span class="cert-year">2020</span></div><h3 class="cert-card-title">Digital Marketing Challenger Track</h3><p class="cert-card-issuer">Egypt FWD — Udacity + ITIDA</p><p class="cert-card-reason">Government-backed international credential focusing on digital analytics, target personas, social media funnels, and marketing metrics.</p><span class="cert-view-prompt">Click to View Certificate</span></div>
         </div>
-
         <div class="cert-download-center reveal-card">
           <p>Looking for the full set of certifications including ECDL, Satellite Sciences, and others?</p>
-          <a href="ceritificate portofolio.pdf" class="btn-full-download magnetic-button" download>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            <span>Download Full Certificate Portfolio (PDF)</span>
-          </a>
+          <a href="ceritificate portofolio.pdf" class="btn-full-download magnetic-button" download target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Download Full Certificate Portfolio (PDF)</span></a>
         </div>
       </section>
 
-      <!-- ==================== CONTACT SECTION ==================== -->
       <section id="contact" class="content-section">
-        <div class="eyebrow-split">
-          <span class="line"></span>
-          <span class="text">CONTACT</span>
-        </div>
+        <div class="eyebrow-split"><span class="line"></span><span class="text">CONTACT</span></div>
         <h2 class="split-reveal-heading">Let's <em>Connect</em></h2>
         <p class="section-lead">Ready to collaborate on brand strategy, retention operations, or content campaigns? Get in touch today.</p>
-
         <div class="contact-grid">
-          <!-- Details -->
           <div class="contact-details reveal-card">
-            <div class="detail-item">
-              <div class="icon-wrap">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              </div>
-              <div class="info">
-                <span class="label">Email</span>
-                <a href="mailto:abdelrahman.abdelhafez10@gmail.com" class="val link-effect">abdelrahman.abdelhafez10@gmail.com</a>
-              </div>
-            </div>
-
-            <div class="detail-item">
-              <div class="icon-wrap">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.88.37 1.85.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.96.33 1.93.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-              </div>
-              <div class="info">
-                <span class="label">Phone</span>
-                <a href="tel:+201157265599" class="val link-effect">+20 115 726 5599</a>
-              </div>
-            </div>
-
-            <div class="detail-item">
-              <div class="icon-wrap">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              </div>
-              <div class="info">
-                <span class="label">Location</span>
-                <span class="val">6th of October City, Giza, Egypt</span>
-              </div>
-            </div>
-
-            <div class="detail-item">
-              <div class="icon-wrap">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-              </div>
-              <div class="info">
-                <span class="label">Availability</span>
-                <span class="val">Cairo · Zayed · Smart Village · Maadi · Remote</span>
-              </div>
-            </div>
+            <div class="detail-item"><div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div class="info"><span class="label">Email</span><a href="mailto:abdelrahman.abdelhafez10@gmail.com" class="val link-effect">abdelrahman.abdelhafez10@gmail.com</a></div></div>
+            <div class="detail-item"><div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.88.37 1.85.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.96.33 1.93.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="info"><span class="label">Phone</span><a href="tel:+201157265599" class="val link-effect">+20 115 726 5599</a></div></div>
+            <div class="detail-item"><div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="info"><span class="label">Location</span><span class="val">6th of October City, Giza, Egypt</span></div></div>
+            <div class="detail-item"><div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div class="info"><span class="label">Availability</span><span class="val">Cairo · Zayed · Smart Village · Maadi · Remote</span></div></div>
+            <div class="detail-item"><div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div><div class="info"><span class="label">Resume</span><a href="Abdelrahman_CV_Final.pdf" download target="_blank" class="val link-effect">Download CV (PDF)</a></div></div>
           </div>
-
-          <!-- Form -->
           <div class="contact-form-card reveal-card">
             <h3 class="form-title">Send a Transmission</h3>
             <p class="form-desc">Typically responding within 24 hours.</p>
             <form action="mailto:abdelrahman.abdelhafez10@gmail.com" method="post" enctype="text/plain">
-              <div class="form-group">
-                <label for="name">Your Name</label>
-                <input type="text" id="name" name="name" placeholder="Enter your name" required />
-              </div>
-              <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" placeholder="your@email.com" required />
-              </div>
-              <div class="form-group">
-                <label for="message">Message</label>
-                <textarea id="message" name="message" placeholder="Tell me about your project..." required></textarea>
-              </div>
-              <button type="submit" class="btn-submit-form magnetic-button">
-                <span>Send Message</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-              </button>
+              <div class="form-group"><label for="name">Your Name</label><input type="text" id="name" name="name" placeholder="Enter your name" required /></div>
+              <div class="form-group"><label for="email">Email Address</label><input type="email" id="email" name="email" placeholder="your@email.com" required /></div>
+              <div class="form-group"><label for="message">Message</label><textarea id="message" name="message" placeholder="Tell me about your project..." required></textarea></div>
+              <button type="submit" class="btn-submit-form magnetic-button"><span>Send Message</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
             </form>
           </div>
         </div>
-      </main>
+      </section>
 
-    </div> <!-- End Right main-content -->
-  </div> <!-- End app-container -->
+    </main>
+  </div>
 
-  <!-- ===== FOOTER ===== -->
   <footer class="footer-system">
     <div class="footer-inner">
       <p class="copyright">&copy; 2026 Abdelrahman Mohammed Abdelhafez. All rights reserved.</p>
@@ -696,170 +295,14 @@
     </div>
   </footer>
 
-  <!-- ===== CERTIFICATE LIGHTBOX ===== -->
-  <div class="lightbox-modal" id="cert-lightbox" aria-hidden="true">
-    <div class="lightbox-overlay"></div>
-    <button class="lightbox-close" aria-label="Close Lightbox">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
-    <div class="lightbox-content-box">
-      <img src="" alt="Certificate Enlarged" class="lightbox-img" />
-    </div>
-  </div>
+  <div class="lightbox-modal" id="cert-lightbox" aria-hidden="true"><div class="lightbox-overlay"></div><button class="lightbox-close" aria-label="Close Lightbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="lightbox-content-box"><img src="" alt="Certificate Enlarged" class="lightbox-img" /></div></div>
 
-  <!-- ===== CASE STUDY DRAWERS ===== -->
-  <!-- Drawer Kyoko -->
-  <div class="project-drawer" id="drawer-kyoko" aria-hidden="true">
-    <div class="drawer-overlay"></div>
-    <div class="drawer-panel">
-      <button class="drawer-close" aria-label="Close Case Study">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-      <div class="drawer-inner">
-        <div class="drawer-header">
-          <span class="drawer-badge">Flagship Project</span>
-          <h3 class="drawer-title">Kyoko Gifts — Full Marketing Plan</h3>
-          <p class="drawer-meta">2026 · Gift &amp; E-commerce · Cairo, Egypt</p>
-        </div>
-        <div class="drawer-body">
-          <p class="drawer-intro-desc">Built a comprehensive marketing plan for an Egyptian gifting brand covering brand positioning, customer research, content planning, marketing funnels, and growth-focused KPIs.</p>
-          <div class="drawer-tags-list">
-            <span>Business Model Canvas</span>
-            <span>Blue Ocean Strategy</span>
-            <span>Buyer Personas</span>
-            <span>Meta &amp; TikTok Ads</span>
-            <span>KPI Framework</span>
-          </div>
-          
-          <div class="drawer-highlights-section">
-            <h4 class="section-sub-title">Strategic Highlights</h4>
-            <div class="highlight-cards-row">
-              <div class="highlight-mini-card">
-                <h5>Strategy Framework</h5>
-                <p>Business Model Canvas, brand identity system, dual SWOT, 5 SMART goals, competitive positioning, and Blue Ocean differentiation.</p>
-              </div>
-              <div class="highlight-mini-card">
-                <h5>Customer Intelligence</h5>
-                <p>2 buyer personas, 4Ps marketing mix, Push &amp; Pull strategy, customer journey mapping across all funnel stages.</p>
-              </div>
-              <div class="highlight-mini-card">
-                <h5>Growth &amp; Performance</h5>
-                <p>Ad copy, content pillars, online sales funnel, moderation guide, and a 6-category KPI measurement framework.</p>
-              </div>
-            </div>
-          </div>
+  <div class="project-drawer" id="drawer-kyoko" aria-hidden="true"><div class="drawer-overlay"></div><div class="drawer-panel"><button class="drawer-close" aria-label="Close Case Study"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="drawer-inner"><div class="drawer-header"><span class="drawer-badge">Flagship Project</span><h3 class="drawer-title">Kyoko Gifts — Full Marketing Plan</h3><p class="drawer-meta">2026 · Gift &amp; E-commerce · Cairo, Egypt</p></div><div class="drawer-body"><p class="drawer-intro-desc">Built a comprehensive marketing plan for an Egyptian gifting brand covering brand positioning, customer research, content planning, marketing funnels, and growth-focused KPIs.</p><div class="drawer-tags-list"><span>Business Model Canvas</span><span>Blue Ocean Strategy</span><span>Buyer Personas</span><span>Meta &amp; TikTok Ads</span><span>KPI Framework</span></div><div class="drawer-highlights-section"><h4 class="section-sub-title">Strategic Highlights</h4><div class="highlight-cards-row"><div class="highlight-mini-card"><h5>Strategy Framework</h5><p>Business Model Canvas, brand identity system, dual SWOT, 5 SMART goals, competitive positioning, and Blue Ocean differentiation.</p></div><div class="highlight-mini-card"><h5>Customer Intelligence</h5><p>2 buyer personas, 4Ps marketing mix, Push &amp; Pull strategy, customer journey mapping across all funnel stages.</p></div><div class="highlight-mini-card"><h5>Growth &amp; Performance</h5><p>Ad copy, content pillars, online sales funnel, moderation guide, and a 6-category KPI measurement framework.</p></div></div></div><div class="drawer-cta-center"><a href="kyoko marketing plan.pdf" class="btn-drawer-download magnetic-button" download target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Download Full Marketing Plan (PDF)</span></a></div></div></div></div></div>
 
-          <div class="drawer-cta-center">
-            <a href="kyoko marketing plan.pdf" class="btn-drawer-download magnetic-button" download>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              <span>Download Full Marketing Plan (PDF)</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="project-drawer" id="drawer-new-direction" aria-hidden="true"><div class="drawer-overlay"></div><div class="drawer-panel"><button class="drawer-close" aria-label="Close Case Study"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="drawer-inner"><div class="drawer-header"><span class="drawer-badge">Brand Strategy</span><h3 class="drawer-title">New Direction English Academy</h3><p class="drawer-meta">2020–2022 · EdTech · Egypt (Remote)</p></div><div class="drawer-body"><p class="drawer-intro-desc">Led full brand identity creation and marketing strategy for an Egyptian EdTech startup — from logo direction and tone of voice to content campaigns and competitive analysis.</p><div class="drawer-tags-list"><span>Brand Identity</span><span>SWOT Analysis</span><span>Content Campaigns</span><span>Competitor Research</span><span>Buyer Persona</span></div><div class="drawer-highlights-section"><h4 class="section-sub-title">Strategic Highlights</h4><div class="highlight-cards-row"><div class="highlight-mini-card"><h5>Brand Foundation</h5><p>Logo direction, colour palette, tone of voice, and positioning — differentiating from established English-learning academies.</p></div><div class="highlight-mini-card"><h5>Research &amp; Strategy</h5><p>Dual SWOT analyses, buyer persona, customer journey content map, value proposition research, pricing competitor analysis.</p></div><div class="highlight-mini-card"><h5>Content Execution</h5><p>Monthly content campaigns across Facebook &amp; Instagram — editorial calendars, scheduling, community engagement, bilingual copy.</p></div></div></div><div class="drawer-cta-center"><a href="new direction plan.pdf" class="btn-drawer-download magnetic-button" download target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Download Strategy Pack (PDF)</span></a></div></div></div></div></div>
 
-  <!-- Drawer New Direction -->
-  <div class="project-drawer" id="drawer-new-direction" aria-hidden="true">
-    <div class="drawer-overlay"></div>
-    <div class="drawer-panel">
-      <button class="drawer-close" aria-label="Close Case Study">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-      <div class="drawer-inner">
-        <div class="drawer-header">
-          <span class="drawer-badge">Brand Strategy</span>
-          <h3 class="drawer-title">New Direction English Academy</h3>
-          <p class="drawer-meta">2020–2022 · EdTech · Egypt (Remote)</p>
-        </div>
-        <div class="drawer-body">
-          <p class="drawer-intro-desc">Led full brand identity creation and marketing strategy for an Egyptian EdTech startup — from logo direction and tone of voice to content campaigns and competitive analysis.</p>
-          <div class="drawer-tags-list">
-            <span>Brand Identity</span>
-            <span>SWOT Analysis</span>
-            <span>Content Campaigns</span>
-            <span>Competitor Research</span>
-            <span>Buyer Persona</span>
-          </div>
-          
-          <div class="drawer-highlights-section">
-            <h4 class="section-sub-title">Strategic Highlights</h4>
-            <div class="highlight-cards-row">
-              <div class="highlight-mini-card">
-                <h5>Brand Foundation</h5>
-                <p>Logo direction, colour palette, tone of voice, and positioning — differentiating from established English-learning academies.</p>
-              </div>
-              <div class="highlight-mini-card">
-                <h5>Research &amp; Strategy</h5>
-                <p>Dual SWOT analyses, buyer persona, customer journey content map, value proposition research, pricing competitor analysis.</p>
-              </div>
-              <div class="highlight-mini-card">
-                <h5>Content Execution</h5>
-                <p>Monthly content campaigns across Facebook &amp; Instagram — editorial calendars, scheduling, community engagement, bilingual copy.</p>
-              </div>
-            </div>
-          </div>
+  <div class="project-drawer" id="drawer-hosting" aria-hidden="true"><div class="drawer-overlay"></div><div class="drawer-panel"><button class="drawer-close" aria-label="Close Case Study"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="drawer-inner"><div class="drawer-header"><span class="drawer-badge">Website Audit</span><h3 class="drawer-title">HostingWDomain — UX &amp; Content Audit</h3><p class="drawer-meta">Tech / SaaS</p></div><div class="drawer-body"><p class="drawer-intro-desc">Structured UX and content audit for a hosting &amp; domain provider, identifying brand identity gaps, content quality issues, and conversion friction points.</p><div class="drawer-tags-list"><span>UX Audit</span><span>Site Architecture</span><span>Conversion Optimization</span><span>A/B Testing</span></div><div class="drawer-highlights-section"><h4 class="section-sub-title">Strategic Highlights</h4><div class="highlight-cards-row"><div class="highlight-mini-card"><h5>Audit Scope</h5><p>Site architecture review, brand identity gap analysis, content quality assessment, landing page friction mapping.</p></div><div class="highlight-mini-card"><h5>Recommendations</h5><p>6-point execution roadmap — UX improvements, content restructuring, landing page optimization, A/B testing strategy.</p></div></div></div><div class="drawer-cta-center"><a href="HOSTING W DOMAIN REPORT.pdf" class="btn-drawer-download magnetic-button" download target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Download Audit Report (PDF)</span></a></div></div></div></div></div>
 
-          <div class="drawer-cta-center">
-            <a href="new direction plan.pdf" class="btn-drawer-download magnetic-button" download>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              <span>Download Strategy Pack (PDF)</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Drawer HostingWDomain -->
-  <div class="project-drawer" id="drawer-hosting" aria-hidden="true">
-    <div class="drawer-overlay"></div>
-    <div class="drawer-panel">
-      <button class="drawer-close" aria-label="Close Case Study">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-      <div class="drawer-inner">
-        <div class="drawer-header">
-          <span class="drawer-badge">Website Audit</span>
-          <h3 class="drawer-title">HostingWDomain — UX &amp; Content Audit</h3>
-          <p class="drawer-meta">Tech / SaaS</p>
-        </div>
-        <div class="drawer-body">
-          <p class="drawer-intro-desc">Structured UX and content audit for a hosting &amp; domain provider, identifying brand identity gaps, content quality issues, and conversion friction points.</p>
-          <div class="drawer-tags-list">
-            <span>UX Audit</span>
-            <span>Site Architecture</span>
-            <span>Conversion Optimization</span>
-            <span>A/B Testing</span>
-          </div>
-          
-          <div class="drawer-highlights-section">
-            <h4 class="section-sub-title">Strategic Highlights</h4>
-            <div class="highlight-cards-row">
-              <div class="highlight-mini-card">
-                <h5>Audit Scope</h5>
-                <p>Site architecture review, brand identity gap analysis, content quality assessment, landing page friction mapping.</p>
-              </div>
-              <div class="highlight-mini-card">
-                <h5>Recommendations</h5>
-                <p>6-point execution roadmap — UX improvements, content restructuring, landing page optimization, A/B testing strategy.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="drawer-cta-center">
-            <a href="HOSTING W DOMAIN REPORT.pdf" class="btn-drawer-download magnetic-button" download>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              <span>Download Audit Report (PDF)</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Smooth Scroll Script -->
-  <script src="script.js?v=2.0.1"></script>
+  <script src="script.js?v=3.0.0"></script>
 </body>
 </html>
