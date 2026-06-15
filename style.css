@@ -2147,6 +2147,19 @@ button, input, textarea {
     opacity: 0.16; /* Focused planet opacity for readable overlay text */
   }
   
+  /* Performance override for mobile - remove expensive blurs */
+  .project-glass-card, 
+  .campaign-glass-card, 
+  .stat-card, 
+  .certificate-glass-card,
+  .skill-category,
+  .contact-form-card,
+  .cert-download-center {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(12, 16, 26, 0.98);
+  }
+
   .content-section {
     padding: 60px 0;
   }

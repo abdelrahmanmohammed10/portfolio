@@ -40,24 +40,20 @@ document.addEventListener('DOMContentLoaded', () => {
   `;
   document.body.appendChild(progressBar);
 
-  window.addEventListener('scroll', () => {
-    const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    progressBar.style.width = scrollPercent + '%';
-  });
+  // Progress bar logic moved to the combined throttled scroll handler below.
 
 
   /* ----- 3. CURSOR SPOTLIGHT ----- */
   window.addEventListener('mousemove', (e) => {
+    if (window.innerWidth <= 1024) return; // Disable on mobile for performance
     document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
     document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
-  });
+  }, { passive: true });
 
 
   /* ----- 4. CANVAS PARTICLE SYSTEM (MINIMAL STARFIELD) ----- */
   const canvas = document.getElementById('particle-canvas');
-  if (canvas) {
+  if (canvas && window.innerWidth > 1024) { // Only enable on desktop for performance
     const ctx = canvas.getContext('2d');
     let particles = [];
     let width = (canvas.width = window.innerWidth);
@@ -126,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const magneticButtons = document.querySelectorAll('.magnetic-button');
   magneticButtons.forEach(btn => {
     btn.addEventListener('mousemove', (e) => {
+      if (window.innerWidth <= 1024) return; // Disable on mobile
       const rect = btn.getBoundingClientRect();
       const x = e.clientX - rect.left - rect.width / 2;
       const y = e.clientY - rect.top - rect.height / 2;
@@ -288,48 +285,70 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  let tickingScroll = false;
   window.addEventListener('scroll', () => {
-    let currentActive = '';
-    const scrollPos = window.scrollY + window.innerHeight / 3;
+    if (!tickingScroll) {
+      window.requestAnimationFrame(() => {
+        const scrollTop = window.scrollY;
+        
+        // 1. Progress Bar
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
 
-    sections.forEach(sec => {
-      const secTop = sec.offsetTop;
-      const secHeight = sec.offsetHeight;
-      if (scrollPos >= secTop && scrollPos < secTop + secHeight) {
-        currentActive = sec.getAttribute('id');
-      }
-    });
+        // 2. Active Nav Link Tracking & Background Planets
+        let currentActive = '';
+        const scrollPos = scrollTop + window.innerHeight / 3;
 
-    // Default to Hero section when near the top of the scroll
-    if (window.scrollY < 180) {
-      currentActive = 'hero';
-    }
+        sections.forEach(sec => {
+          const secTop = sec.offsetTop;
+          const secHeight = sec.offsetHeight;
+          if (scrollPos >= secTop && scrollPos < secTop + secHeight) {
+            currentActive = sec.getAttribute('id');
+          }
+        });
 
-    if (currentActive) {
-      navItems.forEach(item => {
-        item.classList.remove('active');
-        // When hero is active, highlight the home/hero link as active
-        if (item.getAttribute('href') === `#${currentActive}`) {
-          item.classList.add('active');
+        // Default to Hero section when near the top of the scroll
+        if (scrollTop < 180) {
+          currentActive = 'hero';
         }
-      });
-      updateActivePlanet(currentActive);
-    }
 
-    // Spine timeline progress drawing
-    const timeline = document.querySelector('.timeline-container');
-    if (timeline) {
-      const spineProgress = document.querySelector('.spine-progress');
-      const rect = timeline.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      
-      // Calculate how much of the timeline has been scrolled past the center of the viewport
-      const startTrigger = windowHeight / 2;
-      const scrolled = startTrigger - rect.top;
-      const percent = Math.min(Math.max((scrolled / rect.height) * 100, 0), 100);
-      spineProgress.style.height = percent + '%';
+        if (currentActive) {
+          navItems.forEach(item => {
+            item.classList.remove('active');
+            // When hero is active, highlight the home/hero link as active
+            if (item.getAttribute('href') === `#${currentActive}`) {
+              item.classList.add('active');
+            }
+          });
+          updateActivePlanet(currentActive);
+        }
+
+        // 3. Spine timeline progress drawing
+        const timeline = document.querySelector('.timeline-container');
+        if (timeline) {
+          const spineProgress = document.querySelector('.spine-progress');
+          const startTrigger = window.innerHeight / 2;
+          
+          // Use offsetTop instead of getBoundingClientRect for layout performance
+          let timelineTop = timeline.offsetTop;
+          let parent = timeline.offsetParent;
+          while(parent) {
+             timelineTop += parent.offsetTop;
+             parent = parent.offsetParent;
+          }
+          const timelineHeight = timeline.offsetHeight;
+          
+          const scrolled = (scrollTop + startTrigger) - timelineTop;
+          const percent = Math.min(Math.max((scrolled / timelineHeight) * 100, 0), 100);
+          spineProgress.style.height = percent + '%';
+        }
+
+        tickingScroll = false;
+      });
+      tickingScroll = true;
     }
-  });
+  }, { passive: true });
 
 
   /* ----- 9. PROJECT DRAWERS ----- */
