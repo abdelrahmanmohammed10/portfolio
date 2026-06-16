@@ -55,107 +55,74 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ----- 4. THREE.JS WebGL 3D SPACE SCENE ----- */
   const canvas = document.getElementById('three-planet-canvas');
-  let scene, camera, renderer, starField;
+  let scene, camera, renderer, starField, spineLine;
   let planets = [];
   let currentCameraY = 0;
   let targetCameraY = 0;
   const isMobile = window.innerWidth <= 1024;
 
-  const getTexturePath = (filename) => {
-    if (window.location.protocol === 'file:') {
-      // Under local file protocol, load from CORS-enabled raw GitHub mapping to bypass browser blocks
-      return `https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/${filename}`;
+  // 1. Programmatic radial glow texture generator (bypasses local CORS blocks entirely)
+  const createGlowTexture = () => {
+    const size = 64;
+    const canvasTexture = document.createElement('canvas');
+    canvasTexture.width = size;
+    canvasTexture.height = size;
+    const ctx = canvasTexture.getContext('2d');
+    
+    const grad = ctx.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
+    grad.addColorStop(0, 'rgba(255, 255, 255, 1.0)');
+    grad.addColorStop(0.25, 'rgba(255, 255, 255, 0.7)');
+    grad.addColorStop(0.55, 'rgba(255, 255, 255, 0.15)');
+    grad.addColorStop(1.0, 'rgba(255, 255, 255, 0.0)');
+    
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, size, size);
+    
+    return new THREE.CanvasTexture(canvasTexture);
+  };
+
+  const getClusterColor = (name) => {
+    switch (name) {
+      case 'hero': return 0xF59E0B;      // Gold
+      case 'about': return 0x06B6D4;     // Cyan
+      case 'work': return 0xef4444;      // Red/Coral
+      case 'campaigns': return 0x7C3AED; // Purple
+      case 'journey': return 0xF59E0B;   // Gold
+      case 'credentials': return 0x06B6D4; // Cyan
+      case 'contact': return 0x7C3AED;   // Purple
+      default: return 0xffffff;
     }
-    return `./textures/${filename}`;
   };
 
   const planetConfig = [
-    { 
-      name: 'hero', 
-      y: 0, 
-      x: 0, 
-      size: 3.2, 
-      color: 0xF59E0B, 
-      materialType: 'basic', 
-      map: 'sunmap.jpg' 
-    },
-    { 
-      name: 'about', 
-      y: -12, 
-      x: -3.8, 
-      size: 2.2, 
-      color: 0x06B6D4, 
-      materialType: 'phong', 
-      map: 'earthmap1k.jpg', 
-      bumpMap: 'earthbump1k.jpg', 
-      bumpScale: 0.05, 
-      specularMap: 'earthspec1k.jpg', 
-      specular: 0x444444, 
-      shininess: 25 
-    },
-    { 
-      name: 'work', 
-      y: -24, 
-      x: 3.8, 
-      size: 1.8, 
-      color: 0xef4444, 
-      materialType: 'phong', 
-      map: 'marsmap1k.jpg', 
-      bumpMap: 'marsbump1k.jpg', 
-      bumpScale: 0.03, 
-      shininess: 12 
-    },
-    { 
-      name: 'campaigns', 
-      y: -36, 
-      x: -3.8, 
-      size: 2.5, 
-      color: 0xdca876, 
-      materialType: 'standard', 
-      map: 'jupitermap.jpg', 
-      roughness: 0.8, 
-      metalness: 0.1 
-    },
-    { 
-      name: 'journey', 
-      y: -48, 
-      x: 3.8, 
-      size: 2.0, 
-      color: 0xdfcdb2, 
-      materialType: 'standard', 
-      map: 'saturnmap.jpg', 
-      roughness: 0.85, 
-      metalness: 0.1, 
-      ring: { 
-        innerRadiusMultiplier: 1.3, 
-        outerRadiusMultiplier: 2.3, 
-        colorMap: 'saturnringcolor.jpg', 
-        patternMap: 'saturnringpattern.gif' 
-      } 
-    },
-    { 
-      name: 'credentials', 
-      y: -60, 
-      x: 3.8, 
-      size: 1.9, 
-      color: 0xa5d6a7, 
-      materialType: 'standard', 
-      map: 'uranusmap.jpg', 
-      roughness: 0.8, 
-      metalness: 0.1 
-    },
-    { 
-      name: 'contact', 
-      y: -72, 
-      x: 0, 
-      size: 2.2, 
-      color: 0x3f51b5, 
-      materialType: 'standard', 
-      map: 'neptunemap.jpg', 
-      roughness: 0.8, 
-      metalness: 0.1 
-    }
+    { name: 'hero', y: 0, x: 0, size: 0.22, color: getClusterColor('hero') },
+    { name: 'about', y: -12, x: -3.8, size: 0.20, color: getClusterColor('about') },
+    { name: 'work', y: -24, x: 3.8, size: 0.18, color: getClusterColor('work') },
+    { name: 'campaigns', y: -36, x: -3.8, size: 0.22, color: getClusterColor('campaigns') },
+    { name: 'journey', y: -48, x: 3.8, size: 0.20, color: getClusterColor('journey') },
+    { name: 'credentials', y: -60, x: 3.8, size: 0.18, color: getClusterColor('credentials') },
+    { name: 'contact', y: -72, x: 0, size: 0.22, color: getClusterColor('contact') }
   ];
+
+  const satelliteOffsets = [
+    new THREE.Vector3(-1.6, 1.3, 0.6),
+    new THREE.Vector3(1.7, 0.9, -0.7),
+    new THREE.Vector3(-0.9, -1.5, -0.8),
+    new THREE.Vector3(1.3, -1.3, 1.0),
+    new THREE.Vector3(-1.8, -0.4, 0.4),
+    new THREE.Vector3(0.6, 1.7, -1.0)
+  ];
+
+  const connectionPairs = [
+    [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], // Core to satellites
+    [1, 2], [3, 4], [5, 6],                         // Satellite pairs
+    [2, 5], [4, 1]                                  // Cross links
+  ];
+
+  const getLocalNodePos = (idx) => {
+    if (idx === 0) return new THREE.Vector3(0, 0, 0);
+    return satelliteOffsets[idx - 1];
+  };
 
   if (canvas) {
     scene = new THREE.Scene();
@@ -166,19 +133,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderer = new THREE.WebGLRenderer({
       canvas: canvas,
-      alpha: true, // transparent background for style meshes
+      alpha: true,
       antialias: !isMobile,
       powerPreference: "high-performance"
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    // 1. Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.16);
+    // 1. Lighting (Soft technical space ambiance)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.22);
     scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight(0xffffff, 2.0);
-    sunLight.position.set(-6, 6, 8); // Top-left rays
+    const sunLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    sunLight.position.set(-6, 6, 8);
     scene.add(sunLight);
 
     // 2. Starfield (Drifting points)
@@ -197,144 +164,140 @@ document.addEventListener('DOMContentLoaded', () => {
       color: 0xffffff,
       size: 0.08,
       transparent: true,
-      opacity: 0.6,
+      opacity: 0.5,
       sizeAttenuation: true
     });
     starField = new THREE.Points(starGeometry, starMaterial);
     scene.add(starField);
 
-    // 3. Planet Builder
-    const textureLoader = new THREE.TextureLoader();
+    // 3. Network Constellation Builder
+    const glowTexture = createGlowTexture();
     const isAr = document.documentElement.getAttribute('lang') === 'ar';
 
     planetConfig.forEach((cfg) => {
-      // Create material with fallback color first
-      let material;
-
-      if (cfg.materialType === 'basic') {
-        material = new THREE.MeshBasicMaterial({
-          color: cfg.color
-        });
-        if (cfg.map) {
-          material.map = textureLoader.load(getTexturePath(cfg.map), () => {
-            material.color.setHex(0xffffff); // Remove fallback tint once loaded
-            material.needsUpdate = true;
-          }, undefined, (err) => {
-            console.warn("Failed to load basic texture:", cfg.map);
-          });
-        }
-      } else if (cfg.materialType === 'phong') {
-        material = new THREE.MeshPhongMaterial({
-          color: cfg.color,
-          bumpScale: cfg.bumpScale || 0.05,
-          shininess: cfg.shininess || 30
-        });
-
-        if (cfg.map) {
-          material.map = textureLoader.load(getTexturePath(cfg.map), () => {
-            material.color.setHex(0xffffff);
-            material.needsUpdate = true;
-          });
-        }
-        if (cfg.bumpMap) {
-          material.bumpMap = textureLoader.load(getTexturePath(cfg.bumpMap), () => {
-            material.needsUpdate = true;
-          });
-        }
-        if (cfg.specularMap) {
-          material.specularMap = textureLoader.load(getTexturePath(cfg.specularMap), () => {
-            material.specular = new THREE.Color(cfg.specular || 0x111111);
-            material.needsUpdate = true;
-          });
-        }
-      } else {
-        // PBR Standard Material
-        material = new THREE.MeshStandardMaterial({
-          color: cfg.color,
-          roughness: cfg.roughness !== undefined ? cfg.roughness : 0.8,
-          metalness: cfg.metalness !== undefined ? cfg.metalness : 0.1
-        });
-
-        if (cfg.map) {
-          material.map = textureLoader.load(getTexturePath(cfg.map), () => {
-            material.color.setHex(0xffffff);
-            material.needsUpdate = true;
-          });
-        }
-        if (cfg.bumpMap) {
-          material.bumpMap = textureLoader.load(getTexturePath(cfg.bumpMap), () => {
-            material.needsUpdate = true;
-          });
-        }
-      }
-
-      const geometry = new THREE.SphereGeometry(cfg.size, cfg.name === 'hero' ? 64 : 32, cfg.name === 'hero' ? 64 : 32);
-      const mesh = new THREE.Mesh(geometry, material);
-
       const group = new THREE.Group();
       const initialX = isAr ? -cfg.x : cfg.x;
       group.position.set(initialX, cfg.y, 0);
       group.scale.set(0.9, 0.9, 0.9); // Inactive scale
-      group.add(mesh);
 
-      // Saturn Rings
-      if (cfg.ring) {
-        const innerRad = cfg.size * cfg.ring.innerRadiusMultiplier;
-        const outerRad = cfg.size * cfg.ring.outerRadiusMultiplier;
-        const thetaSegments = 64;
-        const phiSegments = 8;
-        
-        const ringGeo = new THREE.RingGeometry(innerRad, outerRad, thetaSegments, phiSegments);
-        
-        // Radial UV mapping (U = radius from inner to outer, V = angle around circle)
-        const uvs = ringGeo.attributes.uv;
-        let uvIndex = 0;
-        for (let j = 0; j <= phiSegments; j++) {
-          const u = j / phiSegments;
-          for (let i = 0; i <= thetaSegments; i++) {
-            const v = i / thetaSegments;
-            uvs.setXY(uvIndex, u, v);
-            uvIndex++;
-          }
-        }
-        uvs.needsUpdate = true;
+      // Dedicated material instances per cluster to prevent focused opacity leakage
+      const coreMat = new THREE.MeshBasicMaterial({
+        color: cfg.color,
+        transparent: true,
+        opacity: 0.95
+      });
+      coreMat.isCore = true;
 
-        const ringMat = new THREE.MeshStandardMaterial({
-          color: 0xe5c3a3, // Fallback ring color
+      const glowMat = new THREE.SpriteMaterial({
+        map: glowTexture,
+        color: cfg.color,
+        transparent: true,
+        opacity: 0.65,
+        blending: THREE.AdditiveBlending
+      });
+      glowMat.isCoreGlow = true;
+
+      const satMat = new THREE.MeshBasicMaterial({
+        color: 0xffffff, // White satellite spheres for technical aesthetic contrast
+        transparent: true,
+        opacity: 0.85
+      });
+      satMat.isSatellite = true;
+
+      const lineMat = new THREE.LineBasicMaterial({
+        color: cfg.color,
+        transparent: true,
+        opacity: 0.35
+      });
+      lineMat.isLine = true;
+
+      // A. Create Core Node
+      const coreGeo = new THREE.SphereGeometry(cfg.size, 16, 16);
+      const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+      group.add(coreMesh);
+
+      // B. Create Glow Aura around Core
+      const glowSprite = new THREE.Sprite(glowMat);
+      glowSprite.scale.set(cfg.size * 5.0, cfg.size * 5.0, 1.0);
+      group.add(glowSprite);
+
+      // C. Create Satellite Nodes
+      satelliteOffsets.forEach((offset) => {
+        const satGeo = new THREE.SphereGeometry(0.08, 8, 8);
+        const satMesh = new THREE.Mesh(satGeo, satMat);
+        satMesh.position.copy(offset);
+        group.add(satMesh);
+      });
+
+      // D. Create Connection Lines inside Cluster
+      const lineVertices = [];
+      connectionPairs.forEach((pair) => {
+        const p1 = getLocalNodePos(pair[0]);
+        const p2 = getLocalNodePos(pair[1]);
+        lineVertices.push(p1.x, p1.y, p1.z);
+        lineVertices.push(p2.x, p2.y, p2.z);
+      });
+
+      const lineGeo = new THREE.BufferGeometry();
+      lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(lineVertices, 3));
+      const lineMesh = new THREE.LineSegments(lineGeo, lineMat);
+      group.add(lineMesh);
+
+      // E. Create Local Data Flow Packets (Busy light streams)
+      const clusterPackets = [];
+      const numPackets = isMobile ? 2 : 4;
+      for (let k = 0; k < numPackets; k++) {
+        const connIndex = Math.floor(Math.random() * connectionPairs.length);
+        const pair = connectionPairs[connIndex];
+        
+        const pktMat = new THREE.SpriteMaterial({
+          map: glowTexture,
+          color: cfg.color,
           transparent: true,
-          side: THREE.DoubleSide,
-          roughness: 0.8,
-          metalness: 0.1
+          opacity: 0.90,
+          blending: THREE.AdditiveBlending
         });
+        pktMat.isPacket = true;
 
-        ringMat.map = textureLoader.load(getTexturePath(cfg.ring.colorMap), () => {
-          ringMat.color.setHex(0xffffff);
-          ringMat.needsUpdate = true;
+        const packetSprite = new THREE.Sprite(pktMat);
+        packetSprite.scale.set(0.24, 0.24, 1.0);
+        group.add(packetSprite);
+
+        clusterPackets.push({
+          startNode: pair[0],
+          endNode: pair[1],
+          progress: Math.random(), // Randomize to offset start timings
+          speed: 0.008 + Math.random() * 0.014,
+          sprite: packetSprite
         });
-
-        ringMat.alphaMap = textureLoader.load(getTexturePath(cfg.ring.patternMap), () => {
-          ringMat.needsUpdate = true;
-        });
-
-        const ringMesh = new THREE.Mesh(ringGeo, ringMat);
-        ringMesh.rotation.x = Math.PI / 2.5;
-        ringMesh.rotation.y = Math.PI / 12;
-        group.add(ringMesh);
       }
 
       scene.add(group);
 
       planets.push({
         name: cfg.name,
-        mesh: mesh,
+        mesh: coreMesh, // Compatible reference for rotation
         group: group,
         baseX: cfg.x,
         baseY: cfg.y,
-        targetX: initialX
+        targetX: initialX,
+        packets: clusterPackets
       });
     });
 
-    // 4. Render loop with Lerp Easing
+    // 4. Create Dynamic Central Spine Connector Line
+    const spineVertices = new Float32Array(planets.length * 2 * 3);
+    const spineGeo = new THREE.BufferGeometry();
+    spineGeo.setAttribute('position', new THREE.BufferAttribute(spineVertices, 3));
+    const spineMat = new THREE.LineBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.22
+    });
+    spineLine = new THREE.LineSegments(spineGeo, spineMat);
+    scene.add(spineLine);
+
+    // 5. Render loop with Lerp Easing
     function animate() {
       requestAnimationFrame(animate);
 
@@ -342,28 +305,72 @@ document.addEventListener('DOMContentLoaded', () => {
       currentCameraY += (targetCameraY - currentCameraY) * 0.045;
       camera.position.y = currentCameraY;
 
-      // Axis rotation & swell meshes on scroll focus
-      planets.forEach(p => {
-        const rotSpeed = p.name === 'hero' ? 0.0006 : 0.0035;
-        p.mesh.rotation.y += rotSpeed;
+      // Update dynamic spine line vertices to match cluster translations
+      if (spineLine) {
+        const positions = spineLine.geometry.attributes.position;
+        for (let k = 0; k < planets.length - 1; k++) {
+          const posA = planets[k].group.position;
+          const posB = planets[k+1].group.position;
+          
+          positions.setXYZ(k * 2, posA.x, posA.y, posA.z);
+          positions.setXYZ(k * 2 + 1, posB.x, posB.y, posB.z);
+        }
+        positions.needsUpdate = true;
+      }
 
-        // Animate X target transitions on language toggling
+      // Rotate constellation nodes & update data packets
+      planets.forEach(p => {
+        // Slow axial rotation of the satellite orbits
+        p.group.rotation.y += 0.0035;
+        p.group.rotation.x += 0.001;
+
+        // Animate X target translations on language toggling
         p.group.position.x += (p.targetX - p.group.position.x) * 0.08;
 
-        // Breathe expansion when active
-        if (p.name === lastActiveSection) {
-          p.group.scale.set(
-            THREE.MathUtils.lerp(p.group.scale.x, 1.05, 0.05),
-            THREE.MathUtils.lerp(p.group.scale.y, 1.05, 0.05),
-            THREE.MathUtils.lerp(p.group.scale.z, 1.05, 0.05)
-          );
-        } else {
-          p.group.scale.set(
-            THREE.MathUtils.lerp(p.group.scale.x, 0.9, 0.05),
-            THREE.MathUtils.lerp(p.group.scale.y, 0.9, 0.05),
-            THREE.MathUtils.lerp(p.group.scale.z, 0.9, 0.05)
-          );
-        }
+        const isActive = p.name === lastActiveSection;
+        const targetScale = isActive ? 1.06 : 0.88;
+
+        // Active breathing scale interpolation
+        p.group.scale.set(
+          THREE.MathUtils.lerp(p.group.scale.x, targetScale, 0.05),
+          THREE.MathUtils.lerp(p.group.scale.y, targetScale, 0.05),
+          THREE.MathUtils.lerp(p.group.scale.z, targetScale, 0.05)
+        );
+
+        // Adjust opacities of child materials dynamically to create a focused depth effect
+        const targetOpacity = isActive ? 1.0 : 0.22;
+        p.group.children.forEach(child => {
+          if (child.material) {
+            let baseOpacity = 0.9;
+            if (child.material.isCoreGlow) baseOpacity = 0.65;
+            else if (child.material.isLine) baseOpacity = 0.35;
+            else if (child.material.isSatellite) baseOpacity = 0.85;
+            else if (child.material.isCore) baseOpacity = 0.95;
+            else if (child.material.isPacket) baseOpacity = 0.90;
+            
+            child.material.opacity = THREE.MathUtils.lerp(child.material.opacity, targetOpacity * baseOpacity, 0.07);
+          }
+        });
+
+        // Update local data flow packets along segments
+        p.packets.forEach(pkt => {
+          pkt.progress += pkt.speed;
+          if (pkt.progress >= 1.0) {
+            pkt.progress = 0.0;
+            pkt.startNode = pkt.endNode;
+            
+            // Randomly branch onto a connected line path at the junction
+            const possiblePairs = connectionPairs.filter(pair => pair.includes(pkt.startNode));
+            const nextPair = possiblePairs[Math.floor(Math.random() * possiblePairs.length)];
+            
+            pkt.endNode = nextPair[0] === pkt.startNode ? nextPair[1] : nextPair[0];
+            pkt.speed = 0.008 + Math.random() * 0.014;
+          }
+
+          const startPos = getLocalNodePos(pkt.startNode);
+          const endPos = getLocalNodePos(pkt.endNode);
+          pkt.sprite.position.lerpVectors(startPos, endPos, pkt.progress);
+        });
       });
 
       if (starField) {
