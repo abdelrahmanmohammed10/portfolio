@@ -555,3 +555,139 @@ document.addEventListener('DOMContentLoaded', () => {
     revealObserver.observe(el);
   });
 });
+/* ============================================================
+   STARRY NIGHT INTERACTIVE ENGINE (2D Canvas)
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('three-planet-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  
+  let width, height;
+  let stars = [];
+  const numStars = window.innerWidth > 768 ? 200 : 80;
+  
+  // Mouse interaction
+  let mouse = { x: -1000, y: -1000 };
+  let scrollSpeed = 0;
+  let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
+
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  }
+
+  class Star {
+    constructor() {
+      this.reset();
+    }
+    
+    reset() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      this.z = Math.random() * 2 + 0.1; // depth/size
+      this.baseAlpha = Math.random() * 0.5 + 0.1;
+      this.alpha = this.baseAlpha;
+      // Stars drift slowly to the top-left
+      this.vx = (Math.random() - 0.5) * 0.2 - 0.1;
+      this.vy = -Math.random() * 0.3 - 0.1; 
+    }
+    
+    update() {
+      // Base movement
+      this.x += this.vx;
+      this.y += this.vy;
+      
+      // Scroll boost
+      this.y += scrollSpeed * this.z * 0.5;
+      
+      // Mouse repulsion
+      let dx = this.x - mouse.x;
+      let dy = this.y - mouse.y;
+      let dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 150) {
+        let force = (150 - dist) / 150;
+        this.x -= (dx / dist) * force * 2;
+        this.y -= (dy / dist) * force * 2;
+        this.alpha = Math.min(1, this.baseAlpha + force);
+      } else {
+        this.alpha = this.baseAlpha;
+      }
+      
+      // Screen wrap
+      if (this.x < 0) this.x = width;
+      if (this.x > width) this.x = 0;
+      if (this.y < 0) this.y = height;
+      if (this.y > height) this.y = 0;
+    }
+    
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.z, 0, Math.PI * 2);
+      ctx.fillStyle = \gba(255, 255, 255, \)\;
+      ctx.fill();
+      
+      // Glow effect for bigger stars
+      if (this.z > 1.5) {
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = '#FF9F1C';
+      } else {
+        ctx.shadowBlur = 0;
+      }
+    }
+  }
+
+  function init() {
+    resize();
+    stars = [];
+    for (let i = 0; i < numStars; i++) {
+      stars.push(new Star());
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    stars.forEach(star => {
+      star.update();
+      star.draw();
+    });
+    
+    // Friction for scroll speed
+    scrollSpeed *= 0.9;
+    
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('resize', () => {
+    resize();
+    init();
+  });
+  
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
+
+  window.addEventListener('mouseout', () => {
+    mouse.x = -1000;
+    mouse.y = -1000;
+  });
+  
+  window.addEventListener('touchmove', (e) => {
+    mouse.x = e.touches[0].clientX;
+    mouse.y = e.touches[0].clientY;
+  });
+  
+  window.addEventListener('scroll', () => {
+    let currentScroll = window.scrollY || document.documentElement.scrollTop;
+    let delta = currentScroll - lastScrollTop;
+    scrollSpeed = delta * -0.05; // move stars opposite to scroll
+    lastScrollTop = currentScroll;
+  });
+
+  init();
+  animate();
+});
+
