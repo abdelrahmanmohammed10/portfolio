@@ -94,13 +94,14 @@ document.addEventListener('DOMContentLoaded', () => {
     uniform vec3 glowColor;
     uniform float opacity;
     uniform float isSun;
+    uniform float textureScale;
     varying vec3 vNormal;
     varying vec3 vLocalNormal;
     varying vec3 vViewPosition;
 
     void main() {
       vec3 localN = normalize(vLocalNormal);
-      vec2 uv = localN.xy * 0.5 + 0.5;
+      vec2 uv = localN.xy * textureScale + 0.5;
       
       vec4 texColor = vec4(fallbackColor, 1.0);
       if (hasTexture > 0.5) {
@@ -123,16 +124,23 @@ document.addEventListener('DOMContentLoaded', () => {
       float diffuse = max(dotNL, 0.0);
       
       vec3 litColor = texColor.rgb;
+      float lightingAlphaFactor = 1.0;
       if (isSun < 0.5) {
-        litColor = texColor.rgb * (diffuse * 0.85 + 0.15);
+        // Soft terminator lighting
+        litColor = texColor.rgb * (diffuse * 0.95 + 0.05);
+        // Fade out the shadowed side to make it transparent
+        lightingAlphaFactor = smoothstep(-0.05, 0.35, diffuse);
       }
       
       vec3 viewDir = normalize(vViewPosition);
       float fresnel = pow(1.0 - max(dot(normal, viewDir), 0.0), 3.5);
       vec3 glow = glowColor * fresnel * 0.7;
+      if (isSun < 0.5) {
+        glow *= smoothstep(-0.1, 0.3, diffuse);
+      }
       
       vec3 finalColor = litColor + glow;
-      float finalAlpha = texColor.a * alpha * edgeFade * opacity;
+      float finalAlpha = texColor.a * alpha * edgeFade * lightingAlphaFactor * opacity;
       
       gl_FragColor = vec4(finalColor, finalAlpha);
     }
@@ -178,6 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
       glowColor: 0xF59E0B,
       texture: 'planets/javier-miranda-5qPsVqmlQOs-unsplash.jpg',
       isSun: 1.0,
+      textureScale: 0.48,
       tiltX: 0.1,
       tiltZ: 0.1,
       rotSpeed: 0.0012
@@ -185,12 +194,13 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       name: 'about',
       y: -12,
-      x: -3.6,
+      x: 4.2,
       size: 1.7,
       color: 0x06B6D4,
       glowColor: 0x06B6D4,
       texture: 'planets/planet-volumes-awYEQyYdHVE-unsplash.jpg',
       isSun: 0.0,
+      textureScale: 0.47,
       tiltX: 0.35,
       tiltZ: 0.15,
       rotSpeed: 0.003
@@ -198,12 +208,13 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       name: 'work',
       y: -24,
-      x: 3.6,
+      x: -4.2,
       size: 1.6,
       color: 0xef4444,
       glowColor: 0xef4444,
       texture: 'planets/pexels-zelch-20337601.jpg',
       isSun: 0.0,
+      textureScale: 0.47,
       tiltX: 0.2,
       tiltZ: 0.25,
       rotSpeed: 0.004
@@ -211,12 +222,13 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       name: 'campaigns',
       y: -36,
-      x: -3.6,
+      x: 4.2,
       size: 1.8,
       color: 0xF59E0B,
       glowColor: 0xF59E0B,
       texture: 'planets/pexels-t-keawkanok-3252323-13229275.jpg',
       isSun: 0.0,
+      textureScale: 0.47,
       tiltX: 0.15,
       tiltZ: 0.1,
       rotSpeed: 0.0035
@@ -224,12 +236,13 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       name: 'journey',
       y: -48,
-      x: 3.6,
+      x: 4.2,
       size: 1.6,
       color: 0x06B6D4,
       glowColor: 0x06B6D4,
       texture: 'planets/pexels-zelch-20337597.jpg',
       isSun: 0.0,
+      textureScale: 0.47,
       tiltX: 0.4,
       tiltZ: 0.2,
       rotSpeed: 0.003
@@ -237,12 +250,13 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       name: 'credentials',
       y: -60,
-      x: 3.6,
+      x: -4.2,
       size: 1.7,
       color: 0x7C3AED,
       glowColor: 0x7C3AED,
       texture: 'planets/pexels-zelch-20376399.jpg',
       isSun: 0.0,
+      textureScale: 0.47,
       tiltX: 0.3,
       tiltZ: 0.3,
       rotSpeed: 0.0025
@@ -250,12 +264,13 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       name: 'contact',
       y: -72,
-      x: 0,
+      x: 4.2,
       size: 1.8,
       color: 0x06B6D4,
       glowColor: 0x06B6D4,
       texture: 'planets/pexels-zelch-30596214.jpg',
       isSun: 0.0,
+      textureScale: 0.47,
       tiltX: 0.25,
       tiltZ: 0.15,
       rotSpeed: 0.0035
@@ -329,7 +344,8 @@ document.addEventListener('DOMContentLoaded', () => {
         lightDirection: { value: directionalLight.position.clone().normalize() },
         glowColor: { value: new THREE.Color(cfg.glowColor) },
         opacity: { value: 0.03 },
-        isSun: { value: cfg.isSun }
+        isSun: { value: cfg.isSun },
+        textureScale: { value: cfg.textureScale }
       };
 
       const material = new THREE.ShaderMaterial({
@@ -869,7 +885,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ----- 15. LANGUAGE SWITCHER LOGIC ----- */
   const initLanguage = () => {
-    const savedLang = localStorage.getItem('selectedLanguage') || 'en';
+    // Force default language to English on reload
+    const savedLang = 'en';
     setLanguage(savedLang);
 
     // Bind clicks to all language toggle buttons
