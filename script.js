@@ -143,6 +143,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const img = new Image();
     img.onload = () => {
       texture.image = img;
+      
+      // Setup NPOT WebGL 1.0 compatibility and optimize upload speed
+      texture.minFilter = THREE.LinearFilter;
+      texture.magFilter = THREE.LinearFilter;
+      texture.wrapS = THREE.ClampToEdgeWrapping;
+      texture.wrapT = THREE.ClampToEdgeWrapping;
+      texture.generateMipmaps = false;
+      
       texture.needsUpdate = true;
       if (onLoad) onLoad(texture);
     };
@@ -270,7 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  if (canvas) {
+  if (canvas && typeof THREE !== 'undefined') {
     scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
