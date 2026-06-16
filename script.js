@@ -532,3 +532,26 @@ document.addEventListener('DOMContentLoaded', () => {
   initLanguage();
 
 });
+
+/* === NEW INTERSECTION OBSERVER FOR MICRO-REVEALS === */
+document.addEventListener('DOMContentLoaded', () => {
+  // Select all major sections, cards, and paragraphs to reveal
+  const elementsToReveal = document.querySelectorAll('.content-section p, .stat-card, .skill-category, .project-glass-card, .campaign-glass-card, .certificate-glass-card');
+  
+  elementsToReveal.forEach((el) => {
+    el.classList.add('reveal');
+  });
+
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+  document.querySelectorAll('.reveal').forEach(el => {
+    revealObserver.observe(el);
+  });
+});
