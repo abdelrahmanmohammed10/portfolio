@@ -565,7 +565,10 @@ document.addEventListener('DOMContentLoaded', () => {
   
   let width, height;
   let stars = [];
-  const numStars = window.innerWidth > 768 ? 200 : 80;
+  const numStars = window.innerWidth > 768 ? 400 : 150;
+  
+  // Palette for realistic stars
+  const starColors = ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#FF9F1C', '#2EC4B6', '#274C77'];
   
   // Mouse interaction
   let mouse = { x: -1000, y: -1000 };
@@ -582,17 +585,30 @@ document.addEventListener('DOMContentLoaded', () => {
   class Star {
     constructor() {
       this.reset();
+      // randomize starting twinkle phase
+      this.twinklePhase = Math.random() * Math.PI * 2;
+      this.twinkleSpeed = Math.random() * 0.05 + 0.01;
     }
     
     reset() {
       this.x = Math.random() * width;
       this.y = Math.random() * height;
-      this.z = Math.random() * 2 + 0.1; // depth/size
-      this.baseAlpha = Math.random() * 0.5 + 0.1;
+      
+      // Realism: Most stars are tiny, a few are larger
+      const sizeRand = Math.random();
+      if (sizeRand > 0.95) this.z = Math.random() * 1.5 + 1.0; // large
+      else if (sizeRand > 0.7) this.z = Math.random() * 0.8 + 0.5; // medium
+      else this.z = Math.random() * 0.4 + 0.1; // tiny
+
+      this.baseAlpha = Math.random() * 0.6 + 0.2;
       this.alpha = this.baseAlpha;
-      // Stars drift slowly to the top-left
-      this.vx = (Math.random() - 0.5) * 0.2 - 0.1;
-      this.vy = -Math.random() * 0.3 - 0.1; 
+      
+      // Color assignment
+      this.color = starColors[Math.floor(Math.random() * starColors.length)];
+      
+      // Slower, more realistic drift
+      this.vx = (Math.random() - 0.5) * 0.1;
+      this.vy = -Math.random() * 0.1 - 0.05; 
     }
     
     update() {
@@ -603,6 +619,10 @@ document.addEventListener('DOMContentLoaded', () => {
       // Scroll boost
       this.y += scrollSpeed * this.z * 0.5;
       
+      // Twinkle effect
+      this.twinklePhase += this.twinkleSpeed;
+      let twinkle = Math.sin(this.twinklePhase) * 0.3;
+      
       // Mouse repulsion
       let dx = this.x - mouse.x;
       let dy = this.y - mouse.y;
@@ -611,9 +631,9 @@ document.addEventListener('DOMContentLoaded', () => {
         let force = (150 - dist) / 150;
         this.x -= (dx / dist) * force * 2;
         this.y -= (dy / dist) * force * 2;
-        this.alpha = Math.min(1, this.baseAlpha + force);
+        this.alpha = Math.min(1, this.baseAlpha + force + twinkle);
       } else {
-        this.alpha = this.baseAlpha;
+        this.alpha = Math.max(0.1, Math.min(1, this.baseAlpha + twinkle));
       }
       
       // Screen wrap
@@ -626,13 +646,21 @@ document.addEventListener('DOMContentLoaded', () => {
     draw() {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.z, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+      
+      // Convert hex to rgb for alpha support, assuming hex strings from array
+      let r, g, b;
+      if (this.color === '#FFFFFF') { r=255; g=255; b=255; }
+      else if (this.color === '#FF9F1C') { r=255; g=159; b=28; }
+      else if (this.color === '#2EC4B6') { r=46; g=196; b=182; }
+      else if (this.color === '#274C77') { r=39; g=76; b=119; }
+      
+      ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${this.alpha})`;
       ctx.fill();
       
       // Glow effect for bigger stars
-      if (this.z > 1.5) {
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = '#FF9F1C';
+      if (this.z > 1.0) {
+        ctx.shadowBlur = this.z * 4;
+        ctx.shadowColor = this.color;
       } else {
         ctx.shadowBlur = 0;
       }
