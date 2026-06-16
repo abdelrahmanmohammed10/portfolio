@@ -4,21 +4,22 @@
 
 /* ----- 1. CUSTOM PROPERTIES ----- */
 :root {
-  --bg-primary: #000000;
-  --bg-sidebar: rgba(0, 0, 0, 0.85);
-  --bg-card: rgba(255, 255, 255, 0.015);
-  --bg-card-hover: rgba(255, 255, 255, 0.035);
+  /* Space Weather Palette */
+  --bg-primary: #0D1321;
+  --bg-sidebar: rgba(13, 19, 33, 0.85);
+  --bg-card: rgba(39, 76, 119, 0.1);
+  --bg-card-hover: rgba(39, 76, 119, 0.25);
   
-  --border-color: rgba(255, 255, 255, 0.05);
-  --border-hover: rgba(255, 255, 255, 0.12);
+  --border-color: rgba(248, 249, 250, 0.08);
+  --border-hover: rgba(255, 159, 28, 0.5);
   
-  --color-gold: #F59E0B;
-  --color-cyan: #06B6D4;
-  --color-purple: #7C3AED;
+  --color-gold: #FF9F1C;   /* Solar Flare mapped to gold for legacy class names */
+  --color-cyan: #2EC4B6;   /* Aurora Emerald */
+  --color-purple: #274C77; /* Ionosphere Blue */
   
-  --text-primary: #f8fafc;
-  --text-muted: #8a99ad;
-  --text-dark: #475569;
+  --text-primary: #F8F9FA;
+  --text-muted: rgba(248, 249, 250, 0.6);
+  --text-dark: #274C77;
   
   --font-heading: 'Space Grotesk', sans-serif;
   --font-body: 'Inter', sans-serif;
@@ -151,7 +152,7 @@ button, input, textarea {
 .preloader-bar {
   width: 0%;
   height: 100%;
-  background: linear-gradient(90deg, var(--color-gold), var(--color-cyan), var(--color-purple));
+  background: var(--color-gold);
   animation: barProgress 1.4s forwards linear;
 }
 
@@ -396,7 +397,7 @@ button, input, textarea {
 }
 
 /* MOBILE HEADER & NAVIGATION (HIDDEN ON DESKTOP) */
-.mobile-header {
+.mobile-header { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(13, 19, 33, 0.85) !important;
   display: none;
 }
 
@@ -474,7 +475,7 @@ button, input, textarea {
   transform: translateY(0);
 }
 
-.mob-link .num {
+.mob-link .num { letter-spacing: 2px;
   font-family: var(--font-body);
   font-size: 0.9rem;
   font-weight: 500;
@@ -488,7 +489,7 @@ button, input, textarea {
   left: 0;
   width: 0%;
   height: 2px;
-  background: linear-gradient(90deg, var(--color-cyan), var(--color-purple));
+  background: var(--color-cyan);
   transition: width 0.3s ease;
 }
 
@@ -551,7 +552,7 @@ button, input, textarea {
   left: 0;
   width: 100%;
   height: 2px;
-  background: linear-gradient(90deg, var(--color-cyan), var(--color-purple));
+  background: var(--color-cyan);
 }
 
 .section-lead {
@@ -595,7 +596,7 @@ button, input, textarea {
 .stat-card:hover {
   border-color: var(--color-cyan);
   background: var(--bg-card-hover);
-  transform: translateY(-5px);
+  transform: translateY(-2px);
 }
 
 .stat-num {
@@ -734,7 +735,7 @@ button, input, textarea {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(400px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(255, 255, 255, 0.03), transparent 85%);
+  background: transparent;
   pointer-events: none;
 }
 
@@ -760,7 +761,7 @@ button, input, textarea {
 .project-glass-card:hover {
   border-color: var(--border-hover);
   background: var(--bg-card-hover);
-  transform: translateY(-8px);
+  transform: translateY(-3px);
 }
 
 .border-purple:hover {
@@ -881,7 +882,7 @@ button, input, textarea {
 .campaign-glass-card:hover {
   background: var(--bg-card-hover);
   border-color: rgba(255, 255, 255, 0.15);
-  transform: translateY(-5px);
+  transform: translateY(-2px);
 }
 
 .campaign-header {
@@ -967,7 +968,7 @@ button, input, textarea {
   left: 0;
   width: 100%;
   height: 0%;
-  background: linear-gradient(to bottom, var(--color-gold), var(--color-cyan), var(--color-purple));
+  background: var(--color-gold);
   transition: height 0.1s ease-out;
 }
 
@@ -1064,7 +1065,7 @@ button, input, textarea {
 
 .certificate-glass-card:hover {
   background: var(--bg-card-hover);
-  transform: translateY(-5px);
+  transform: translateY(-2px);
 }
 
 .cert-card-header {
@@ -1439,7 +1440,7 @@ button, input, textarea {
   font-size: 0.85rem;
   font-weight: 700;
   color: var(--bg-primary);
-  background: linear-gradient(135deg, var(--color-gold), var(--color-cyan));
+  background: var(--color-gold);
   border: none;
   padding: 12px 24px;
   border-radius: 30px;
@@ -1457,7 +1458,7 @@ button, input, textarea {
 
 .btn-cv-download:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(46, 196, 182, 0.35);
+  box-shadow: 0 4px 15px rgba(255, 159, 28, 0.2);
   color: var(--bg-primary);
 }
 
@@ -2064,7 +2065,7 @@ button, input, textarea {
   }
   
   /* Mobile Header */
-  .mobile-header {
+  .mobile-header { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(13, 19, 33, 0.85) !important;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -2498,7 +2499,7 @@ html[lang="en"] .spine-dot::after {
     margin-left: 0;
     margin-right: 0;
   }
-  html[lang="ar"] .mobile-header {
+  html[lang="ar"] .mobile-header { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(13, 19, 33, 0.85) !important;
     left: 16px;
     right: 16px;
   }
