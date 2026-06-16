@@ -53,59 +53,376 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { passive: true });
 
 
-  /* ----- 4. DYNAMIC BACKGROUND PLANETS (SOLAR SYSTEM) ----- */
-  const planetStage = document.querySelector('.bg-planet-stage');
-  const solarSystem = document.querySelector('.solar-system');
-  const planetElements = document.querySelectorAll('.bg-planet');
-  const isMobile = window.innerWidth <= 1024;
+  /* ----- 4. THREE.JS WebGL 3D BACKGROUND SCENE ----- */
+  const canvas = document.getElementById('three-planet-canvas');
+  let scene, camera, renderer, starField;
+  let planets = [];
+  let currentCameraY = 0;
+  let targetCameraY = 0;
+  let isMobile = window.innerWidth <= 1024;
+
+  let targetMouseX = 0;
+  let targetMouseY = 0;
+  let currentMouseX = 0;
+  let currentMouseY = 0;
+
+  // Track mouse movements for 3D parallax
+  window.addEventListener('mousemove', (e) => {
+    targetMouseX = (e.clientX / window.innerWidth) * 2 - 1;
+    targetMouseY = (e.clientY / window.innerHeight) * 2 - 1;
+  });
+
+  const vertexShader = `
+    varying vec3 vNormal;
+    varying vec3 vLocalNormal;
+    varying vec3 vViewPosition;
+
+    void main() {
+      vNormal = normalize(normalMatrix * normal);
+      vLocalNormal = normalize(position);
+      vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+      vViewPosition = -mvPosition.xyz;
+      gl_Position = projectionMatrix * mvPosition;
+    }
+  `;
+
+  const fragmentShader = `
+    uniform sampler2D map;
+    uniform float hasTexture;
+    uniform vec3 fallbackColor;
+    uniform vec3 lightDirection;
+    uniform vec3 glowColor;
+    uniform float opacity;
+    uniform float isSun;
+    varying vec3 vNormal;
+    varying vec3 vLocalNormal;
+    varying vec3 vViewPosition;
+
+    void main() {
+      vec3 localN = normalize(vLocalNormal);
+      vec2 uv = localN.xy * 0.5 + 0.5;
+      
+      vec4 texColor = vec4(fallbackColor, 1.0);
+      if (hasTexture > 0.5) {
+        texColor = texture2D(map, uv);
+      }
+      
+      float alpha = 1.0;
+      if (hasTexture > 0.5) {
+        float brightness = dot(texColor.rgb, vec3(0.299, 0.587, 0.114));
+        alpha = smoothstep(0.015, 0.12, brightness);
+      }
+      
+      float distFromCenter = length(localN.xy);
+      float edgeFade = smoothstep(1.0, 0.85, distFromCenter);
+      
+      vec3 normal = normalize(vNormal);
+      vec3 lightDir = normalize(lightDirection);
+      
+      float dotNL = dot(normal, lightDir);
+      float diffuse = max(dotNL, 0.0);
+      
+      vec3 litColor = texColor.rgb;
+      if (isSun < 0.5) {
+        litColor = texColor.rgb * (diffuse * 0.85 + 0.15);
+      }
+      
+      vec3 viewDir = normalize(vViewPosition);
+      float fresnel = pow(1.0 - max(dot(normal, viewDir), 0.0), 3.5);
+      vec3 glow = glowColor * fresnel * 0.7;
+      
+      vec3 finalColor = litColor + glow;
+      float finalAlpha = texColor.a * alpha * edgeFade * opacity;
+      
+      gl_FragColor = vec4(finalColor, finalAlpha);
+    }
+  `;
+
+  const loadTextureBypassCORS = (url, onLoad) => {
+    const texture = new THREE.Texture();
+    const img = new Image();
+    img.onload = () => {
+      texture.image = img;
+      texture.needsUpdate = true;
+      if (onLoad) onLoad(texture);
+    };
+    img.onerror = (err) => {
+      console.warn("Failed to load local texture:", url, err);
+    };
+    img.src = url;
+    return texture;
+  };
+
+  const createPlaceholderTexture = () => {
+    const data = new Uint8Array([255, 255, 255, 255]);
+    const texture = new THREE.DataTexture(data, 1, 1, THREE.RGBAFormat);
+    texture.needsUpdate = true;
+    return texture;
+  };
+
+  const planetConfig = [
+    {
+      name: 'hero',
+      y: 0,
+      x: 0,
+      size: 2.2,
+      color: 0xF59E0B,
+      glowColor: 0xF59E0B,
+      texture: 'planets/javier-miranda-5qPsVqmlQOs-unsplash.jpg',
+      isSun: 1.0,
+      tiltX: 0.1,
+      tiltZ: 0.1,
+      rotSpeed: 0.0012
+    },
+    {
+      name: 'about',
+      y: -12,
+      x: -3.6,
+      size: 1.7,
+      color: 0x06B6D4,
+      glowColor: 0x06B6D4,
+      texture: 'planets/planet-volumes-awYEQyYdHVE-unsplash.jpg',
+      isSun: 0.0,
+      tiltX: 0.35,
+      tiltZ: 0.15,
+      rotSpeed: 0.003
+    },
+    {
+      name: 'work',
+      y: -24,
+      x: 3.6,
+      size: 1.6,
+      color: 0xef4444,
+      glowColor: 0xef4444,
+      texture: 'planets/pexels-zelch-20337601.jpg',
+      isSun: 0.0,
+      tiltX: 0.2,
+      tiltZ: 0.25,
+      rotSpeed: 0.004
+    },
+    {
+      name: 'campaigns',
+      y: -36,
+      x: -3.6,
+      size: 1.8,
+      color: 0xF59E0B,
+      glowColor: 0xF59E0B,
+      texture: 'planets/pexels-t-keawkanok-3252323-13229275.jpg',
+      isSun: 0.0,
+      tiltX: 0.15,
+      tiltZ: 0.1,
+      rotSpeed: 0.0035
+    },
+    {
+      name: 'journey',
+      y: -48,
+      x: 3.6,
+      size: 1.6,
+      color: 0x06B6D4,
+      glowColor: 0x06B6D4,
+      texture: 'planets/pexels-zelch-20337597.jpg',
+      isSun: 0.0,
+      tiltX: 0.4,
+      tiltZ: 0.2,
+      rotSpeed: 0.003
+    },
+    {
+      name: 'credentials',
+      y: -60,
+      x: 3.6,
+      size: 1.7,
+      color: 0x7C3AED,
+      glowColor: 0x7C3AED,
+      texture: 'planets/pexels-zelch-20376399.jpg',
+      isSun: 0.0,
+      tiltX: 0.3,
+      tiltZ: 0.3,
+      rotSpeed: 0.0025
+    },
+    {
+      name: 'contact',
+      y: -72,
+      x: 0,
+      size: 1.8,
+      color: 0x06B6D4,
+      glowColor: 0x06B6D4,
+      texture: 'planets/pexels-zelch-30596214.jpg',
+      isSun: 0.0,
+      tiltX: 0.25,
+      tiltZ: 0.15,
+      rotSpeed: 0.0035
+    }
+  ];
 
   const updateActivePlanet = (activeSec, force = false) => {
     if (activeSec === lastActiveSection && !force) return;
     lastActiveSection = activeSec;
 
-    // Solar system mapping coordinates (Center is 1500, 1500)
-    const coordinates = {
-      'hero': { x: 1500, y: 1500, scale: 1.15 },
-      'about': { x: 1747, y: 1253, scale: 1.15 },
-      'work': { x: 1076, y: 1076, scale: 1.15 },
-      'campaigns': { x: 1925, y: 2236, scale: 1.15 },
-      'journey': { x: 722, y: 2278, scale: 1.15 },
-      'credentials': { x: 2150, y: 374, scale: 1.15 },
-      'contact': { x: 138, y: 1996, scale: 1.15 }
-    };
-
-    const coord = coordinates[activeSec] || coordinates['hero'];
-
-    // Dynamic panning based on text layout alignment (desktop only)
-    let xOffset = 0;
-    if (!isMobile) {
-      const lang = document.documentElement.getAttribute('lang') || 'en';
-      const rightLayoutSections = ['work', 'credentials'];
-      const isRightLayout = rightLayoutSections.includes(activeSec);
-      if (lang === 'ar') {
-        xOffset = isRightLayout ? 280 : -280;
-      } else {
-        xOffset = isRightLayout ? -280 : 280;
-      }
+    const activeCfg = planetConfig.find(p => p.name === activeSec);
+    if (activeCfg) {
+      targetCameraY = activeCfg.y;
     }
 
-    const panX = 1500 - coord.x + xOffset;
-    const panY = 1500 - coord.y;
-
-    // Set translation and scale variables for CSS transform panning
-    document.documentElement.style.setProperty('--pan-x', `${panX}px`);
-    document.documentElement.style.setProperty('--pan-y', `${panY}px`);
-    document.documentElement.style.setProperty('--zoom-scale', coord.scale);
-
-    // Toggle active classes on background planets
-    planetElements.forEach(p => {
-      if (p.getAttribute('data-sec') === activeSec) {
-        p.classList.add('active');
-      } else {
-        p.classList.remove('active');
-      }
+    const lang = document.documentElement.getAttribute('lang') || 'en';
+    const isAr = lang === 'ar';
+    planets.forEach(p => {
+      p.targetX = isMobile ? 0.0 : (isAr ? -p.baseX : p.baseX);
     });
   };
+
+  if (canvas) {
+    scene = new THREE.Scene();
+
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, isMobile ? 12.0 : 8.5);
+
+    renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+      alpha: true,
+      antialias: !isMobile,
+      powerPreference: "high-performance"
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    // Light Source (top-left directional lighting)
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    directionalLight.position.set(-5, 5, 5);
+    scene.add(directionalLight);
+
+    // Starfield Points
+    const starCount = isMobile ? 250 : 800;
+    const starGeometry = new THREE.BufferGeometry();
+    const starPositions = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount * 3; i += 3) {
+      starPositions[i] = (Math.random() - 0.5) * 50;
+      starPositions[i + 1] = (Math.random() - 0.5) * 120;
+      starPositions[i + 2] = -Math.random() * 25 - 5;
+    }
+    starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+    const starMaterial = new THREE.PointsMaterial({
+      color: 0xffffff,
+      size: 0.07,
+      transparent: true,
+      opacity: 0.5,
+      sizeAttenuation: true
+    });
+    starField = new THREE.Points(starGeometry, starMaterial);
+    scene.add(starField);
+
+    // Build Planets
+    planetConfig.forEach((cfg) => {
+      const placeholder = createPlaceholderTexture();
+      
+      const uniforms = {
+        map: { value: placeholder },
+        hasTexture: { value: 0.0 },
+        fallbackColor: { value: new THREE.Color(cfg.color) },
+        lightDirection: { value: directionalLight.position.clone().normalize() },
+        glowColor: { value: new THREE.Color(cfg.glowColor) },
+        opacity: { value: 0.03 },
+        isSun: { value: cfg.isSun }
+      };
+
+      const material = new THREE.ShaderMaterial({
+        vertexShader: vertexShader,
+        fragmentShader: fragmentShader,
+        uniforms: uniforms,
+        transparent: true,
+        depthWrite: false, // Prevents clipping with stars and alpha blending issues
+        side: THREE.FrontSide
+      });
+
+      const geometry = new THREE.SphereGeometry(cfg.size, 48, 48);
+      const mesh = new THREE.Mesh(geometry, material);
+      
+      // Apply Tilt
+      mesh.rotation.x = cfg.tiltX;
+      mesh.rotation.z = cfg.tiltZ;
+
+      const group = new THREE.Group();
+      const lang = document.documentElement.getAttribute('lang') || 'en';
+      const initialX = isMobile ? 0.0 : (lang === 'ar' ? -cfg.x : cfg.x);
+      group.position.set(initialX, cfg.y, 0);
+      group.add(mesh);
+      scene.add(group);
+
+      // Async load texture bypass CORS
+      loadTextureBypassCORS(cfg.texture, (texture) => {
+        uniforms.map.value = texture;
+        uniforms.hasTexture.value = 1.0;
+      });
+
+      planets.push({
+        name: cfg.name,
+        mesh: mesh,
+        group: group,
+        material: material,
+        baseX: cfg.x,
+        targetX: initialX,
+        currentScale: 0.88,
+        currentOpacity: 0.03,
+        rotSpeed: cfg.rotSpeed
+      });
+    });
+
+    // Animation Loop
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // Smooth camera scroll glide
+      currentCameraY += (targetCameraY - currentCameraY) * 0.045;
+      camera.position.y = currentCameraY;
+
+      // Mouse Parallax easing
+      currentMouseX += (targetMouseX - currentMouseX) * 0.05;
+      currentMouseY += (targetMouseY - currentMouseY) * 0.05;
+
+      // Tilts the entire scene slightly
+      scene.rotation.y = currentMouseX * 0.15;
+      scene.rotation.x = currentMouseY * 0.10;
+
+      // Update planets scale, rotation and opacity
+      planets.forEach(p => {
+        // Continuous axial rotation in local space
+        p.mesh.rotateY(p.rotSpeed);
+
+        // Glide group position horizontally to clear text cards
+        p.group.position.x += (p.targetX - p.group.position.x) * 0.05;
+
+        // Swell active planet and fade others out
+        const isActive = (p.name === lastActiveSection);
+        const targetScale = isActive ? 1.06 : 0.88;
+        p.currentScale += (targetScale - p.currentScale) * 0.05;
+        p.group.scale.set(p.currentScale, p.currentScale, p.currentScale);
+
+        const targetOpacity = isActive ? (p.name === 'hero' ? 0.28 : 0.22) : 0.03;
+        p.currentOpacity += (targetOpacity - p.currentOpacity) * 0.05;
+        p.material.uniforms.opacity.value = p.currentOpacity;
+      });
+
+      if (starField) {
+        starField.rotation.y += 0.0001;
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    // Resize Handler
+    window.addEventListener('resize', () => {
+      const newIsMobile = window.innerWidth <= 1024;
+      if (newIsMobile !== isMobile) {
+        isMobile = newIsMobile;
+        camera.position.z = isMobile ? 12.0 : 8.5;
+      }
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      updateActivePlanet(lastActiveSection, true);
+    });
+  }
 
 
   /* ----- 5. MAGNETIC HOVER EFFECT ----- */
