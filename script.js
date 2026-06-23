@@ -95,31 +95,39 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-  /* ----- 6. UNIFIED INTERSECTION OBSERVER REVEALS ----- */
+  /* ----- 6. INTERSECTION OBSERVER REVEALS ----- */
   // Add class 'reveal' dynamically to section content elements
   document.querySelectorAll('.content-section p, .stat-card, .skill-category, .project-glass-card, .campaign-glass-card, .certificate-glass-card, .eyebrow-split').forEach(el => {
     el.classList.add('reveal');
   });
 
+  // Reveal observer for one-time fade-ins
   const globalRevealObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
-      if (entry.target.classList.contains('timeline-item')) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('active');
-        } else {
-          entry.target.classList.remove('active');
-        }
-      } else {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
       }
     });
   }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
 
-  document.querySelectorAll('.reveal-paragraph, .reveal-card, .split-reveal-heading, .reveal, .timeline-item').forEach(el => {
+  document.querySelectorAll('.reveal-paragraph, .reveal-card, .split-reveal-heading, .reveal').forEach(el => {
     globalRevealObserver.observe(el);
+  });
+
+  // Timeline active dot glow observer (toggles dynamically on scroll)
+  const timelineObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+      } else {
+        entry.target.classList.remove('active');
+      }
+    });
+  }, { threshold: 0.3, rootMargin: "-10% 0px -10% 0px" });
+
+  document.querySelectorAll('.timeline-item').forEach(el => {
+    timelineObserver.observe(el);
   });
 
 
