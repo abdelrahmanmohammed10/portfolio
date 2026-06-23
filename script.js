@@ -246,10 +246,26 @@ document.addEventListener('DOMContentLoaded', () => {
     cachedDocHeight = document.documentElement.scrollHeight - window.innerHeight;
   };
 
+  // Nav spine active line dynamic height updates
+  const updateSpineActiveLine = () => {
+    const activeLine = document.getElementById('nav-spine-active-line');
+    if (activeLine && spineDots.length > 0) {
+      const firstDot = spineDots[0];
+      const activeDot = spineDots.find(dot => dot.classList.contains('active'));
+      if (activeDot) {
+        activeLine.style.top = (firstDot.offsetTop + 4) + 'px';
+        activeLine.style.height = (activeDot.offsetTop - firstDot.offsetTop) + 'px';
+      }
+    }
+  };
+
   // Run initial geometry caching
   cacheTimelineGeometry();
   cacheSectionsGeometry();
   cacheDocHeight();
+
+  // Set initial line position after dynamic offsets render
+  setTimeout(updateSpineActiveLine, 200);
 
   let tickingScroll = false;
   window.addEventListener('scroll', () => {
@@ -321,6 +337,9 @@ document.addEventListener('DOMContentLoaded', () => {
               activeIdx = idx + 1;
             }
           });
+
+          // Update navigation spine active line height/position
+          updateSpineActiveLine();
 
           // Update progress counter index text
           if (currentIndexEl) {
