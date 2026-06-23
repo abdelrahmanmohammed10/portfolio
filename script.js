@@ -173,6 +173,49 @@ document.addEventListener('DOMContentLoaded', () => {
   const spineProgress = document.querySelector('.spine-progress');
   const scrollTopBtn = document.getElementById('scroll-to-top');
 
+  let cachedTimelineTop = 0;
+  let cachedTimelineHeight = 0;
+  let cachedDocHeight = 0;
+  let cachedSections = [];
+
+  const cacheTimelineGeometry = () => {
+    if (timeline) {
+      let top = timeline.offsetTop;
+      let parent = timeline.offsetParent;
+      while (parent) {
+        top += parent.offsetTop;
+        parent = parent.offsetParent;
+      }
+      cachedTimelineTop = top;
+      cachedTimelineHeight = timeline.offsetHeight;
+    }
+  };
+
+  const cacheSectionsGeometry = () => {
+    cachedSections = Array.from(sections).map(sec => {
+      let top = sec.offsetTop;
+      let parent = sec.offsetParent;
+      while (parent) {
+        top += parent.offsetTop;
+        parent = parent.offsetParent;
+      }
+      return {
+        id: sec.getAttribute('id'),
+        top: top,
+        height: sec.offsetHeight
+      };
+    });
+  };
+
+  const cacheDocHeight = () => {
+    cachedDocHeight = document.documentElement.scrollHeight - window.innerHeight;
+  };
+
+  // Run initial geometry caching
+  cacheTimelineGeometry();
+  cacheSectionsGeometry();
+  cacheDocHeight();
+
   let tickingScroll = false;
   window.addEventListener('scroll', () => {
     if (!tickingScroll) {
@@ -180,9 +223,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const scrollTop = window.scrollY;
         
         // 1. Progress Bar
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        const scrollPercent = cachedDocHeight > 0 ? (scrollTop / cachedDocHeight) * 100 : 0;
         progressBar.style.width = scrollPercent + '%';
+
+        // 2. Active Nav Link Tracking & Background Planets
+        let currentActive = '';
+        const scrollPos = scrollTop + window.innerHeight / 3;
+
+        for (let i = 0; i < cachedSections.length; i++) {
+          const sec = cachedSections[i];
+          if (scrollPos >= sec.top && scrollPos < sec.top + sec.height) {
+            currentActive = sec.id;
+            break;
+          }
+        }
+
+        // Default to Hero section when near the top of the scroll
+        if (scrollTop < 180) {
+          currentActive = 'hero';
+        }
 
         // 1b. Mobile Smart Header (Hide on scroll down, show on scroll up) & Dynamic Section Title
         if (mobileHeader) {
@@ -218,23 +277,6 @@ document.addEventListener('DOMContentLoaded', () => {
           lastScrollY = currentScrollY;
         }
 
-        // 2. Active Nav Link Tracking & Background Planets
-        let currentActive = '';
-        const scrollPos = scrollTop + window.innerHeight / 3;
-
-        sections.forEach(sec => {
-          const secTop = sec.offsetTop;
-          const secHeight = sec.offsetHeight;
-          if (scrollPos >= secTop && scrollPos < secTop + secHeight) {
-            currentActive = sec.getAttribute('id');
-          }
-        });
-
-        // Default to Hero section when near the top of the scroll
-        if (scrollTop < 180) {
-          currentActive = 'hero';
-        }
-
         if (currentActive) {
           let activeIdx = 1;
           spineDots.forEach((dot, idx) => {
@@ -262,17 +304,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // 3. Spine timeline progress drawing
         if (timeline && spineProgress) {
           const startTrigger = window.innerHeight / 2;
-          
-          let timelineTop = timeline.offsetTop;
-          let parent = timeline.offsetParent;
-          while(parent) {
-             timelineTop += parent.offsetTop;
-             parent = parent.offsetParent;
-          }
-          const timelineHeight = timeline.offsetHeight;
-          
-          const scrolled = (scrollTop + startTrigger) - timelineTop;
-          const percent = Math.min(Math.max((scrolled / timelineHeight) * 100, 0), 100);
+          const scrolled = (scrollTop + startTrigger) - cachedTimelineTop;
+          const percent = Math.min(Math.max((scrolled / cachedTimelineHeight) * 100, 0), 100);
           spineProgress.style.height = percent + '%';
         }
 
@@ -949,6 +982,9 @@ document.addEventListener('DOMContentLoaded', () => {
       resizeTimeout = setTimeout(() => {
         resize();
         init();
+        cacheTimelineGeometry();
+        cacheSectionsGeometry();
+        cacheDocHeight();
       }, 200);
     });
     
