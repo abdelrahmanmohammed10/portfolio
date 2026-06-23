@@ -5,6 +5,17 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   let lastActiveSection = 'hero';
+  let scrollSpeed = 0;
+  let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
+
+  // Set stagger indices for cards in containers dynamically on load
+  const cardContainers = document.querySelectorAll('.stats-grid, .projects-stack, .campaigns-grid, .certificates-grid, .timeline-items');
+  cardContainers.forEach(container => {
+    const cards = container.querySelectorAll('.reveal-card, .stat-card, .campaign-glass-card, .certificate-glass-card');
+    cards.forEach((card, idx) => {
+      card.style.setProperty('--i', idx);
+    });
+  });
 
   /* ----- 1. PRELOADER SEQUENCE ----- */
   const preloader = document.getElementById('preloader');
@@ -35,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     top: 0;
     left: 0;
     height: 3px;
-    background: linear-gradient(90deg, #F59E0B, #06B6D4, #7C3AED);
+    background: linear-gradient(90deg, #FF9F1C, #2EC4B6, #274C77);
     z-index: 1000000;
     width: 0%;
     transition: width 0.1s ease-out;
@@ -46,11 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* ----- 3. CURSOR SPOTLIGHT ----- */
-  window.addEventListener('mousemove', (e) => {
-    if (window.innerWidth <= 1024) return; // Disable on mobile for performance
-    document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
-    document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
-  }, { passive: true });
+  // Combined mousemove event listener is defined below in the unified handler to prevent duplicate event loops.
 
 
   /* ----- 4. (Removed 3D Background) ----- */
@@ -65,80 +72,54 @@ document.addEventListener('DOMContentLoaded', () => {
       const x = e.clientX - rect.left - rect.width / 2;
       const y = e.clientY - rect.top - rect.height / 2;
       
+      btn.style.transition = 'none';
+      const innerSpan = btn.querySelector('span');
+      if (innerSpan) innerSpan.style.transition = 'none';
+
       // Pull button towards cursor by 35% of offset
       btn.style.transform = `translate(${x * 0.35}px, ${y * 0.35}px)`;
-      if (btn.querySelector('span')) {
-        btn.querySelector('span').style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+      if (innerSpan) {
+        innerSpan.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
       }
     });
 
     btn.addEventListener('mouseleave', () => {
+      btn.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
       btn.style.transform = 'translate(0px, 0px)';
-      if (btn.querySelector('span')) {
-        btn.querySelector('span').style.transform = 'translate(0px, 0px)';
+      const innerSpan = btn.querySelector('span');
+      if (innerSpan) {
+        innerSpan.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+        innerSpan.style.transform = 'translate(0px, 0px)';
       }
     });
   });
 
 
-  /* ----- 6. INTERSECTION OBSERVER REVEALS ----- */
-  // Paragraphs fade-in reveal
-  const revealParagraphs = document.querySelectorAll('.reveal-paragraph');
-  const paragraphObserver = new IntersectionObserver((entries) => {
+  /* ----- 6. UNIFIED INTERSECTION OBSERVER REVEALS ----- */
+  // Add class 'reveal' dynamically to section content elements
+  document.querySelectorAll('.content-section p, .stat-card, .skill-category, .project-glass-card, .campaign-glass-card, .certificate-glass-card, .eyebrow-split').forEach(el => {
+    el.classList.add('reveal');
+  });
+
+  const globalRevealObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-        paragraphObserver.unobserve(entry.target);
+      if (entry.target.classList.contains('timeline-item')) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        } else {
+          entry.target.classList.remove('active');
+        }
+      } else {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
       }
     });
-  }, { threshold: 0.15 });
+  }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
 
-  revealParagraphs.forEach(p => {
-    p.style.opacity = '0';
-    p.style.transform = 'translateY(15px)';
-    p.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-    paragraphObserver.observe(p);
-  });
-
-  // Cards stagger reveal
-  const revealCards = document.querySelectorAll('.reveal-card');
-  const cardObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry, idx) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }, idx * 60); // subtle cascade delay
-        cardObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-
-  revealCards.forEach(card => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(30px)';
-    card.style.transition = 'opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1)';
-    cardObserver.observe(card);
-  });
-
-  // Heading split mimic
-  const revealHeadings = document.querySelectorAll('.split-reveal-heading');
-  const headingObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-        headingObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.2 });
-
-  revealHeadings.forEach(heading => {
-    heading.style.opacity = '0';
-    heading.style.transform = 'translateY(25px)';
-    heading.style.transition = 'opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)';
-    headingObserver.observe(heading);
+  document.querySelectorAll('.reveal-paragraph, .reveal-card, .split-reveal-heading, .reveal, .timeline-item').forEach(el => {
+    globalRevealObserver.observe(el);
   });
 
 
@@ -151,19 +132,21 @@ document.addEventListener('DOMContentLoaded', () => {
       statsTriggered = true;
       statNums.forEach(num => {
         const limit = parseInt(num.getAttribute('data-val'));
-        let current = 0;
         const duration = 1200; // ms
-        const increment = limit / (duration / 16); // ~60fps
-        
-        const counter = setInterval(() => {
-          current += increment;
-          if (current >= limit) {
-            num.textContent = limit;
-            clearInterval(counter);
+        let startTime = null;
+
+        function updateCount(timestamp) {
+          if (!startTime) startTime = timestamp;
+          const progress = timestamp - startTime;
+          const current = Math.min(limit, Math.floor((progress / duration) * limit));
+          num.textContent = current;
+          if (progress < duration) {
+            requestAnimationFrame(updateCount);
           } else {
-            num.textContent = Math.floor(current);
+            num.textContent = limit;
           }
-        }, 16);
+        }
+        requestAnimationFrame(updateCount);
       });
     }
   }, { threshold: 0.5 });
@@ -177,8 +160,18 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ----- 8. ACTIVE NAV LINK TRACKING & BACKGROUND PLANETS ----- */
   const sections = document.querySelectorAll('section[id]');
   const navItems = document.querySelectorAll('.nav-spine .spine-dot, .mobile-menu .mob-link');
+  let lastScrollY = window.scrollY || document.documentElement.scrollTop;
+  const mobileHeader = document.querySelector('.mobile-header');
+  const headerSectionTitle = document.querySelector('.header-section-title');
+  const spineDots = Array.from(document.querySelectorAll('.nav-spine .spine-dot'));
+  const mobLinks = Array.from(document.querySelectorAll('.mobile-menu .mob-link'));
+  const currentIndexEl = document.querySelector('.spine-progress-counter .current-index');
   // lastActiveSection declared at DOMContentLoaded top
 
+
+  const timeline = document.querySelector('.timeline-container');
+  const spineProgress = document.querySelector('.spine-progress');
+  const scrollTopBtn = document.getElementById('scroll-to-top');
 
   let tickingScroll = false;
   window.addEventListener('scroll', () => {
@@ -190,6 +183,40 @@ document.addEventListener('DOMContentLoaded', () => {
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
         const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
         progressBar.style.width = scrollPercent + '%';
+
+        // 1b. Mobile Smart Header (Hide on scroll down, show on scroll up) & Dynamic Section Title
+        if (mobileHeader) {
+          const currentScrollY = scrollTop;
+          
+          // Show active section title in header if scrolled past Hero
+          if (currentActive && currentActive !== 'hero') {
+            const activeDot = spineDots.find(dot => dot.getAttribute('href') === `#${currentActive}`);
+            if (activeDot) {
+              const lang = document.documentElement.getAttribute('lang') || 'en';
+              const titleAttr = lang === 'ar' ? 'data-title-ar' : 'data-title-en';
+              const titleVal = activeDot.getAttribute(titleAttr);
+              if (headerSectionTitle && headerSectionTitle.textContent !== titleVal) {
+                headerSectionTitle.textContent = titleVal;
+              }
+            }
+            mobileHeader.classList.add('show-section-title');
+          } else {
+            mobileHeader.classList.remove('show-section-title');
+          }
+
+          // Hide on scroll down, show on scroll up
+          if (currentScrollY > 150) {
+            const isMenuOverlayActive = mobileNav && mobileNav.classList.contains('active');
+            if (currentScrollY > lastScrollY && !isMenuOverlayActive) {
+              mobileHeader.classList.add('header-hidden');
+            } else {
+              mobileHeader.classList.remove('header-hidden');
+            }
+          } else {
+            mobileHeader.classList.remove('header-hidden');
+          }
+          lastScrollY = currentScrollY;
+        }
 
         // 2. Active Nav Link Tracking & Background Planets
         let currentActive = '';
@@ -209,22 +236,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (currentActive) {
-          navItems.forEach(item => {
-            item.classList.remove('active');
-            // When hero is active, highlight the home/hero link as active
-            if (item.getAttribute('href') === `#${currentActive}`) {
-              item.classList.add('active');
+          let activeIdx = 1;
+          spineDots.forEach((dot, idx) => {
+            dot.classList.remove('active');
+            if (dot.getAttribute('href') === `#${currentActive}`) {
+              dot.classList.add('active');
+              activeIdx = idx + 1;
+            }
+          });
+
+          // Update progress counter index text
+          if (currentIndexEl) {
+            currentIndexEl.textContent = activeIdx.toString().padStart(2, '0');
+          }
+
+          // Update mobile active class
+          mobLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${currentActive}`) {
+              link.classList.add('active');
             }
           });
         }
 
         // 3. Spine timeline progress drawing
-        const timeline = document.querySelector('.timeline-container');
-        if (timeline) {
-          const spineProgress = document.querySelector('.spine-progress');
+        if (timeline && spineProgress) {
           const startTrigger = window.innerHeight / 2;
           
-          // Use offsetTop instead of getBoundingClientRect for layout performance
           let timelineTop = timeline.offsetTop;
           let parent = timeline.offsetParent;
           while(parent) {
@@ -239,7 +277,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // 4. Scroll to Top Button Visibility
-        const scrollTopBtn = document.getElementById('scroll-to-top');
         if (scrollTopBtn) {
           if (scrollTop > 600) {
             scrollTopBtn.classList.add('visible');
@@ -248,6 +285,12 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
 
+        // 5. Starfield scroll speed boost (Merged from Starfield scroll listener)
+        let delta = scrollTop - lastScrollTop;
+        const speedMult = window.innerWidth <= 768 ? -0.08 : -0.05;
+        scrollSpeed = delta * speedMult;
+        lastScrollTop = scrollTop;
+
         tickingScroll = false;
       });
       tickingScroll = true;
@@ -255,18 +298,85 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { passive: true });
 
 
-  /* ----- 9. PROJECT DRAWERS ----- */
+  /* ----- 9. ACCESSIBILITY UTILITIES (FOCUS TRAP & GLOBAL ESCAPE) ----- */
+  let activeTriggerElement = null;
+
+  const setupFocusTrap = (container) => {
+    container.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab') return;
+      
+      const focusableSelectors = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable]';
+      const focusableElements = Array.from(container.querySelectorAll(focusableSelectors));
+      if (focusableElements.length === 0) return;
+      
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+      
+      if (e.shiftKey) { // Shift + Tab
+        if (document.activeElement === firstElement) {
+          lastElement.focus();
+          e.preventDefault();
+        }
+      } else { // Tab
+        if (document.activeElement === lastElement) {
+          firstElement.focus();
+          e.preventDefault();
+        }
+      }
+    });
+  };
+
+  // Global Escape Key Overlay Closer
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      // 1. Drawers
+      const activeDrawer = document.querySelector('.project-drawer.active');
+      if (activeDrawer) {
+        const closeBtn = activeDrawer.querySelector('.drawer-close');
+        if (closeBtn) closeBtn.click();
+      }
+      
+      // 2. Lightbox
+      const activeLightbox = document.querySelector('.lightbox-modal.active');
+      if (activeLightbox) {
+        const closeBtn = activeLightbox.querySelector('.lightbox-close');
+        if (closeBtn) closeBtn.click();
+      }
+      
+      // 3. Mobile Nav Menu
+      const activeMobileNav = document.getElementById('mobile-nav-overlay');
+      if (activeMobileNav && activeMobileNav.classList.contains('active')) {
+        const closeBtn = document.getElementById('mobile-close');
+        if (closeBtn) closeBtn.click();
+      }
+    }
+  });
+
+  /* ----- 10. PROJECT DRAWERS ----- */
   const projectCards = document.querySelectorAll('.project-glass-card');
   const drawers = document.querySelectorAll('.project-drawer');
 
   projectCards.forEach(card => {
+    // Add keyboard interaction
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('role', 'button');
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        card.click();
+      }
+    });
+
     card.addEventListener('click', () => {
+      activeTriggerElement = card;
       const drawerId = card.getAttribute('data-drawer');
       const targetDrawer = document.getElementById(drawerId);
       if (targetDrawer) {
         targetDrawer.classList.add('active');
         targetDrawer.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden'; // prevent scroll behind
+        const closeBtn = targetDrawer.querySelector('.drawer-close');
+        if (closeBtn) closeBtn.focus();
       }
     });
   });
@@ -274,31 +384,99 @@ document.addEventListener('DOMContentLoaded', () => {
   drawers.forEach(drawer => {
     const closeBtn = drawer.querySelector('.drawer-close');
     const overlay = drawer.querySelector('.drawer-overlay');
+    const panel = drawer.querySelector('.drawer-panel');
+    setupFocusTrap(drawer);
 
     const closeDrawer = () => {
       drawer.classList.remove('active');
       drawer.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
+      if (activeTriggerElement) {
+        activeTriggerElement.focus();
+        activeTriggerElement = null;
+      }
     };
 
     if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
     if (overlay) overlay.addEventListener('click', closeDrawer);
+
+    // Prepend a drag handle to drawer panels for visual cue on mobile bottom sheets
+    if (panel) {
+      const handle = document.createElement('div');
+      handle.className = 'drawer-handle';
+      panel.insertBefore(handle, panel.firstChild);
+    }
+
+    // Touch Swipe-to-Close Gestures (Horizontal for desktop drawers, vertical down for mobile bottom sheets)
+    let startX = 0;
+    let startY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    if (panel) {
+      panel.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        currentX = startX;
+        currentY = startY;
+      }, { passive: true });
+
+      panel.addEventListener('touchmove', (e) => {
+        currentX = e.touches[0].clientX;
+        currentY = e.touches[0].clientY;
+      }, { passive: true });
+
+      panel.addEventListener('touchend', () => {
+        const diffX = currentX - startX;
+        const diffY = currentY - startY;
+        const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
+        const swipeThreshold = 80; // px
+
+        if (window.innerWidth <= 768) {
+          // Mobile bottom sheet: swipe down to close
+          if (diffY > swipeThreshold) {
+            closeDrawer();
+          }
+        } else {
+          // Table/Desktop side drawer: swipe horizontally out to close
+          if ((!isRtl && diffX > swipeThreshold) || (isRtl && diffX < -swipeThreshold)) {
+            closeDrawer();
+          }
+        }
+        startX = startY = currentX = currentY = 0;
+      }, { passive: true });
+    }
   });
 
 
-  /* ----- 10. CERTIFICATE LIGHTBOX ----- */
+  /* ----- 10b. CERTIFICATE LIGHTBOX ----- */
   const certCards = document.querySelectorAll('.certificate-glass-card');
   const lightbox = document.getElementById('cert-lightbox');
   const lightboxImg = lightbox ? lightbox.querySelector('.lightbox-img') : null;
 
   if (lightbox && lightboxImg) {
+    setupFocusTrap(lightbox);
+
     certCards.forEach(card => {
+      // Add keyboard interaction
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'button');
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          card.click();
+        }
+      });
+
       card.addEventListener('click', () => {
+        activeTriggerElement = card;
         const imgSrc = card.getAttribute('data-img');
         lightboxImg.src = imgSrc;
         lightbox.classList.add('active');
         lightbox.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
+        const closeBtn = lightbox.querySelector('.lightbox-close');
+        if (closeBtn) closeBtn.focus();
       });
     });
 
@@ -309,6 +487,10 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         lightboxImg.src = '';
       }, 500);
+      if (activeTriggerElement) {
+        activeTriggerElement.focus();
+        activeTriggerElement = null;
+      }
     };
 
     const closeBtn = lightbox.querySelector('.lightbox-close');
@@ -316,13 +498,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
     if (overlay) overlay.addEventListener('click', closeLightbox);
-
-    // Close on Escape key
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-        closeLightbox();
-      }
-    });
   }
 
 
@@ -333,29 +508,34 @@ document.addEventListener('DOMContentLoaded', () => {
   const mobileLinks = document.querySelectorAll('.mobile-menu .mob-link');
 
   if (burger && mobileNav) {
+    setupFocusTrap(mobileNav);
+
     burger.addEventListener('click', () => {
-      mobileNav.classList.add('active');
-      mobileNav.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-
-      // Stagger link entrance animations
-      mobileLinks.forEach((link, idx) => {
-        link.style.opacity = '0';
-        link.style.transform = 'translateY(30px)';
-        link.style.transition = 'none'; // reset
-
-        setTimeout(() => {
-          link.style.transition = 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
-          link.style.opacity = '1';
-          link.style.transform = 'translateY(0)';
-        }, 120 + idx * 60);
-      });
+      const isActive = burger.classList.contains('active');
+      if (isActive) {
+        closeMobileNav();
+      } else {
+        activeTriggerElement = burger;
+        burger.classList.add('active');
+        document.body.classList.add('menu-open');
+        mobileNav.classList.add('active');
+        mobileNav.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        const closeBtn = document.getElementById('mobile-close');
+        if (closeBtn) closeBtn.focus();
+      }
     });
 
     const closeMobileNav = () => {
+      burger.classList.remove('active');
+      document.body.classList.remove('menu-open');
       mobileNav.classList.remove('active');
       mobileNav.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
+      if (activeTriggerElement) {
+        activeTriggerElement.focus();
+        activeTriggerElement = null;
+      }
     };
 
     if (mobileClose) mobileClose.addEventListener('click', closeMobileNav);
@@ -364,7 +544,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* ----- 12. GLASS CARDS mouse tracking (3D TILT EFFECT) ----- */
-  const glassCards = document.querySelectorAll('.project-glass-card, .certificate-glass-card');
+  const glassCards = document.querySelectorAll('.project-glass-card, .certificate-glass-card, .campaign-glass-card');
   
   glassCards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
@@ -395,7 +575,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* ----- 13. SCROLL TO TOP CLICK FUNCTIONALITY ----- */
-  const scrollTopBtn = document.getElementById('scroll-to-top');
   if (scrollTopBtn) {
     scrollTopBtn.addEventListener('click', () => {
       window.scrollTo({
@@ -413,7 +592,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const successUsername = document.getElementById('success-username');
   const resetFormBtn = document.querySelector('.btn-reset-form');
   const submitBtn = contactForm ? contactForm.querySelector('.btn-submit-form') : null;
-  const submitBtnSpan = submitBtn ? submitBtn.querySelector('span') : null;
+  const submitBtnSpanEn = submitBtn ? submitBtn.querySelector('.lang-en') : null;
+  const submitBtnSpanAr = submitBtn ? submitBtn.querySelector('.lang-ar') : null;
 
   if (contactForm && formContentArea && formSuccessState) {
     contactForm.addEventListener('submit', (e) => {
@@ -424,7 +604,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // Set submit button loading state
       if (submitBtn) {
         submitBtn.classList.add('loading');
-        if (submitBtnSpan) submitBtnSpan.textContent = 'Transmitting...';
+        if (submitBtnSpanEn) submitBtnSpanEn.textContent = 'Transmitting...';
+        if (submitBtnSpanAr) submitBtnSpanAr.textContent = 'جاري الإرسال...';
       }
 
       const formData = new FormData(contactForm);
@@ -461,13 +642,18 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .catch(err => {
         console.error('Submission error:', err);
-        alert('Transmission failed. Please check your connection or contact abdelrahman.abdelhafez10@gmail.com directly.');
+        const isAr = document.documentElement.getAttribute('lang') === 'ar';
+        const errMsg = isAr 
+          ? 'فشل إرسال الرسالة. يرجى التحقق من اتصالك بالإنترنت أو التواصل مباشرة عبر البريد الإلكتروني abdelrahman.abdelhafez10@gmail.com'
+          : 'Transmission failed. Please check your connection or contact abdelrahman.abdelhafez10@gmail.com directly.';
+        alert(errMsg);
       })
       .finally(() => {
         // Reset submit button state
         if (submitBtn) {
           submitBtn.classList.remove('loading');
-          if (submitBtnSpan) submitBtnSpan.textContent = 'Send Message';
+          if (submitBtnSpanEn) submitBtnSpanEn.textContent = 'Send Message';
+          if (submitBtnSpanAr) submitBtnSpanAr.textContent = 'إرسال الرسالة';
         }
       });
     });
@@ -491,8 +677,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ----- 15. LANGUAGE SWITCHER LOGIC ----- */
   const initLanguage = () => {
-    // Force default language to English on reload
-    const savedLang = 'en';
+    // Read saved language preference or default to English
+    const savedLang = localStorage.getItem('selectedLanguage') || 'en';
     setLanguage(savedLang);
 
     // Bind clicks to all language toggle buttons
@@ -509,6 +695,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.documentElement.setAttribute('lang', lang);
     localStorage.setItem('selectedLanguage', lang);
 
+    // Dynamically set text direction based on selected language
+    if (lang === 'ar') {
+      document.documentElement.setAttribute('dir', 'rtl');
+    } else {
+      document.documentElement.setAttribute('dir', 'ltr');
+    }
+
     // Update active visual state for language buttons
     const langBtns = document.querySelectorAll('.lang-btn');
     langBtns.forEach(btn => {
@@ -519,7 +712,23 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Update spine dots aria-labels dynamically for screen readers
+    const spineDots = document.querySelectorAll('.spine-dot');
+    spineDots.forEach(dot => {
+      const label = lang === 'ar' ? dot.getAttribute('data-title-ar') : dot.getAttribute('data-title-en');
+      dot.setAttribute('aria-label', label || 'Navigation dot');
+    });
 
+    // Dynamically toggle aria-hidden on multi-language labels for accessibility
+    const enLabels = document.querySelectorAll('label.lang-en');
+    const arLabels = document.querySelectorAll('label.lang-ar');
+    if (lang === 'ar') {
+      enLabels.forEach(label => label.setAttribute('aria-hidden', 'true'));
+      arLabels.forEach(label => label.removeAttribute('aria-hidden'));
+    } else {
+      arLabels.forEach(label => label.setAttribute('aria-hidden', 'true'));
+      enLabels.forEach(label => label.removeAttribute('aria-hidden'));
+    }
 
     // Update document title and placeholders based on language
     const nameInput = document.getElementById('name');
@@ -541,12 +750,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initLanguage();
 
-});
 
-/* === NEW INTERSECTION OBSERVER FOR MICRO-REVEALS === */
-document.addEventListener('DOMContentLoaded', () => {
+  /* === NEW INTERSECTION OBSERVER FOR MICRO-REVEALS === */
   // Select all major sections, cards, and paragraphs to reveal
-  const elementsToReveal = document.querySelectorAll('.content-section p, .stat-card, .skill-category, .project-glass-card, .campaign-glass-card, .certificate-glass-card');
+  const elementsToReveal = document.querySelectorAll('.content-section p, .stat-card, .skill-category, .project-glass-card, .campaign-glass-card, .certificate-glass-card, .eyebrow-split');
   
   elementsToReveal.forEach((el) => {
     el.classList.add('reveal');
@@ -564,185 +771,209 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.reveal').forEach(el => {
     revealObserver.observe(el);
   });
-});
-/* ============================================================
-   STARRY NIGHT INTERACTIVE ENGINE (2D Canvas)
-   ============================================================ */
-document.addEventListener('DOMContentLoaded', () => {
+
+  // Project cards peek hover details are handled via native CSS now.
+
+  /* ============================================================
+     STARRY NIGHT INTERACTIVE ENGINE (2D Canvas)
+     ============================================================ */
   const canvas = document.getElementById('three-planet-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  
-  let width, height;
-  let stars = [];
-  const numStars = window.innerWidth > 768 ? 400 : 150;
-  
-  // Palette for realistic stars
-  const starColors = ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#FF9F1C', '#2EC4B6', '#274C77'];
-  
-  // Mouse interaction
-  let mouse = { x: -1000, y: -1000 };
-  let scrollSpeed = 0;
-  let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
-
-  function resize() {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-  }
-
-  class Star {
-    constructor() {
-      this.reset();
-      // randomize starting twinkle phase
-      this.twinklePhase = Math.random() * Math.PI * 2;
-      this.twinkleSpeed = Math.random() * 0.05 + 0.01;
-    }
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
     
-    reset() {
-      this.x = Math.random() * width;
-      this.y = Math.random() * height;
-      
-      // Powerful Reality: More larger stars, higher base visibility
-      const sizeRand = Math.random();
-      if (sizeRand > 0.90) this.z = Math.random() * 2.0 + 1.5; // huge
-      else if (sizeRand > 0.60) this.z = Math.random() * 1.2 + 0.8; // medium
-      else this.z = Math.random() * 0.6 + 0.3; // small
+    let width, height;
+    let stars = [];
+    const numStars = window.innerWidth > 768 ? 400 : 150;
 
-      this.baseAlpha = Math.random() * 0.7 + 0.3;
-      this.alpha = this.baseAlpha;
-      
-      // Color assignment
-      this.color = starColors[Math.floor(Math.random() * starColors.length)];
-      
-      // Slower, more realistic drift
-      this.vx = (Math.random() - 0.5) * 0.1;
-      this.vy = -Math.random() * 0.1 - 0.05; 
-    }
     
-    update() {
-      // Base movement
-      this.x += this.vx;
-      this.y += this.vy;
-      
-      // Scroll boost
-      this.y += scrollSpeed * this.z * 0.5;
-      
-      // Powerful Twinkle effect
-      this.twinklePhase += this.twinkleSpeed;
-      let twinkle = Math.sin(this.twinklePhase) * 0.5;
-      
-      // Mouse repulsion
-      let dx = this.x - mouse.x;
-      let dy = this.y - mouse.y;
-      let dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 150) {
-        let force = (150 - dist) / 150;
-        this.x -= (dx / dist) * force * 2;
-        this.y -= (dy / dist) * force * 2;
-        this.alpha = Math.min(1, this.baseAlpha + force + twinkle);
-      } else {
-        this.alpha = Math.max(0.1, Math.min(1, this.baseAlpha + twinkle));
+    // Palette for realistic stars
+    const starColors = ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#FF9F1C', '#2EC4B6', '#274C77'];
+    
+    // Mouse interaction
+    let mouse = { x: -1000, y: -1000 };
+    let scrollSpeed = 0;
+    let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
+
+    function resize() {
+      const dpr = window.devicePixelRatio || 1;
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.scale(dpr, dpr);
+    }
+
+    class Star {
+      constructor() {
+        this.reset();
+        // randomize starting twinkle phase
+        this.twinklePhase = Math.random() * Math.PI * 2;
+        this.twinkleSpeed = Math.random() * 0.05 + 0.01;
       }
       
-      // Screen wrap
-      if (this.x < 0) this.x = width;
-      if (this.x > width) this.x = 0;
-      if (this.y < 0) this.y = height;
-      if (this.y > height) this.y = 0;
-    }
-    
-    draw() {
-      // Dynamic pulsing size based on twinkle
-      let currentZ = Math.max(0.1, this.z + (Math.sin(this.twinklePhase) * 0.3));
+      reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        
+        // Powerful Reality: More larger stars, higher base visibility
+        const sizeRand = Math.random();
+        if (sizeRand > 0.90) this.z = Math.random() * 2.0 + 1.5; // huge
+        else if (sizeRand > 0.60) this.z = Math.random() * 1.2 + 0.8; // medium
+        else this.z = Math.random() * 0.6 + 0.3; // small
 
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, currentZ, 0, Math.PI * 2);
-      
-      // Convert hex to rgb for alpha support, assuming hex strings from array
-      let r, g, b;
-      if (this.color === '#FFFFFF') { r=255; g=255; b=255; }
-      else if (this.color === '#FF9F1C') { r=255; g=159; b=28; }
-      else if (this.color === '#2EC4B6') { r=46; g=196; b=182; }
-      else if (this.color === '#274C77') { r=39; g=76; b=119; }
-      
-      ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${this.alpha})`;
-      ctx.fill();
-      
-      // Powerful Glow effect
-      if (this.z > 0.8) {
-        ctx.shadowBlur = this.z * 8;
-        ctx.shadowColor = this.color;
-      } else {
-        ctx.shadowBlur = 0;
+        this.baseAlpha = Math.random() * 0.7 + 0.3;
+        this.alpha = this.baseAlpha;
+        
+        // Color assignment
+        this.color = starColors[Math.floor(Math.random() * starColors.length)];
+        
+        // Precompute RGB values to avoid hex conversions in every frame
+        if (this.color === '#FFFFFF') { this.rgb = { r: 255, g: 255, b: 255 }; }
+        else if (this.color === '#FF9F1C') { this.rgb = { r: 255, g: 159, b: 28 }; }
+        else if (this.color === '#2EC4B6') { this.rgb = { r: 46, g: 196, b: 182 }; }
+        else if (this.color === '#274C77') { this.rgb = { r: 39, g: 76, b: 119 }; }
+        
+        // Slower, more realistic drift
+        this.vx = (Math.random() - 0.5) * 0.1;
+        this.vy = -Math.random() * 0.1 - 0.05; 
       }
       
-      // Diffraction spikes (starfish arms) for the largest, brightest stars
-      if (this.z > 1.8 && this.alpha > 0.4) {
-        let spikeSize = currentZ * 5;
-        ctx.shadowBlur = 0; // Disable shadow for sharp lines
+      update() {
+        // Base movement
+        this.x += this.vx;
+        this.y += this.vy;
+        
+        // Scroll boost
+        this.y += scrollSpeed * this.z * 0.5;
+        
+        // Powerful Twinkle effect
+        this.twinklePhase += this.twinkleSpeed;
+        let twinkle = Math.sin(this.twinklePhase) * 0.5;
+        
+        // Mouse repulsion
+        let dx = this.x - mouse.x;
+        let dy = this.y - mouse.y;
+        let dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          let force = (150 - dist) / 150;
+          this.x -= (dx / dist) * force * 2;
+          this.y -= (dy / dist) * force * 2;
+          this.alpha = Math.min(1, this.baseAlpha + force + twinkle);
+        } else {
+          this.alpha = Math.max(0.1, Math.min(1, this.baseAlpha + twinkle));
+        }
+        
+        // Screen wrap
+        if (this.x < 0) this.x = width;
+        if (this.x > width) this.x = 0;
+        if (this.y < 0) this.y = height;
+        if (this.y > height) this.y = 0;
+      }
+      
+      draw() {
+        // Dynamic pulsing size based on twinkle
+        let currentZ = Math.max(0.1, this.z + (Math.sin(this.twinklePhase) * 0.3));
+
+        // Draw soft glow halo for brighter stars (replaces slow CPU shadowBlur)
+        if (this.z > 0.8 && this.alpha > 0.3) {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, currentZ * 4, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${this.alpha * 0.15})`;
+          ctx.fill();
+        }
+
         ctx.beginPath();
-        ctx.moveTo(this.x - spikeSize, this.y);
-        ctx.lineTo(this.x + spikeSize, this.y);
-        ctx.moveTo(this.x, this.y - spikeSize);
-        ctx.lineTo(this.x, this.y + spikeSize);
-        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${this.alpha * 0.4})`;
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
+        ctx.arc(this.x, this.y, currentZ, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${this.alpha})`;
+        ctx.fill();
+        
+        // Diffraction spikes (starfish arms) for the largest, brightest stars
+        if (this.z > 1.8 && this.alpha > 0.4) {
+          let spikeSize = currentZ * 5;
+          ctx.beginPath();
+          ctx.moveTo(this.x - spikeSize, this.y);
+          ctx.lineTo(this.x + spikeSize, this.y);
+          ctx.moveTo(this.x, this.y - spikeSize);
+          ctx.lineTo(this.x, this.y + spikeSize);
+          ctx.strokeStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${this.alpha * 0.4})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
       }
     }
-  }
 
-  function init() {
-    resize();
-    stars = [];
-    for (let i = 0; i < numStars; i++) {
-      stars.push(new Star());
+
+
+    function init() {
+      resize();
+      stars = [];
+      for (let i = 0; i < numStars; i++) {
+        stars.push(new Star());
+      }
+
     }
-  }
 
-  function animate() {
-    ctx.clearRect(0, 0, width, height);
-    stars.forEach(star => {
-      star.update();
-      star.draw();
+    let isTabVisible = true;
+    document.addEventListener('visibilitychange', () => {
+      isTabVisible = !document.hidden;
+      if (isTabVisible) {
+        lastScrollTop = window.scrollY || document.documentElement.scrollTop;
+        lastScrollY = lastScrollTop;
+        animate();
+      }
+    });
+
+    function animate() {
+      if (!isTabVisible) return;
+      
+      try {
+        ctx.clearRect(0, 0, width, height);
+        stars.forEach(star => {
+          star.update();
+          star.draw();
+        });
+        
+        scrollSpeed *= 0.9;
+        requestAnimationFrame(animate);
+      } catch (err) {
+        console.error("Canvas animation error:", err);
+      }
+    }
+
+    // Debounced Resize event listener (200ms delay) to save processing
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        resize();
+        init();
+      }, 200);
     });
     
-    // Friction for scroll speed
-    scrollSpeed *= 0.9;
+    // Merged global mousemove event listener (handles spotlight AND starfield)
+    window.addEventListener('mousemove', (e) => {
+      if (window.innerWidth > 1024) {
+        document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+        document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+      }
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    }, { passive: true });
+
+    window.addEventListener('mouseout', () => {
+      mouse.x = -1000;
+      mouse.y = -1000;
+    });
     
-    requestAnimationFrame(animate);
-  }
-
-  window.addEventListener('resize', () => {
-    resize();
+    window.addEventListener('touchmove', (e) => {
+      mouse.x = e.touches[0].clientX;
+      mouse.y = e.touches[0].clientY;
+    }, { passive: true });
+    
     init();
-  });
-  
-  window.addEventListener('mousemove', (e) => {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-  });
-
-  window.addEventListener('mouseout', () => {
-    mouse.x = -1000;
-    mouse.y = -1000;
-  });
-  
-  window.addEventListener('touchmove', (e) => {
-    mouse.x = e.touches[0].clientX;
-    mouse.y = e.touches[0].clientY;
-  });
-  
-  window.addEventListener('scroll', () => {
-    let currentScroll = window.scrollY || document.documentElement.scrollTop;
-    let delta = currentScroll - lastScrollTop;
-    scrollSpeed = delta * -0.05; // move stars opposite to scroll
-    lastScrollTop = currentScroll;
-  });
-
-  init();
-  animate();
+    animate();
+  }
 });
 
