@@ -17,7 +17,34 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* ----- 1. PRELOADER SEQUENCE ----- */
+  /* ----- 0. THEME TOGGLE (Light / Dark) ----- */
+  const html = document.documentElement;
+  const THEME_KEY = 'portfolioTheme';
+
+  const applyTheme = (theme) => {
+    if (theme === 'light') {
+      html.setAttribute('data-theme', 'light');
+    } else {
+      html.removeAttribute('data-theme');
+    }
+    localStorage.setItem(THEME_KEY, theme);
+  };
+
+  // Restore saved preference (default = dark)
+  const savedTheme = localStorage.getItem(THEME_KEY) || 'dark';
+  applyTheme(savedTheme);
+
+  const toggleTheme = () => {
+    const current = html.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    applyTheme(current === 'light' ? 'dark' : 'light');
+  };
+
+  // Wire up all theme toggle buttons
+  document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
+    btn.addEventListener('click', toggleTheme);
+  });
+
+
   const preloader = document.getElementById('preloader');
   window.addEventListener('load', () => {
     setTimeout(() => {
