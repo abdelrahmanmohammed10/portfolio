@@ -3323,50 +3323,49 @@ html[lang="ar"] .project-card-peek {
 
 /* ----- CUSTOM PROPERTIES ----- */
 html[data-theme="light"] {
-  --bg-primary: #f1f6fa;
+  --bg-primary: #f8fafc;
   --bg-card: rgba(255, 255, 255, 0.97);
   --bg-card-hover: rgba(255, 255, 255, 1.0);
-  --border-color: rgba(30, 61, 97, 0.25);
-  --border-hover: rgba(5, 74, 67, 0.7);
-  --color-gold: #614100;
-  --color-cyan: #054a43;
-  --color-cyan-rgb: 5, 74, 67;
-  --color-purple: #0f2237;
-  --color-violet: #44158f;
-  --color-violet-rgb: 68, 21, 143;
-  --text-primary: #000000;
-  --text-muted: #111827;
-  --text-dark: #030712;
-  scrollbar-color: #0f2237 #f1f6fa;
+  --border-color: rgba(30, 61, 97, 0.2);
+  --border-hover: rgba(11, 93, 86, 0.6);
+  --color-gold: #b45309;
+  --color-cyan: #0b5d56;
+  --color-cyan-rgb: 11, 93, 86;
+  --color-purple: #1e3a8a;
+  --color-violet: #6d28d9;
+  --color-violet-rgb: 109, 40, 217;
+  --text-primary: #0f172a;
+  --text-muted: #334155;
+  --text-dark: #020617;
+  scrollbar-color: #1e3a8a #f8fafc;
 }
 
 /* SCROLLBAR */
-html[data-theme="light"] ::-webkit-scrollbar-track { background: #f1f6fa; }
-html[data-theme="light"] ::-webkit-scrollbar-thumb { background: rgba(15, 34, 55, 0.5); }
+html[data-theme="light"] ::-webkit-scrollbar-track { background: #f8fafc; }
+html[data-theme="light"] ::-webkit-scrollbar-thumb { background: rgba(30, 58, 138, 0.5); }
 
 /* BODY */
-html[data-theme="light"] body { background-color: transparent; color: #000000; }
-html[data-theme="light"] ::selection { background-color: rgba(15, 34, 55, 0.25); color: #000000; }
+html[data-theme="light"] body { background-color: transparent; color: #0f172a; }
+html[data-theme="light"] ::selection { background-color: rgba(30, 58, 138, 0.2); color: #000000; }
 
-/* ----- REALISTIC SKY GRADIENT (no orange) ----- */
+/* ----- REALISTIC SKY GRADIENT (no orange, highly desaturated slate-grays) ----- */
 html[data-theme="light"] .gradient-mesh {
   background: linear-gradient(
     180deg,
-    #bde2f5 0%,
-    #ccedf9 20%,
-    #daf4fd 40%,
-    #e9f8fe 60%,
-    #f3faff 80%,
-    #fafeff 100%
+    #f1f5f9 0%,
+    #f8fafc 30%,
+    #ffffff 60%,
+    #f8fafc 80%,
+    #f1f5f9 100%
   );
-  opacity: 1;
+  opacity: 0.95;
   animation: skyBreath 20s ease-in-out infinite alternate;
 }
 
 @keyframes skyBreath {
   0%   { filter: brightness(1)    saturate(1);    }
-  50%  { filter: brightness(1.02) saturate(1.04); }
-  100% { filter: brightness(0.98) saturate(0.97); }
+  50%  { filter: brightness(1.01) saturate(1.02); }
+  100% { filter: brightness(0.99) saturate(0.98); }
 }
 
 /* ----- CLOUDS (ONLY IN LIGHT MODE) ----- */
@@ -3383,6 +3382,8 @@ html[data-theme="light"] .gradient-mesh {
 
 html[data-theme="light"] .cloud {
   display: block;
+  opacity: 0.35 !important;
+  mix-blend-mode: overlay;
 }
 
 .cloud-1 {

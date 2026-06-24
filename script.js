@@ -115,16 +115,13 @@ document.addEventListener('DOMContentLoaded', () => {
       el.classList.remove('animate-fadeInLeft', 'animate-fadeInRight');
     });
     
-    // Set initial opacity and offset on Hero items
-    window.gsap.set([
-      "#hero .logo-wrap",
-      "#hero .badge-status",
-      "#hero .hero-name",
-      "#hero .hero-title",
-      "#hero .hero-bio",
-      "#hero .btn-cv-download",
-      "#hero .hero-social-links a"
-    ], { opacity: 0, y: 30 });
+    // Set initial parallax offsets
+    window.gsap.set("#three-planet-canvas, .gradient-mesh", { scale: 1.12, y: -30 });
+    window.gsap.set(".hero-brand-header", { opacity: 0, y: -40 });
+    window.gsap.set(".hero-name", { opacity: 0, x: -50, y: 10 });
+    window.gsap.set(".hero-title", { opacity: 0, x: -35, y: 15 });
+    window.gsap.set(".hero-bio", { opacity: 0, x: 45, y: 15 });
+    window.gsap.set(".hero-cta-row", { opacity: 0, y: 35 });
   }
 
   // Preloader GSAP Timeline
@@ -157,16 +154,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set preloader to display none
     tl.set("#preloader", { display: "none" });
     
-    // Stagger reveal Hero elements
-    tl.to([
-      "#hero .logo-wrap",
-      "#hero .badge-status",
-      "#hero .hero-name",
-      "#hero .hero-title",
-      "#hero .hero-bio",
-      "#hero .btn-cv-download",
-      "#hero .hero-social-links a"
-    ], { opacity: 1, y: 0, duration: 0.8, stagger: 0.08, ease: "power3.out" }, "-=0.1");
+    // Parallax background drift-in (scales down and centers)
+    tl.to("#three-planet-canvas, .gradient-mesh", { scale: 1, y: 0, duration: 2.0, ease: "power3.out" }, "-=0.5");
+    
+    // Stagger reveal Hero elements with parallax paths
+    tl.to(".hero-brand-header", { opacity: 1, y: 0, duration: 1.0, ease: "power3.out" }, "-=1.7");
+    tl.to(".hero-name", { opacity: 1, x: 0, y: 0, duration: 1.2, ease: "power4.out" }, "-=1.5");
+    tl.to(".hero-title", { opacity: 1, x: 0, y: 0, duration: 1.2, ease: "power4.out" }, "-=1.3");
+    tl.to(".hero-bio", { opacity: 1, x: 0, y: 0, duration: 1.2, ease: "power4.out" }, "-=1.2");
+    tl.to(".hero-cta-row", { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }, "-=1.0");
   };
 
   // Fallback native preloader loader sequence
