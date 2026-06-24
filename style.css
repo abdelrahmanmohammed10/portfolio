@@ -3252,7 +3252,6 @@ html[data-theme="light"] .cloud {
 }
 
 .cloud-1 {
-  background-image: url('cloud-flat-1.png');
   width: 340px;
   height: 190px;
   top: 8%;
@@ -3263,7 +3262,6 @@ html[data-theme="light"] .cloud {
 }
 
 .cloud-2 {
-  background-image: url('cloud-flat-2.png');
   width: 280px;
   height: 150px;
   top: 32%;
@@ -3275,7 +3273,6 @@ html[data-theme="light"] .cloud {
 }
 
 .cloud-3 {
-  background-image: url('cloud-flat-3.png');
   width: 380px;
   height: 210px;
   top: 58%;
@@ -3287,7 +3284,6 @@ html[data-theme="light"] .cloud {
 }
 
 .cloud-4 {
-  background-image: url('cloud-flat-1.png');
   width: 300px;
   height: 170px;
   top: 82%;

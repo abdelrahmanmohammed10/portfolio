@@ -41,6 +41,15 @@
           <feMergeNode in="SourceGraphic" />
         </feMerge>
       </filter>
+      <!-- Cloud Asset Definitions -->
+      <linearGradient id="cloudGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#ffffff" />
+        <stop offset="70%" stop-color="#f4f9fd" />
+        <stop offset="100%" stop-color="#d5e8f5" />
+      </linearGradient>
+      <filter id="cloudBlur" x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur stdDeviation="15" />
+      </filter>
     </defs>
   </svg>
 
@@ -64,10 +73,22 @@
   </div>
 
   <div class="gradient-mesh" aria-hidden="true">
-    <div class="cloud cloud-1"></div>
-    <div class="cloud cloud-2"></div>
-    <div class="cloud cloud-3"></div>
-    <div class="cloud cloud-4"></div>
+    <!-- Cloud 1 (Cumulus Type A) -->
+    <svg class="cloud cloud-1" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 50,150 L 350,150 A 40,40 0 0,0 330,110 A 50,50 0 0,0 260,70 A 65,65 0 0,0 140,80 A 45,45 0 0,0 50,150 Z" fill="url(#cloudGrad)" filter="url(#cloudBlur)" />
+    </svg>
+    <!-- Cloud 2 (Cumulus Type B) -->
+    <svg class="cloud cloud-2" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 30,140 L 370,140 A 35,35 0 0,0 340,105 A 45,45 0 0,0 270,75 A 55,55 0 0,0 150,70 A 40,40 0 0,0 80,105 A 30,30 0 0,0 30,140 Z" fill="url(#cloudGrad)" filter="url(#cloudBlur)" />
+    </svg>
+    <!-- Cloud 3 (Cumulus Type C) -->
+    <svg class="cloud cloud-3" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 40,160 L 360,160 A 40,40 0 0,0 330,120 A 55,55 0 0,0 260,75 A 70,70 0 0,0 130,75 A 50,50 0 0,0 60,120 A 40,40 0 0,0 40,160 Z" fill="url(#cloudGrad)" filter="url(#cloudBlur)" />
+    </svg>
+    <!-- Cloud 4 (Cumulus Type A Clone) -->
+    <svg class="cloud cloud-4" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 50,150 L 350,150 A 40,40 0 0,0 330,110 A 50,50 0 0,0 260,70 A 65,65 0 0,0 140,80 A 45,45 0 0,0 50,150 Z" fill="url(#cloudGrad)" filter="url(#cloudBlur)" />
+    </svg>
   </div>
   <div class="cursor-spotlight" aria-hidden="true"></div>
 
