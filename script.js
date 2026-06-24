@@ -52,24 +52,97 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   const preloader = document.getElementById('preloader');
-  window.addEventListener('load', () => {
+  
+  // Set up initial Hero states for GSAP immediately to avoid flashes
+  if (window.gsap && preloader) {
+    // Remove CSS animation classes to prevent conflicts
+    document.querySelectorAll('.hero-left-col, .hero-right-col').forEach(el => {
+      el.classList.remove('animate-fadeInLeft', 'animate-fadeInRight');
+    });
+    
+    // Set initial opacity and offset on Hero items
+    window.gsap.set([
+      "#hero .logo-wrap",
+      "#hero .badge-status",
+      "#hero .hero-name",
+      "#hero .hero-title",
+      "#hero .hero-bio",
+      "#hero .btn-cv-download",
+      "#hero .hero-social-links a"
+    ], { opacity: 0, y: 30 });
+  }
+
+  // Preloader GSAP Timeline
+  const runGSAPLoader = () => {
+    const tl = window.gsap.timeline({
+      defaults: { ease: "power2.out" }
+    });
+
+    // Make preloader logo visible and scale it
+    tl.to(".preloader-logo", { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: "back.out(1.5)" });
+    
+    // Draw orbit path
+    tl.to(".logo-orbit", { strokeDashoffset: 0, duration: 1.5, ease: "power2.inOut" }, "-=0.4");
+    
+    // Draw lines path
+    tl.to(".logo-lines", { strokeDashoffset: 0, duration: 1.2, ease: "power2.inOut" }, "-=1.1");
+    
+    // Stagger fade-in the stars
+    tl.to(".logo-star", { opacity: 1, scale: 1, duration: 0.6, stagger: 0.1, ease: "back.out(1.8)" }, "-=0.9");
+    
+    // Fill progress bar to 100%
+    tl.to(".preloader-bar", { width: "100%", duration: 1.4, ease: "power1.inOut" }, "-=1.2");
+    
+    // Transition preloader card out
+    tl.to(".preloader-content", { scale: 1.05, opacity: 0, duration: 0.6, ease: "power2.in" });
+    
+    // Fade out preloader overlay
+    tl.to("#preloader", { opacity: 0, duration: 0.6 }, "-=0.4");
+    
+    // Set preloader to display none
+    tl.set("#preloader", { display: "none" });
+    
+    // Stagger reveal Hero elements
+    tl.to([
+      "#hero .logo-wrap",
+      "#hero .badge-status",
+      "#hero .hero-name",
+      "#hero .hero-title",
+      "#hero .hero-bio",
+      "#hero .btn-cv-download",
+      "#hero .hero-social-links a"
+    ], { opacity: 1, y: 0, duration: 0.8, stagger: 0.08, ease: "power3.out" }, "-=0.1");
+  };
+
+  // Fallback native preloader loader sequence
+  const runFallbackLoader = () => {
+    preloader.classList.add('no-gsap');
     setTimeout(() => {
       preloader.classList.add('loaded');
       setTimeout(() => {
         preloader.style.display = 'none';
       }, 800);
     }, 1200);
+  };
+
+  // Run the loader when the window loads
+  let loaderStarted = false;
+  const startLoader = () => {
+    if (loaderStarted) return;
+    loaderStarted = true;
+    if (window.gsap) {
+      runGSAPLoader();
+    } else {
+      runFallbackLoader();
+    }
+  };
+
+  window.addEventListener('load', () => {
+    setTimeout(startLoader, 200);
   });
 
-  // Fallback in case window load doesn't trigger
-  setTimeout(() => {
-    if (!preloader.classList.contains('loaded')) {
-      preloader.classList.add('loaded');
-      setTimeout(() => {
-        preloader.style.display = 'none';
-      }, 800);
-    }
-  }, 3500);
+  // Safety fallback in case load event does not trigger
+  setTimeout(startLoader, 3500);
 
 
   /* ----- 2. DYNAMIC SCROLL PROGRESS BAR ----- */
