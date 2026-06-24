@@ -3326,10 +3326,10 @@ html[data-theme="light"] {
   --bg-card: rgba(255, 255, 255, 0.97);
   --bg-card-hover: rgba(255, 255, 255, 1.0);
   --border-color: rgba(30, 61, 97, 0.2);
-  --border-hover: rgba(11, 93, 86, 0.6);
+  --border-hover: rgba(2, 105, 122, 0.6);
   --color-gold: #b45309;
-  --color-cyan: #0b5d56;
-  --color-cyan-rgb: 11, 93, 86;
+  --color-cyan: #02697a;
+  --color-cyan-rgb: 2, 105, 122;
   --color-purple: #1e3a8a;
   --color-violet: #6d28d9;
   --color-violet-rgb: 109, 40, 217;
@@ -3347,17 +3347,17 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb { background: rgba(30, 58, 13
 html[data-theme="light"] body { background-color: transparent; color: #0f172a; }
 html[data-theme="light"] ::selection { background-color: rgba(30, 58, 138, 0.2); color: #000000; }
 
-/* ----- REALISTIC SKY GRADIENT (no orange, highly desaturated slate-grays) ----- */
+/* ----- REALISTIC SKY GRADIENT (soft desaturated sky-blue backdrop for white clouds) ----- */
 html[data-theme="light"] .gradient-mesh {
   background: linear-gradient(
     180deg,
-    #f1f5f9 0%,
-    #f8fafc 30%,
-    #ffffff 60%,
-    #f8fafc 80%,
-    #f1f5f9 100%
+    #cae6f4 0%,
+    #d9eef7 20%,
+    #e8f5fb 40%,
+    #f4fafc 70%,
+    #ffffff 100%
   );
-  opacity: 0.95;
+  opacity: 1;
   animation: skyBreath 20s ease-in-out infinite alternate;
 }
 
