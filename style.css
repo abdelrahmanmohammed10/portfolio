@@ -238,6 +238,29 @@ button, input, textarea {
   }
 }
 
+/* Interactive constellation logo hover enhancements */
+.constellation-logo {
+  cursor: pointer;
+}
+
+.logo-lines, .logo-orbit, .logo-star {
+  transition: stroke 0.3s ease, stroke-width 0.3s ease, filter 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.constellation-logo:hover .logo-lines {
+  stroke-width: 3.2px;
+  filter: drop-shadow(0 0 5px var(--color-cyan, #2ec4b6));
+}
+
+.constellation-logo:hover .logo-orbit {
+  stroke-width: 2.2px;
+  filter: drop-shadow(0 0 4px var(--color-purple, #7c3aed));
+}
+
+.constellation-logo:hover .logo-star {
+  transform: scale(1.22);
+}
+
 .preloader-bar-wrap {
   width: 140px;
   height: 2px;
