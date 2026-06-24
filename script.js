@@ -74,16 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ----- 2. DYNAMIC SCROLL PROGRESS BAR ----- */
   const progressBar = document.createElement('div');
-  progressBar.style.cssText = `
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #FF9F1C, #2EC4B6, #274C77);
-    z-index: 1000000;
-    width: 0%;
-    transition: width 0.1s ease-out;
-  `;
+  progressBar.className = 'scroll-progress-bar';
   document.body.appendChild(progressBar);
 
   // Progress bar logic moved to the combined throttled scroll handler below.

@@ -301,6 +301,17 @@ button, input, textarea {
   to { opacity: 0.9; }
 }
 
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-gold) 0%, var(--color-cyan) 50%, var(--color-purple) 100%);
+  z-index: 1000000;
+  width: 0%;
+  transition: width 0.1s ease-out;
+}
+
 @keyframes logoReveal {
   to {
     opacity: 1;
