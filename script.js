@@ -30,15 +30,23 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem(THEME_KEY, theme);
   };
 
-  // Restore saved preference (default = dark, force dark on fresh session load)
+  // Restore saved preference (default = system preference)
   let savedTheme = localStorage.getItem(THEME_KEY);
   if (!sessionStorage.getItem('themeInitialized')) {
-    savedTheme = 'dark';
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    savedTheme = prefersDark ? 'dark' : 'light';
     sessionStorage.setItem('themeInitialized', 'true');
   } else {
-    savedTheme = savedTheme || 'dark';
+    savedTheme = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
   }
   applyTheme(savedTheme);
+
+  // Listen for changes in system color scheme preference
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!localStorage.getItem(THEME_KEY)) {
+      applyTheme(e.matches ? 'dark' : 'light');
+    }
+  });
 
   const toggleTheme = () => {
     const current = html.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
@@ -572,6 +580,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const projectCards = document.querySelectorAll('.project-glass-card, .skill-category');
   const drawers = document.querySelectorAll('.project-drawer');
 
+  // Initialize inert attribute on closed drawers to prevent tab navigation of hidden focusable elements
+  drawers.forEach(drawer => {
+    if (!drawer.classList.contains('active')) {
+      drawer.setAttribute('inert', '');
+    }
+  });
+
   projectCards.forEach(card => {
     // Add keyboard interaction
     card.setAttribute('tabindex', '0');
@@ -588,6 +603,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const drawerId = card.getAttribute('data-drawer');
       const targetDrawer = document.getElementById(drawerId);
       if (targetDrawer) {
+        targetDrawer.removeAttribute('inert'); // Enable interaction
         targetDrawer.classList.add('active');
         targetDrawer.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden'; // prevent scroll behind
@@ -606,6 +622,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeDrawer = () => {
       drawer.classList.remove('active');
       drawer.setAttribute('aria-hidden', 'true');
+      drawer.setAttribute('inert', ''); // Disable interaction
       document.body.style.overflow = '';
       if (activeTriggerElement) {
         activeTriggerElement.focus();
@@ -671,6 +688,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const lightboxImg = lightbox ? lightbox.querySelector('.lightbox-img') : null;
 
   if (lightbox && lightboxImg) {
+    // Initialize inert attribute on closed lightbox
+    if (!lightbox.classList.contains('active')) {
+      lightbox.setAttribute('inert', '');
+    }
     setupFocusTrap(lightbox);
 
     certCards.forEach(card => {
@@ -688,6 +709,7 @@ document.addEventListener('DOMContentLoaded', () => {
         activeTriggerElement = card;
         const imgSrc = card.getAttribute('data-img');
         lightboxImg.src = imgSrc;
+        lightbox.removeAttribute('inert'); // Enable interaction
         lightbox.classList.add('active');
         lightbox.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
@@ -699,6 +721,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeLightbox = () => {
       lightbox.classList.remove('active');
       lightbox.setAttribute('aria-hidden', 'true');
+      lightbox.setAttribute('inert', ''); // Disable interaction
       document.body.style.overflow = '';
       setTimeout(() => {
         lightboxImg.src = '';
@@ -996,7 +1019,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Preload cloud images for light mode
     const cloudImages = [];
-    const cloudSources = ['cloud-flat-1.png', 'cloud-flat-2.png', 'cloud-flat-3.png'];
+    const cloudSources = ['cloud-flat-1.webp', 'cloud-flat-2.webp', 'cloud-flat-3.webp'];
     let cloudsLoaded = false;
     let loadedCount = 0;
 

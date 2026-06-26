@@ -2909,6 +2909,20 @@ html[lang="ar"] {
   --font-heading: 'IBM Plex Sans Arabic', sans-serif;
   --font-body: 'IBM Plex Sans Arabic', sans-serif;
 }
+html[lang="ar"] body,
+[dir="rtl"] {
+  line-height: 2.0 !important;
+}
+html[lang="ar"] p,
+[dir="rtl"] p,
+html[lang="ar"] span,
+[dir="rtl"] span,
+html[lang="ar"] a,
+[dir="rtl"] a,
+html[lang="ar"] button,
+[dir="rtl"] button {
+  line-height: 1.8 !important;
+}
 
 /* Reset letter-spacing globally in Arabic to prevent broken ligatures */
 html[lang="ar"] * {
