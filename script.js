@@ -1134,28 +1134,31 @@ document.addEventListener('DOMContentLoaded', () => {
         // Dynamic pulsing size based on twinkle
         let currentZ = Math.max(0.1, this.z + (Math.sin(this.twinklePhase) * 0.3));
 
+        // Scale down alpha to make the stars fade a little (60% of original opacity)
+        let renderAlpha = this.alpha * 0.6;
+
         // Draw soft glow halo for brighter stars (replaces slow CPU shadowBlur)
-        if (this.z > 0.8 && this.alpha > 0.3) {
+        if (this.z > 0.8 && renderAlpha > 0.2) {
           ctx.beginPath();
           ctx.arc(this.x, this.y, currentZ * 4, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${this.alpha * 0.15})`;
+          ctx.fillStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${renderAlpha * 0.15})`;
           ctx.fill();
         }
 
         ctx.beginPath();
         ctx.arc(this.x, this.y, currentZ, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${this.alpha})`;
+        ctx.fillStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${renderAlpha})`;
         ctx.fill();
         
         // Diffraction spikes (starfish arms) for the largest, brightest stars
-        if (this.z > 1.8 && this.alpha > 0.4) {
+        if (this.z > 1.8 && renderAlpha > 0.25) {
           let spikeSize = currentZ * 5;
           ctx.beginPath();
           ctx.moveTo(this.x - spikeSize, this.y);
           ctx.lineTo(this.x + spikeSize, this.y);
           ctx.moveTo(this.x, this.y - spikeSize);
           ctx.lineTo(this.x, this.y + spikeSize);
-          ctx.strokeStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${this.alpha * 0.4})`;
+          ctx.strokeStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${renderAlpha * 0.4})`;
           ctx.lineWidth = 0.5;
           ctx.stroke();
         }
