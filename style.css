@@ -39,6 +39,8 @@
 
 html {
   scroll-behavior: auto !important; /* Required for Lenis smooth scroll compatibility */
+  overflow-x: hidden;
+  width: 100%;
   scrollbar-width: thin;
   scrollbar-color: var(--color-cyan) var(--bg-primary);
 }
@@ -130,8 +132,8 @@ button, input, textarea {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   z-index: -2;
   pointer-events: none;
   opacity: 0.35; /* Fainter starfield */
@@ -2044,8 +2046,8 @@ button, input, textarea {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   z-index: -1; /* Above mesh (z-index -2) but behind page content (z-index 1) */
   pointer-events: none;
   overflow: hidden;
@@ -2079,8 +2081,8 @@ button, input, textarea {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   z-index: 100000;
   display: flex;
   justify-content: center;
@@ -2169,8 +2171,8 @@ button, input, textarea {
   position: fixed;
   top: 0;
   right: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   z-index: 99999;
   display: flex;
   justify-content: flex-end;
@@ -3252,8 +3254,8 @@ html[lang="en"] .spine-dot::after {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background: #000000;
   pointer-events: none;
   z-index: -2;
@@ -4496,4 +4498,15 @@ html[data-theme="light"] .chat-close-btn:hover {
     overflow-wrap: break-word !important;
     font-size: 0.85rem !important;
   }
+}
+
+@keyframes rocketFlame {
+  0% { transform: scaleY(1); opacity: 0.8; }
+  50% { transform: scaleY(1.35); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 0.8; }
+}
+
+.scroll-to-top-btn:hover .rocket-fire {
+  animation: rocketFlame 0.12s infinite alternate ease-in-out;
+  transform-origin: top center;
 }

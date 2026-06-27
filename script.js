@@ -1452,8 +1452,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Chatbot Knowledge Base
     const KB = {
       en: {
-        greeting: "Greetings, Explorer! 🌌 I am Astro-Bot, Abdelrahman's cosmic AI co-pilot. I have scanned all of his professional files, certifications, and project payloads. Ask me anything about his journey, skills, or how he can launch your next marketing campaign!",
-        defaultResponse: "I'm not sure about that specific question, but I can tell you about Abdelrahman's marketing services, experience at Tabby and Concentrix, certifications, or key projects like Kyoko Gifts. Try asking: 'What are your projects?' or 'How can I contact you?'",
+        greeting: "Hello! I'm Astro-Bot, Abdelrahman's AI assistant. Ask me anything about digital marketing, retention strategy, or coding, and let's explore!",
+        defaultResponse: "I am Astro-Bot, focused on digital marketing, retention strategies, and Abdelrahman's work. Ask me about space, marketing, or check out his CV! You can also ask anything else, and I'll do my best to help.",
         typing: "Astro-Bot is thinking...",
         intents: [
           {
@@ -1518,7 +1518,7 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           {
             name: "volunteer",
-            keywords: ["volunteer", "charity", "resala", "team lead", "anwar", "zagازيج", "عمل تطوعي", "جمعية", "رسالة"],
+            keywords: ["volunteer", "charity", "resala", "team lead", "anwar", "zagazig", "عمل تطوعي", "جمعية", "رسالة"],
             response: "I served as a **Marketing Team Lead** (May 2019 - Oct 2022) at Anwar Resala Zagazig (Resala Charity). I led a team of 8+ members, built awareness campaigns for community initiatives, trained members on content creation, and won the **Presentation & Public Speaking Competition Award**."
           },
           {
@@ -1547,15 +1547,40 @@ document.addEventListener('DOMContentLoaded', () => {
             response: "I can answer questions about Abdelrahman's professional details. Try asking: <br>• 'Tell me about your experience at Tabby/Concentrix'<br>• 'What projects have you worked on?'<br>• 'How can I download your CV?'<br>• 'What are your contact details?'"
           },
           {
+            name: "marketing_info",
+            keywords: ["what is digital marketing", "define marketing", "explain marketing", "marketing meaning", "ما هو التسويق الرقمي", "تعريف التسويق"],
+            response: "Digital marketing is the promotion of brands to connect with potential customers using the internet and digital communication (SEO, Social Media, Paid Ads, Email). Abdelrahman specializes in designing custom strategy playbooks that align business goals with market opportunities!"
+          },
+          {
+            name: "retention_info",
+            keywords: ["what is retention", "define retention", "customer loyalty", "churn rate", "ما هو الاحتفاظ بالعملاء", "الولاء"],
+            response: "Customer retention refers to the strategy and actions companies take to keep clients loyal and reduce churn. Abdelrahman is an award-winning retention specialist ( Concentrix 1st Enterprise Loyalty Award 2026 ) who maps behavior and restructures guides to lower support recurrence."
+          },
+          {
+            name: "seo_info",
+            keywords: ["what is seo", "define seo", "search engine optimization", "ما هو السيو", "تحسين محركات البحث"],
+            response: "SEO (Search Engine Optimization) is the practice of optimizing web content and structure to increase organic search visibility. Abdelrahman has experience optimizing CMS systems like Odoo and Wix, commending landing page UX, and tracking search index growth."
+          },
+          {
+            name: "astronomy_info",
+            keywords: ["what is astronomy", "astronomy definition", "space science", "meteorology", "ما هو علم الفلك", "علم الفلك"],
+            response: "Astronomy is the scientific study of stars, planets, and cosmic space phenomena. Did you know Abdelrahman holds a **Bachelor of Science in Astronomy, Meteorology & Space Science** (2019-2023) from Al-Azhar University? This background fuels his analytical and data-driven approach to marketing campaigns!"
+          },
+          {
+            name: "ai_info",
+            keywords: ["what is ai", "define artificial intelligence", "robot", "chatbot", "ما هو الذكاء الاصطناعي", "روبوت"],
+            response: "AI (Artificial Intelligence) is the simulation of human cognitive processes by computer systems. I am an AI-driven chatbot representation of Abdelrahman's digital footprint, built to handle marketing, professional, and general questions!"
+          },
+          {
             name: "greetings",
             keywords: ["hello", "hi", "hey", "greetings", "good morning", "good afternoon", "welcome", "about you", "أهلا", "مرحبا", "سلام", "ازيك"],
-            response: "Greetings, Explorer! 🌌 I am Astro-Bot, Abdelrahman's cosmic AI co-pilot. I have scanned all of his professional files, certifications, and project payloads. Ask me anything about his journey, skills, or how he can launch your next marketing campaign!"
+            response: "Hello! I'm Astro-Bot, Abdelrahman's AI assistant. Ask me anything about digital marketing, retention strategy, or coding, and let's explore!"
           }
         ]
       },
       ar: {
-        greeting: "مرحباً بك أيها المستكشف! 🌌 أنا المساعد الكوني الذكي (Astro-Bot)، الطيار المساعد لعبد الرحمن. لقد قمت بمسح جميع ملفاته المهنية، وشهاداته، وبيانات مشاريعه بدقة. اسألني عن أي شيء يخص رحلته، مهاراته، أو كيف يمكنه إطلاق حملتك التسويقية القادمة بنجاح كوني!",
-        defaultResponse: "لست متأكداً تماماً من إجابة هذا السؤال، ولكن يمكنني إخبارك عن خدمات عبد الرحمن التسويقية، أو خبراته في شركات تابي وكونسنتريكس، أو مشاريع مثل هدايا كيوكو. جرب أن تسألني: 'ما هي خبراتك؟' أو 'كيف يمكنني التواصل معك؟'",
+        greeting: "مرحباً! أنا Astro-Bot، المساعد الذكي لعبد الرحمن. اسألني عن أي شيء يخص التسويق الرقمي، خطط الاحتفاظ بالعملاء، أو البرمجة، ودعنا نستكشف معاً!",
+        defaultResponse: "أنا Astro-Bot، ومهمتي مساعدتك في التسويق الرقمي، خطط الاحتفاظ بالعملاء، ومشاريع عبد الرحمن. اسألني عن الفضاء، أو التسويق، أو تصفح سيرته الذاتية! يمكنك سؤالي عن أي شيء آخر وسأبذل قصارى جهدي لمساعدتك.",
         typing: "المساعد الذكي يفكر...",
         intents: [
           {
@@ -1596,7 +1621,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "new_direction",
             keywords: ["دايركشن", "اتجاه", "جديد", "أكاديمية", "انجليزي", "تعليم", "new direction"],
-            response: "لصالح <strong>أكاديمية نيو دايركشن</strong> لتعليم اللغة الإنجليزية (من سبتمبر ٢٠٢٠ إلى مايو ٢٠٢٢)، توليت إدارة استراتيجية الإطلاق من الصفر، وحددت نبرة الصوت وهوية العلامة التجارية، وأطلقت حملات الاستحواذ الناجحة عبر فيسبوك وإنستجرام."
+            response: "لصالح <strong>أكاديمية نيو دايركشن</strong> لتعليم اللغة الإنجليزية (من سبتمبر ٢٠٢٠ إلى مايو ٢٠٢٢)، توافقني إدارة استراتيجية الإطلاق من الصفر، وحددت نبرة الصوت وهوية العلامة التجارية، وأطلقت حملات الاستحواذ الناجحة عبر فيسبوك وإنستجرام."
           },
           {
             name: "hosting",
@@ -1649,9 +1674,34 @@ document.addEventListener('DOMContentLoaded', () => {
             response: "يمكنني الإجابة عن أي استفسار يخص الحياة المهنية لعبد الرحمن. جرب أن تسألني عن:<br>• خبراته في شركتي تابي وكونسنتريكس<br>• تفاصيل مشاريعه التسويقية (مثل هدايا كيوكو)<br>• كيفية تحميل سيرته الذاتية (CV)<br>• قنوات التواصل المباشر معه"
           },
           {
+            name: "marketing_info",
+            keywords: ["التسويق الرقمي", "ما هو التسويق", "تعريف التسويق", "digital marketing", "define marketing"],
+            response: "التسويق الرقمي هو ترويج العلامات التجارية للتواصل مع العملاء عبر الإنترنت وقنوات التواصل الرقمي. يتخصص عبد الرحمن في بناء الأدلة التسويقية المخصصة التي تربط بين أهداف العمل واحتياجات السوق الحقيقية!"
+          },
+          {
+            name: "retention_info",
+            keywords: ["الاحتفاظ بالعملاء", "ما هو الاحتفاظ", "الولاء", "retention", "loyalty"],
+            response: "الاحتفاظ بالعملاء (Customer Retention) هو الأنشطة التي تتخذها الشركات لزيادة ولاء عملائها وتقليل نسب تسربهم. عبد الرحمن خبير معتمد في الاحتفاظ بالعملاء وحصل على جائزة الولاء الأولى على مستوى مؤسسة كونسنتريكس لتميزه في هذا المجال."
+          },
+          {
+            name: "seo_info",
+            keywords: ["السيو", "ما هو السيو", "محركات البحث", "seo", "search engine"],
+            response: "تحسين محركات البحث (SEO) هو تحسين المواقع والصفحات لزيادة نسبة ظهورها بشكل طبيعي على محركات البحث. يمتلك عبد الرحمن خبرة في تطوير أداء السيو على أنظمة إدارة المحتوى Odoo و Wix وكتابة الأوصاف التعريفية للمنتجات."
+          },
+          {
+            name: "astronomy_info",
+            keywords: ["علم الفلك", "ما هو الفلك", "الفضاء", "الارصاد", "astronomy", "space"],
+            response: "علم الفلك هو العلم الذي يدرس النجوم والكواكب والمجرات والظواهر الفضائية. عبد الرحمن خريج كلية العلوم بجامعة الأزهر بتخصص **الفلك والأرصاد الجوية وعلوم الفضاء**، وتساعده هذه الخلفية العلمية والرياضية في التحليل الدقيق لقياسات وأرقام حملات التسويق."
+          },
+          {
+            name: "ai_info",
+            keywords: ["الذكاء الاصطناعي", "ما هو الذكاء", "روبوت", "بوت", "ai", "artificial intelligence"],
+            response: "الذكاء الاصطناعي هو محاكاة العمليات الذهنية البشرية بواسطة الآلات. أنا مساعد ذكي أعمل كخوارزمية محاكاة لتمثيل الحضور الرقمي لعبد الرحمن ومساعدتك في الإجابة عن أي تساؤل!"
+          },
+          {
             name: "greetings",
             keywords: ["أهلا", "اهلاً", "مرحباً", "مرحبا", "السلام", "سلام", "ازيك", "أهلاً وسهلاً", "من أنت", "مين"],
-            response: "مرحباً بك أيها المستكشف! 🌌 أنا المساعد الكوني الذكي (Astro-Bot)، الطيار المساعد لعبد الرحمن. لقد قمت بمسح جميع ملفاته المهنية، وشهاداته، وبيانات مشاريعه بدقة. اسألني عن أي شيء يخص رحلته، مهاراته، أو كيف يمكنه إطلاق حملتك التسويقية القادمة بنجاح كوني!"
+            response: "مرحباً! أنا Astro-Bot، المساعد الذكي لعبد الرحمن. اسألني عن أي شيء يخص التسويق الرقمي، خطط الاحتفاظ بالعملاء، أو البرمجة، ودعنا نستكشف معاً!"
           }
         ]
       }
@@ -1732,16 +1782,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const getSuggestions = (lang) => {
       if (lang === 'ar') {
         return [
+          "ما هو التسويق الرقمي؟",
           "ما هي خبراتك المهنية؟",
-          "تحميل السيرة الذاتية",
-          "أخبرني عن مشروع هدايا كيوكو",
+          "أخبرني عن دراستك للفلك",
           "كيف يمكنني التواصل معك؟"
         ];
       } else {
         return [
+          "What is digital marketing?",
           "What is your experience?",
-          "Download CV",
-          "Tell me about Kyoko Gifts",
+          "Tell me about your astronomy degree",
           "How can I contact you?"
         ];
       }
