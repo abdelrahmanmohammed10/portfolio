@@ -1040,7 +1040,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Palette for realistic stars
-    const starColors = ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#FF9F1C', '#2EC4B6', '#274C77'];
+    const starColors = ['#FFFFFF', '#FFFFFF', '#F8F9FA', '#E3F2FD', '#FFF9C4', '#FFE0B2'];
     
     // Mouse interaction with interpolation for organic, fluid lag
     let mouse = { x: -1000, y: -1000 };
@@ -1073,9 +1073,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Powerful Reality: More larger stars, higher base visibility
         const sizeRand = Math.random();
-        if (sizeRand > 0.90) this.z = Math.random() * 2.0 + 1.5; // huge
-        else if (sizeRand > 0.60) this.z = Math.random() * 1.2 + 0.8; // medium
-        else this.z = Math.random() * 0.6 + 0.3; // small
+        if (sizeRand > 0.96) this.z = Math.random() * 0.7 + 0.5; // planetary bright stars
+        else if (sizeRand > 0.72) this.z = Math.random() * 0.4 + 0.25; // medium stars
+        else this.z = Math.random() * 0.15 + 0.08; // small background stars
 
         this.baseAlpha = Math.random() * 0.7 + 0.3;
         this.alpha = this.baseAlpha;
@@ -1085,13 +1085,15 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Precompute RGB values to avoid hex conversions in every frame
         if (this.color === '#FFFFFF') { this.rgb = { r: 255, g: 255, b: 255 }; }
-        else if (this.color === '#FF9F1C') { this.rgb = { r: 255, g: 159, b: 28 }; }
-        else if (this.color === '#2EC4B6') { this.rgb = { r: 46, g: 196, b: 182 }; }
-        else if (this.color === '#274C77') { this.rgb = { r: 39, g: 76, b: 119 }; }
+        else if (this.color === '#F8F9FA') { this.rgb = { r: 248, g: 249, b: 250 }; }
+        else if (this.color === '#E3F2FD') { this.rgb = { r: 227, g: 242, b: 253 }; }
+        else if (this.color === '#FFF9C4') { this.rgb = { r: 255, g: 249, b: 196 }; }
+        else if (this.color === '#FFE0B2') { this.rgb = { r: 255, g: 224, b: 178 }; }
+        else { this.rgb = { r: 255, g: 255, b: 255 }; }
         
         // Slower, more realistic drift
-        this.vx = (Math.random() - 0.5) * 0.1;
-        this.vy = -Math.random() * 0.1 - 0.05; 
+        this.vx = (Math.random() - 0.5) * 0.015; // Slowed down for astronomical realism
+        this.vy = -Math.random() * 0.015 - 0.008; // Slowed down for astronomical realism 
       }
       
       update() {
@@ -1151,15 +1153,15 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fill();
         
         // Diffraction spikes (starfish arms) for the largest, brightest stars
-        if (this.z > 1.8 && renderAlpha > 0.25) {
-          let spikeSize = currentZ * 5;
+        if (this.z > 0.95 && renderAlpha > 0.2) {
+          let spikeSize = currentZ * 4.5;
           ctx.beginPath();
           ctx.moveTo(this.x - spikeSize, this.y);
           ctx.lineTo(this.x + spikeSize, this.y);
           ctx.moveTo(this.x, this.y - spikeSize);
           ctx.lineTo(this.x, this.y + spikeSize);
-          ctx.strokeStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${renderAlpha * 0.4})`;
-          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = `rgba(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b}, ${renderAlpha * 0.2})`;
+          ctx.lineWidth = 0.3;
           ctx.stroke();
         }
       }
@@ -1450,7 +1452,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Chatbot Knowledge Base
     const KB = {
       en: {
-        greeting: "Hello! This is Abdelrahman's personal chatbot. You can ask me anything. How may I help?",
+        greeting: "Greetings, Explorer! 🌌 I am Astro-Bot, Abdelrahman's cosmic AI co-pilot. I have scanned all of his professional files, certifications, and project payloads. Ask me anything about his journey, skills, or how he can launch your next marketing campaign!",
         defaultResponse: "I'm not sure about that specific question, but I can tell you about Abdelrahman's marketing services, experience at Tabby and Concentrix, certifications, or key projects like Kyoko Gifts. Try asking: 'What are your projects?' or 'How can I contact you?'",
         typing: "Astro-Bot is thinking...",
         intents: [
@@ -1516,7 +1518,7 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           {
             name: "volunteer",
-            keywords: ["volunteer", "charity", "resala", "team lead", "anwar", "zagazig", "عمل تطوعي", "جمعية", "رسالة"],
+            keywords: ["volunteer", "charity", "resala", "team lead", "anwar", "zagازيج", "عمل تطوعي", "جمعية", "رسالة"],
             response: "I served as a **Marketing Team Lead** (May 2019 - Oct 2022) at Anwar Resala Zagazig (Resala Charity). I led a team of 8+ members, built awareness campaigns for community initiatives, trained members on content creation, and won the **Presentation & Public Speaking Competition Award**."
           },
           {
@@ -1547,12 +1549,12 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "greetings",
             keywords: ["hello", "hi", "hey", "greetings", "good morning", "good afternoon", "welcome", "about you", "أهلا", "مرحبا", "سلام", "ازيك"],
-            response: "Hello! I am Astro-Bot, Abdelrahman's personal chatbot. You can ask me anything. How may I help?"
+            response: "Greetings, Explorer! 🌌 I am Astro-Bot, Abdelrahman's cosmic AI co-pilot. I have scanned all of his professional files, certifications, and project payloads. Ask me anything about his journey, skills, or how he can launch your next marketing campaign!"
           }
         ]
       },
       ar: {
-        greeting: "مرحباً بك! أنا المساعد الذكي الخاص بعبد الرحمن. يمكنك سؤالي عن أي شيء. كيف يمكنني مساعدتك؟",
+        greeting: "مرحباً بك أيها المستكشف! 🌌 أنا المساعد الكوني الذكي (Astro-Bot)، الطيار المساعد لعبد الرحمن. لقد قمت بمسح جميع ملفاته المهنية، وشهاداته، وبيانات مشاريعه بدقة. اسألني عن أي شيء يخص رحلته، مهاراته، أو كيف يمكنه إطلاق حملتك التسويقية القادمة بنجاح كوني!",
         defaultResponse: "لست متأكداً تماماً من إجابة هذا السؤال، ولكن يمكنني إخبارك عن خدمات عبد الرحمن التسويقية، أو خبراته في شركات تابي وكونسنتريكس، أو مشاريع مثل هدايا كيوكو. جرب أن تسألني: 'ما هي خبراتك؟' أو 'كيف يمكنني التواصل معك؟'",
         typing: "المساعد الذكي يفكر...",
         intents: [
@@ -1634,7 +1636,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "location",
             keywords: ["مكان", "موقع", "بلد", "مصر", "القاهرة", "أكتوبر", "remote", "عن بعد", "عنوان"],
-            response: "أقيم حالياً في <strong>مدينة السادس من أكتوبر، Giza، جمهورية مصر العربية</strong>. أنا متاح للعمل الميداني في القاهرة، زايد، القرية الذكية، والمعادي، أو العمل عن بعد مع كافة الدول."
+            response: "أقيم حالياً في <strong>مدينة السادس من أكتوبر، الجيزة، جمهورية مصر العربية</strong>. أنا متاح للعمل الميداني في القاهرة، زايد، القرية الذكية، والمعادي، أو العمل عن بعد مع كافة الدول."
           },
           {
             name: "thanks",
@@ -1649,7 +1651,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "greetings",
             keywords: ["أهلا", "اهلاً", "مرحباً", "مرحبا", "السلام", "سلام", "ازيك", "أهلاً وسهلاً", "من أنت", "مين"],
-            response: "مرحباً بك! أنا المساعد الذكي الخاص بعبد الرحمن. يمكنك سؤالي عن أي شيء. كيف يمكنني مساعدتك؟"
+            response: "مرحباً بك أيها المستكشف! 🌌 أنا المساعد الكوني الذكي (Astro-Bot)، الطيار المساعد لعبد الرحمن. لقد قمت بمسح جميع ملفاته المهنية، وشهاداته، وبيانات مشاريعه بدقة. اسألني عن أي شيء يخص رحلته، مهاراته، أو كيف يمكنه إطلاق حملتك التسويقية القادمة بنجاح كوني!"
           }
         ]
       }

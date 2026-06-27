@@ -2565,7 +2565,7 @@ button, input, textarea {
 /* Scroll-to-Top Button */
 .scroll-to-top-btn {
   position: fixed;
-  bottom: 105px; /* Stacks above chatbot trigger button */
+  bottom: 105px; /* Stacks above chatbot trigger button */ /* Stacks above chatbot trigger button */
   right: 30px;
   width: 48px;
   height: 48px;
@@ -2617,7 +2617,7 @@ button, input, textarea {
 /* Adjust scroll-to-top button on mobile */
 @media (max-width: 1024px) {
   .scroll-to-top-btn {
-    bottom: 90px; /* Stacks above chatbot trigger button */
+    bottom: 90px; /* Stacks above chatbot trigger button */ /* Stacks above chatbot trigger button */
     right: 24px;
     width: 44px;
     height: 44px;
@@ -4094,62 +4094,9 @@ html[lang="ar"] .chat-window-panel {
   gap: 12px;
 }
 
-.chat-avatar-orb {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--color-cyan), var(--color-violet));
-  box-shadow: 0 0 12px rgba(46, 196, 182, 0.6);
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-}
 
-.chat-avatar-orb svg {
-  width: 20px;
-  height: 20px;
-  display: block;
-}
 
-.chat-close-btn {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.2s, transform 0.2s;
-  outline: none;
-  margin-left: auto;
-}
 
-.chat-close-btn:hover {
-  color: var(--color-cyan);
-  transform: scale(1.1);
-}
-
-.chat-close-btn svg {
-  width: 18px;
-  height: 18px;
-  display: block;
-}
-
-html[lang="ar"] .chat-close-btn {
-  margin-left: 0;
-  margin-right: auto;
-}
-
-html[data-theme="light"] .chat-close-btn {
-  color: rgba(30, 61, 97, 0.5);
-}
-
-html[data-theme="light"] .chat-close-btn:hover {
-  color: var(--color-cyan);
-}
 
 .chat-avatar-orb svg {
   width: 20px;
@@ -4448,5 +4395,105 @@ html[data-theme="light"] .chat-user-input:focus {
   html[lang="ar"] .chat-window-panel {
     left: 20px;
     right: auto;
+  }
+}
+
+/* CHATBOT TRIGGER HIDDEN AND AVATAR IMAGES */
+.chat-trigger-btn.hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: scale(0.8) rotate(-10deg) !important;
+}
+
+.chat-icon-img {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  box-shadow: 0 0 10px rgba(46, 196, 182, 0.4);
+  transition: transform 0.3s ease;
+}
+
+.chat-trigger-btn:hover .chat-icon-img {
+  transform: scale(1.05);
+}
+
+.chat-avatar-orb {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bot-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  border: 1.5px solid rgba(46, 196, 182, 0.4);
+}
+
+.chat-close-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, transform 0.2s;
+  outline: none;
+  margin-left: auto;
+}
+
+.chat-close-btn:hover {
+  color: var(--color-cyan);
+  transform: scale(1.1);
+}
+
+.chat-close-btn svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+html[lang="ar"] .chat-close-btn {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+html[data-theme="light"] .chat-close-btn {
+  color: rgba(30, 61, 97, 0.5);
+}
+
+html[data-theme="light"] .chat-close-btn:hover {
+  color: var(--color-cyan);
+}
+
+/* ROCKET SCROLL-TO-TOP BUTTON STYLE */
+.rocket-icon {
+  width: 22px;
+  height: 22px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-to-top-btn:hover .rocket-icon {
+  transform: translateY(-5px) scale(1.05);
+  filter: drop-shadow(0 0 5px var(--color-cyan));
+}
+
+/* MOBILE EMAIL ADDR WORD-WRAP FIX */
+@media (max-width: 768px) {
+  .detail-item .val {
+    word-break: break-all !important;
+    overflow-wrap: break-word !important;
+    font-size: 0.85rem !important;
   }
 }
