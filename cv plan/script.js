@@ -1637,10 +1637,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Helper: Normalize inputs for better token matching (removes diacritics in Arabic)
     const normalizeText = (text) => {
       let str = text.toLowerCase().trim();
-      str = str.replace(/[ًٌٍَُِّْ]/g, "");
-      str = str.replace(/[أإآ]/g, "ا");
-      str = str.replace(/ة/g, "ه");
-      str = str.replace(/ى/g, "ي");
+      // Remove Arabic diacritics: \u064B-\u0652 covers fathah, dammah, kasrah, sukoon, shaddah, tanween
+      str = str.replace(/[\u064B-\u0652]/g, "");
+      // Replace Alif variations (أ, إ, آ) with plain Alif (ا)
+      str = str.replace(/[\u0622\u0623\u0625]/g, "\u0627");
+      // Replace Ta Marbuta (ة) with Ha (ه)
+      str = str.replace(/\u0629/g, "\u0647");
+      // Replace Alef Maksura (ى) with Ya (ي)
+      str = str.replace(/\u0649/g, "\u064A");
+      // Remove question marks, periods, commas, slashes, brackets
       str = str.replace(/[?؟.,!/\\()]/g, "");
       return str;
     };
