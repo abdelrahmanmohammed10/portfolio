@@ -1443,87 +1443,105 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (!chatTriggerBtn || !chatWindowPanel || !chatMessagesContainer) return;
 
+    // Conversational Context state
+    let lastIntentName = "";
+
     // Chatbot Knowledge Base
     const KB = {
       en: {
-        greeting: "Hello! This is Abdelrahman's personal chatbot. You can ask me anything about my experience, projects, skills, or certifications. How may I help you today?",
+        greeting: "Hello! This is Abdelrahman's personal chatbot. You can ask me anything. How may I help?",
         defaultResponse: "I'm not sure about that specific question, but I can tell you about Abdelrahman's marketing services, experience at Tabby and Concentrix, certifications, or key projects like Kyoko Gifts. Try asking: 'What are your projects?' or 'How can I contact you?'",
         typing: "Astro-Bot is thinking...",
         intents: [
           {
             name: "cv",
-            keywords: ["cv", "resume", "download", "pdf", "file", "documents", "sira"],
+            keywords: ["cv", "resume", "download", "pdf", "file", "documents", "sira", "ذاتية", "سيرة", "سيره", "تحميل", "تنزيل", "ملف", "ملخص"],
             response: "You can download my full, up-to-date professional CV in PDF format by clicking <a href=\"Abdelrahman_CV_Final.pdf\" download target=\"_blank\">here</a>."
           },
           {
             name: "contact",
-            keywords: ["contact", "email", "phone", "whatsapp", "call", "reach", "hire", "number", "connect", "message", "linked"],
+            keywords: ["contact", "email", "phone", "whatsapp", "call", "reach", "hire", "number", "connect", "message", "linked", "تواصل", "راسل", "اتصال", "ايميل", "بريد", "واتساب", "هاتف", "تلفون", "رقم", "لينكد"],
             response: "You can reach me directly via:<br>• <strong>WhatsApp:</strong> <a href=\"https://wa.me/201157265599\" target=\"_blank\">+20 115 726 5599</a><br>• <strong>Email:</strong> <a href=\"mailto:abdelrahman.abdelhafez10@gmail.com\">abdelrahman.abdelhafez10@gmail.com</a><br>• <strong>LinkedIn:</strong> <a href=\"https://www.linkedin.com/in/abdelrahman-abdelhafez-994932167/\" target=\"_blank\">LinkedIn Profile</a>"
           },
           {
             name: "experience",
-            keywords: ["experience", "work", "job", "career", "history", "employer", "employ", "company", "role", "concentrix", "tabby", "fine stone", "resala"],
+            keywords: ["experience", "work", "job", "career", "history", "employer", "employ", "company", "role", "concentrix", "tabby", "fine stone", "resala", "خبرة", "عمل", "وظيفة", "وظائف", "سابق", "خبرات"],
             response: "I have over 4 years of experience in digital marketing and retention:<br>• <strong>Concentrix (Boost Mobile):</strong> Customer Retention & Sales Specialist (2025-Present) - 1st Enterprise Loyalty Award.<br>• <strong>Tabby (Fintech):</strong> Customer Service Ambassador (2025) - Mapped user behavior and reduced repeat support contacts.<br>• <strong>New Direction Academy:</strong> Digital Marketer (2020-2022) - Launch strategy and monthly campaigns.<br>• <strong>Fine Stone (UnionAire):</strong> Website Editor & Content Coordinator (2019-2020) - Odoo CMS optimization."
           },
           {
             name: "concentrix",
-            keywords: ["concentrix", "loyalty", "retention", "boost mobile", "dish"],
+            keywords: ["concentrix", "loyalty", "retention", "boost mobile", "dish", "كونسنتريكس", "ولاء"],
             response: "At Concentrix (handling Boost Mobile by Dish Technologies), I consult high-risk accounts, resolve critical customer issues, and design retention plays. I was awarded the <strong>1st Enterprise Loyalty Award (2026)</strong> for my outstanding performance in reducing customer churn."
           },
           {
             name: "tabby",
-            keywords: ["tabby", "fintech", "bnpl", "customer service", "ambassador"],
+            keywords: ["tabby", "fintech", "bnpl", "customer service", "ambassador", "تابي"],
             response: "At Tabby Technologies (BNPL Fintech startup), I mapped and analyzed digital buyer behaviors, restructured self-service support guides, and resolved merchant issues, which systematically decreased support contact recurrence."
           },
           {
             name: "projects",
-            keywords: ["project", "portfolio", "case", "study", "studies", "kyoko", "gifts", "new direction", "hosting", "hostingwdomain"],
+            keywords: ["project", "portfolio", "case", "study", "studies", "kyoko", "gifts", "new direction", "hosting", "hostingwdomain", "مشاريع", "مشروع", "اعمال", "موقع"],
             response: "I have executed several major projects:<br>• <strong>Kyoko Gifts:</strong> A comprehensive e-commerce marketing strategy (SWOT, SMART Goals, Buyer Personas, KPI frameworks).<br>• <strong>New Direction Academy:</strong> Complete launch strategy and visual positioning from scratch.<br>• <strong>HostingWDomain:</strong> Detailed UX and Content Audit for a SaaS provider to optimize landing page conversion rates."
           },
           {
             name: "kyoko",
-            keywords: ["kyoko", "gifts", "gifting", "e-commerce"],
+            keywords: ["kyoko", "gifts", "gifting", "e-commerce", "كيوكو", "هدايا"],
             response: "<strong>Kyoko Gifts</strong> is an e-commerce brand. I built their full marketing playbook, outlining the customer journey, content pillars, Blue Ocean market differentiation, double SWOT analysis, 5 SMART goals, and a 6-category KPI measurement framework."
           },
           {
             name: "new_direction",
-            keywords: ["new direction", "academy", "english", "edtech"],
+            keywords: ["new direction", "academy", "english", "edtech", "نيو دايركشن", "اكاديمية"],
             response: "For <strong>New Direction Academy</strong> (EdTech), I directed the brand launch from zero, establishing their logo direction, brand voice, positioning, and launching monthly Facebook and Instagram campaigns that successfully drove early student acquisition."
           },
           {
             name: "hosting",
-            keywords: ["hosting", "hostingwdomain", "saas", "audit", "ux"],
+            keywords: ["hosting", "hostingwdomain", "saas", "audit", "ux", "هوستنج"],
             response: "For <strong>HostingWDomain</strong>, I performed a detailed content and UX audit. I identified user friction points, mapped drop-off areas, and restructured landing page layouts to optimize their conversion funnel and increase sales."
           },
           {
             name: "skills",
-            keywords: ["skills", "toolkit", "competence", "capabilities", "strategy", "planning", "copywriting", "content", "growth", "analytics", "cro", "meta", "tiktok", "ads", "seo", "swot", "smart", "canvas", "odoo", "canva"],
+            keywords: ["skills", "toolkit", "competence", "capabilities", "strategy", "planning", "copywriting", "content", "growth", "analytics", "cro", "meta", "tiktok", "ads", "seo", "swot", "smart", "canvas", "odoo", "canva", "مهارات", "ادوات"],
             response: "My skills are categorized into:<br>• <strong>Strategy:</strong> SWOT, SMART goals, Buyer Personas, Blue Ocean Strategy, Business Model Canvas (BMC).<br>• <strong>Content:</strong> Bilingual copywriting (AR/EN), Content Calendars, Brand Voice, Content Audits.<br>• <strong>Growth/Analytics:</strong> KPI frameworks, Meta Insights, CRO (Conversion Rate Optimization), Competitor Analysis.<br>• <strong>Tools:</strong> Meta Ads Manager, TikTok Ads Manager, Odoo CMS, Canva, AI productivity."
           },
           {
             name: "certifications",
-            keywords: ["certif", "accredit", "diploma", "course", "fwd", "udacity", "degree", "education", "school", "zagazig", "cct", "ibrahim elfiky"],
+            keywords: ["certif", "accredit", "diploma", "course", "fwd", "udacity", "degree", "education", "school", "zagazig", "cct", "ibrahim elfiky", "شهادات", "كورسات", "دبلوم"],
             response: "My top certifications include:<br>• <strong>Professional Diploma in Digital Marketing</strong> from BSA Academy (40+ hours).<br>• <strong>Certified Corporate Trainer (CCT)</strong> from the Canadian Center (CTCHD / Dr. Ibrahim Elfiky).<br>• <strong>Digital Marketing Challenger Track</strong> from Udacity & Egypt FWD (ITIDA).<br>• Zagazig University graduate."
           },
           {
+            name: "services",
+            keywords: ["services", "help", "consult", "strategy", "marketing", "digital marketing", "retention", "loyalty", "growth", "optimization", "plan", "خدمات", "مساعدة", "خدمة", "تسويق"],
+            response: "I specialize in digital marketing and customer retention strategy, offering services in:<br>• <strong>Retention & Loyalty:</strong> Churn reduction, customer support behavior analysis, and loyalty plays.<br>• <strong>E-commerce Marketing:</strong> Complete playbook design (SWOT, SMART goals, buyer personas, KPIs).<br>• <strong>Brand Launches:</strong> EdTech launch strategies, visual positioning, and paid social campaigns (Meta, TikTok).<br>• <strong>CRO & Content Audits:</strong> Restructuring landing pages, identifying user friction points, and optimizing conversion funnels."
+          },
+          {
             name: "rates",
-            keywords: ["price", "rate", "cost", "salary", "freelance", "budget", "consult", "charge"],
+            keywords: ["price", "rate", "cost", "salary", "freelance", "budget", "consult", "charge", "سعر", "راتب", "تكلفة", "فلوس"],
             response: "I am open to full-time opportunities, freelance consulting, and strategic contract roles. My rates and salary expectations depend on the project scope, duration, and alignment. Let's connect via <a href=\"https://wa.me/201157265599\" target=\"_blank\">WhatsApp</a> to discuss your needs!"
           },
           {
             name: "location",
-            keywords: ["location", "based", "egypt", "ciza", "cairo", "zagazig", "october", "office", "remote"],
+            keywords: ["location", "based", "egypt", "ciza", "cairo", "zagazig", "october", "office", "remote", "مكان", "عنوان", "مصر", "موقع"],
             response: "I am based in <strong>6th of October City, Giza, Egypt</strong>. I am available for on-site roles in Cairo, Zayed, Smart Village, and Maadi, as well as remote opportunities worldwide."
           },
           {
+            name: "thanks",
+            keywords: ["thank", "thanks", "appreciate", "helpful", "good", "great", "awesome", "شكرا", "شكرًا", "تسلم", "جميل", "رائع"],
+            response: "You're very welcome! Let me know if you have any other questions about Abdelrahman's work, experience, or projects."
+          },
+          {
+            name: "abilities",
+            keywords: ["what can you do", "help", "capabilities", "do", "how to use", "questions", "ماذا تفعل", "مساعدة", "خدماتك"],
+            response: "I can answer questions about Abdelrahman's professional details. Try asking: <br>• 'Tell me about your experience at Tabby/Concentrix'<br>• 'What projects have you worked on?'<br>• 'How can I download your CV?'<br>• 'What are your contact details?'"
+          },
+          {
             name: "greetings",
-            keywords: ["hello", "hi", "hey", "greetings", "good morning", "good afternoon", "welcome", "about you"],
-            response: "Hello! I am Astro-Bot, Abdelrahman's AI representative. Ask me about my CV, experience at Tabby/Concentrix, digital marketing services, or contact details!"
+            keywords: ["hello", "hi", "hey", "greetings", "good morning", "good afternoon", "welcome", "about you", "أهلا", "مرحبا", "سلام", "ازيك"],
+            response: "Hello! I am Astro-Bot, Abdelrahman's personal chatbot. You can ask me anything. How may I help?"
           }
         ]
       },
       ar: {
-        greeting: "مرحباً بك! أنا المساعد الذكي الخاص بعبد الرحمن. يمكنك طرح أي سؤال عليّ بخصوص خبراتي المهنية، أو مشاريعي، أو مهاراتي، أو شهاداتي. كيف يمكنني مساعدتك اليوم؟",
+        greeting: "مرحباً بك! أنا المساعد الذكي الخاص بعبد الرحمن. يمكنك سؤالي عن أي شيء. كيف يمكنني مساعدتك؟",
         defaultResponse: "لست متأكداً تماماً من إجابة هذا السؤال، ولكن يمكنني إخبارك عن خدمات عبد الرحمن التسويقية، أو خبراته في شركات تابي وكونسنتريكس، أو مشاريع مثل هدايا كيوكو. جرب أن تسألني: 'ما هي خبراتك؟' أو 'كيف يمكنني التواصل معك؟'",
         typing: "المساعد الذكي يفكر...",
         intents: [
@@ -1539,63 +1557,78 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           {
             name: "experience",
-            keywords: ["خبرة", "خبرات", "خبرتك", "عمل", "سابق", "وظائف", "وظيفة", "شركات", "شركة", "كونسنتريكس", "تابي", "رسالة", "فاين ستون", "مركز"],
-            response: "لدي خبرة تزيد عن 4 سنوات في مجالات التسويق الرقمي واستبقاء العملاء:<br>• <strong>كونسنتريكس (Boost Mobile):</strong> أخصائي استبقاء مبيعات وعملاء (2025-الآن) - جائزة الولاء الأولى.<br>• <strong>تابي للتكنولوجيا المالية (Tabby):</strong> أخصائي علاقات ودعم عملاء (2025) - تقليل تكرار الشكاوى.<br>• <strong>أكاديمية نيو دايركشن:</strong> أخصائي تسويق رقمي (2020-2022) - استراتيجية الإطلاق وحملات الاستحواذ.<br>• <strong>فاين ستون (يونيون إير):</strong> مسؤول محتوى ومواقع (2019-2020) - إدارة Odoo CMS."
+            keywords: ["خبرة", "عمل", "وظيفة", "تاريخ", "سيرة", "شركة", "دور", "كونسنتريكس", "تابي", "فاين ستون", "رسالة", "experience", "work", "job"],
+            response: "لدي أكثر من 4 سنوات من الخبرة في التسويق الرقمي والاحتفاظ بالعملاء (Retention):<br>• <strong>كونسنتريكس (Boost Mobile):</strong> أخصائي الاحتفاظ بالعملاء والمبيعات (٢٠٢٥-الآن) - حصلت على جائزة الولاء الأولى على مستوى المؤسسة.<br>• <strong>تابي (التقنية المالية):</strong> ممثل خدمة العملاء (٢٠٢٥) - قمت بتحليل سلوكيات المستخدمين وتقليل تكرار الشكاوى.<br>• <strong>أكاديمية نيو دايركشن:</strong> مسوق رقمي (٢٠٢٠-٢٠٢٢) - خطة الإطلاق والحملات الشهرية.<br>• <strong>فاين ستون (يونيون إير):</strong> محرر موقع ومنسق محتوى (٢٠١٩-٢٠٢٠) - تحسين محتوى نظام إدارة المحتوى Odoo."
           },
           {
             name: "concentrix",
-            keywords: ["كونسنتريكس", "concentrix", "الولاء", "استبقاء", "عملاء", "مبيعات", "جوائز", "جائزة"],
-            response: "في شركة كونسنتريكس (حساب Boost Mobile)، قمت بتقديم استشارات للحسابات ذات الاحتمالية العالية للمغادرة، وحل النزاعات المعقدة، وتطوير استراتيجيات تعزيز الولاء. حصلت على <strong>جائزة الولاء المؤسسية الأولى (2026)</strong> تقديراً لنجاحي الفعلي في خفض خسارة العملاء."
+            keywords: ["كونسنتريكس", "ولاء", "احتفاظ", "خدمة", "مبيعات", "جوائز", "جائزة", "concentrix", "loyalty"],
+            response: "في شركة كونسنتريكس (إمساك حساب بوست موبايل التابع لشركة ديش تكنولوجيز)، أقوم بتقديم الاستشارات للحسابات المعرضة للإلغاء وحل المشكلات الحرجة. حصلت على <strong>جائزة الولاء الأولى على مستوى المؤسسة (٢٠٢٦)</strong> لتميزي في خفض معدلات تسرب العملاء."
           },
           {
             name: "tabby",
-            keywords: ["تابي", "tabby", "فنتك", "تكنولوجيا مالية", "اشتر الآن", "دعم", "خدمة ذاتية"],
-            response: "في شركة تابي (منصة التكنولوجيا المالية الرائدة)، قمت برسم وتحليل سلوك المشترين الرقميين، وإعادة هيكلة وتبسيط أدلة الدعم الذاتي، وحل مشكلات المتاجر والشركاء، مما ساهم بشكل نظامي في تقليل تكرار الشكاوى الواردة لمركز الدعم."
+            keywords: ["تابي", "تقنية", "مالية", "تقسيط", "فنتك", "عملاء", "دعم", "tabby"],
+            response: "في شركة تابي (رائدة التقنية المالية والشراء الآن والدفع لاحقاً)، قمت بتحليل سلوكيات المشترين الرقميين وإعادة هيكلة أدلة الدعم الذاتي، مما أدى إلى خفض ملموس في تكرار استفسارات الدعم."
           },
           {
             name: "projects",
-            keywords: ["مشاريع", "مشروع", "أعمال", "سابقة", "كيوكو", "هدايا", "نيو دايركشن", "دايركشن", "هوستنج", "تدقيق"],
-            response: "قمت بإعداد وتنفيذ مشاريع استراتيجية بارزة:<br>• <strong>هدايا كيوكو:</strong> خطة تسويق متكاملة شاملة (SWOT، نموذج العمل، شخصيات المشترين، إطار KPIs).<br>• <strong>أكاديمية نيو دايركشن:</strong> استراتيجية إطلاق وتأسيس الهوية التجارية من الصفر.<br>• <strong>هوستنج و دومين:</strong> تدقيق وتقييم شامل لتجربة المستخدم والمحتوى (SaaS UX Audit) لزيادة المبيعات."
+            keywords: ["مشاريع", "مشروع", "اعمال", "حالة", "دراسة", "كيوكو", "هدايا", "دايركشن", "استضافة", "هوستنج", "projects", "kyoko"],
+            response: "أشرفت على تنفيذ عدة مشاريع استراتيجية رئيسية:<br>• <strong>هدايا كيوكو:</strong> خطة تسويقية متكاملة للتجارة الإلكترونية (تحليل SWOT، الأهداف الذكية، شخصيات المشترين، ومؤشرات الأداء).<br>• <strong>أكاديمية نيو دايركشن:</strong> خطة الإطلاق وتحديد التموضع البصري والهوية الكاملة للمشروع.<br>• <strong>هوستنج و دومين:</strong> تدقيق شامل لتجربة المستخدم (UX) والمحتوى لرفع معدلات التحويل للمبيعات."
           },
           {
             name: "kyoko",
-            keywords: ["كيوكو", "هدايا", "kyoko", "تجارة", "إلكترونية", "العميل"],
-            response: "<strong>هدايا كيوكو:</strong> مشروع تجارة إلكترونية متكامل. قمت ببناء دليل تسويقي شامل للبراند، حددت فيه رحلة العميل بالتفصيل، ركائز المحتوى، دراسة المزيج التسويقي 4Ps، التميز بموجب استراتيجية المحيط الأزرق، تحليل سوات الثنائي، وصياغة 5 أهداف ذكية SMART."
+            keywords: ["كيوكو", "هدايا", "تجارة", "الكترونية", "هدية", "kyoko", "gifts"],
+            response: "<strong>هدايا كيوكو</strong> هي علامة تجارية رائدة في التجارة الإلكترونية. قمت ببناء دليلها التسويقي الكامل، ورسم خريطة رحلة العميل، وتحديد ركائز المحتوى، وتطبيق استراتيجية المحيط الأزرق مع وضع نظام قياس الأداء المكون من 6 تصنيفات."
           },
           {
             name: "new_direction",
-            keywords: ["نيو دايركشن", "دايركشن", "أكاديمية", "تعليم", "إنجليزي", "انجليزي", "new direction"],
-            response: "لصالح <strong>أكاديمية نيو دايركشن لتعليم الإنجليزية</strong>، قدت استراتيجية الإطلاق من الصفر؛ بما يشمل اختيار باليتة الألوان ونبرة صوت العلامة التجارية، والتموضع التنافسي، وتخطيط وإطلاق الحملات الإعلانية على فيسبوك وإنستجرام لزيادة الاشتراكات."
+            keywords: ["دايركشن", "اتجاه", "جديد", "أكاديمية", "انجليزي", "تعليم", "new direction"],
+            response: "لصالح <strong>أكاديمية نيو دايركشن</strong> لتعليم اللغة الإنجليزية، توليت إدارة استراتيجية الإطلاق من الصفر، وحددت نبرة الصوت وهوية العلامة التجارية، وأطلقت حملات الاستحواذ الناجحة عبر فيسبوك وإنستجرام."
           },
           {
             name: "hosting",
-            keywords: ["هوستنج", "دومين", "تدقيق", "استضافة", "موقع", "تجربة المستخدم", "ux", "SaaS"],
-            response: "لصالح منصة <strong>هوستنج و دومين</strong> (استضافة مواقع ويب)، قمت بإجراء تدقيق شامل لتجربة المستخدم والمحتوى. حددت الفجوات والعقبات في صفحات الهبوط التي تسبب خروج العميل، وأعدت صياغة النصوص والهيكل لرفع معدل المبيعات والتحويل."
+            keywords: ["استضافة", "هوستنج", "دومين", "تدقيق", "موقع", "تحسين", "مبيعات", "hosting"],
+            response: "لمشروع <strong>هوستنج و دومين</strong>، أجريت تحليلاً دقيقاً لتجربة المستخدم وتدقيق المحتوى، وحددت نقاط تسرب العملاء في صفحات الهبوط، مما ساعد في تحسين مسار المبيعات."
           },
           {
             name: "skills",
-            keywords: ["مهارات", "مهاراتك", "قدرات", "تتقن", "الاستراتيجية", "تخطيط", "كتابة", "إعلانات", "إعلانية", "سوشيال", "تحليل", "بيانات", "أدوات", "سوات", "أهداف", "ميتا", "تيك توك", "أودو", "كانفا"],
-            response: "تتوزع مهاراتي وخبراتي في عدة محاور أساسية:<br>• <strong>الاستراتيجية والتخطيط:</strong> SWOT، الأهداف الذكية، شخصية العميل المستهدف، استراتيجية المحيط الأزرق، مخطط نموذج العمل التجاري BMC.<br>• <strong>المحتوى وكتابة الإعلانات:</strong> كتابة نصوص ثنائية اللغة، تقويمات النشر، نبرة صوت العلامة، تدقيق المحتوى.<br>• <strong>النمو والتحليلات:</strong> أطر قياس الأداء (KPIs)، تحليلات ميتا، تحسين التحويل (CRO)، دراسة المنافسين.<br>• <strong>العمليات والقيادة:</strong> إدارة الفرق والمهام، التدريب المؤسسي المعتمد، الخطابة، والتفاوض ثنائي اللغة."
+            keywords: ["مهارات", "أدوات", "ميزات", "قدرات", "تسويق", "تحليل", "اعلانات", "كتابة", "محتوى", "skills", "tools"],
+            response: "تنقسم مهاراتي إلى:<br>• <strong>الاستراتيجية:</strong> SWOT، الأهداف الذكية SMART، شخصيات المشتري، استراتيجية المحيط الأزرق، مخطط نموذج العمل.<br>• <strong>المحتوى:</strong> كتابة المحتوى الإعلاني باللغتين العربية والإنجليزية، خطط وجداول المحتوى، نبرة العلامة التجارية.<br>• <strong>النمو والتحليل:</strong> تصميم أطر مؤشرات الأداء (KPIs)، إحصاءات ميتا، تحسين معدلات التحويل (CRO)، وتحليل المنافسين.<br>• <strong>الأدوات:</strong> Meta Ads Manager، TikTok Ads Manager، نظام إدارة المحتوى Odoo، وتطبيقات Canva والذكاء الاصطناعي."
           },
           {
             name: "certifications",
-            keywords: ["شهادة", "شهادات", "كورسات", "دبلوم", "دبلومة", "تدريب", "مستقبلنا رقمي", "يوداسيتي", "fwd", "udacity", "إبراهيم الفقي", "الفقي", "BSA"],
-            response: "أبرز شهاداتي المهنية تشمل:<br>• <strong>دبلوم احترافي في التسويق الرقمي</strong> من BSA (أكثر من 40 ساعة).<br>• <strong>شهادة مدرب شركات معتمد (CCT)</strong> من المركز الكندي للتنمية البشرية (د. إبراهيم الفقي).<br>• <strong>مسار تحدي التسويق الرقمي</strong> من Udacity وهيئة تكنولوجيا المعلومات بمصر (FWD).<br>• خريج جامعة الزقازيق."
+            keywords: ["شهادة", "شهادات", "دبلومة", "كورس", "دورة", "تعليم", "جامعة", "المركز الكندي", "ابراهيم الفقي", "certifications"],
+            response: "أبرز شهاداتي المهنية تشمل:<br>• <strong>الدبلوم المهني في التسويق الرقمي</strong> من أكاديمية BSA (أكثر من 40 ساعة تدريبية).<br>• <strong>مدرب شركات معتمد (CCT)</strong> من المركز الكندي (الدكتور إبراهيم الفقي).<br>• <strong>مسار تحدي التسويق الرقمي</strong> من Udacity ومبادرة FWD المصرية.<br>• خريج جامعة الزقازيق."
+          },
+          {
+            name: "services",
+            keywords: ["خدمات", "مساعدة", "خدمة", "تسويق", "استراتيجية", "استشاري", "حملات", "اعلانات", "تحسين", "عملاء", "ولاء"],
+            response: "أتميز بتقديم خدمات متكاملة في التسويق الرقمي واستراتيجيات الاحتفاظ بالعملاء (Retention):<br>• <strong>الاحتفاظ بالعملاء والولاء:</strong> تقليل نسب تسرب العملاء، وتحليل سلوكيات الشكاوى، ووضع خطط الولاء.<br>• <strong>تسويق التجارة الإلكترونية:</strong> بناء خطط تسويقية متكاملة (تحليل SWOT، الأهداف الذكية SMART، شخصيات المشتري، ومؤشرات الأداء).<br>• <strong>إطلاق العلامات التجارية:</strong> خطط إطلاق المنصات التعليمية والخدمية وحملات منصات التواصل الاجتماعي (ميتا، تيك توك).<br>• <strong>تحسين معدلات التحويل (CRO) وتدقيق المحتوى:</strong> تقليل مشكلات تجربة المستخدم بالمواقع وتحسين مسارات الشراء للعملاء."
           },
           {
             name: "rates",
-            keywords: ["سعر", "أسعار", "تكلفة", "راتب", "سعر الخدمة", "شغل", "توظيف", "ميزانية", "استشارة"],
-            response: "أنا متاح للعمل كموظف بدوام كامل، أو تقديم استشارات تسويقية مستقلة وحملات إعلانية مخصصة. تعتمد التكلفة والراتب المتوقع على حجم العمل المطلوب والمدة الزمنية. دعنا نتناقش عبر <a href=\"https://wa.me/201157265599\" target=\"_blank\">واتساب</a> لتحديد أفضل عرض يناسب مشروعك!"
+            keywords: ["سعر", "أسعار", "تكلفة", "سعر الخدمات", "راتب", "توظيف", "عقد", "عمل", "ميزانية", "rates", "salary"],
+            response: "أنا منفتح لفرص العمل بدوام كامل، والاستشارات المستقلة (Freelance)، والعقود الاستراتيجية. تعتمد الأسعار وتوقعات الرواتب على نطاق العمل ومدة العقد. يسعدني التواصل عبر <a href=\"https://wa.me/201157265599\" target=\"_blank\">واتساب</a> لمناقشة التفاصيل!"
           },
           {
             name: "location",
             keywords: ["مكان", "موقع", "بلد", "مصر", "القاهرة", "أكتوبر", "remote", "عن بعد", "عنوان"],
-            response: "أقيم حالياً في <strong>مدينة السادس من أكتوبر، الجيزة، جمهورية مصر العربية</strong>. أنا متاح للعمل الميداني في القاهرة، زايد، القرية الذكية، والمعادي، أو العمل عن بعد مع كافة الدول."
+            response: "أقيم حالياً في <strong>مدينة السادس من أكتوبر، Giza، جمهورية مصر العربية</strong>. أنا متاح للعمل الميداني في القاهرة، زايد، القرية الذكية، والمعادي، أو العمل عن بعد مع كافة الدول."
+          },
+          {
+            name: "thanks",
+            keywords: ["شكرا", "شكرًا", "تسلم", "جزاك", "مشكور", "رائع", "جميل", "ممتاز", "thank", "thanks"],
+            response: "على الرحب والسعة! يسعدني دائماً مساعدتك. لا تتردد في طرح أي أسئلة أخرى حول أعمال عبد الرحمن أو خبراته."
+          },
+          {
+            name: "abilities",
+            keywords: ["ماذا تفعل", "مساعدة", "من أنت", "قدراتك", "كيف استعملك", "help", "do"],
+            response: "يمكنني الإجابة عن أي استفسار يخص الحياة المهنية لعبد الرحمن. جرب أن تسألني عن:<br>• خبراته في شركتي تابي وكونسنتريكس<br>• تفاصيل مشاريعه التسويقية (مثل هدايا كيوكو)<br>• كيفية تحميل سيرته الذاتية (CV)<br>• قنوات التواصل المباشر معه"
           },
           {
             name: "greetings",
             keywords: ["أهلا", "اهلاً", "مرحباً", "مرحبا", "السلام", "سلام", "ازيك", "أهلاً وسهلاً", "من أنت", "مين"],
-            response: "مرحباً بك! أنا المساعد الذكي الخاص بعبد الرحمن. يمكنك طرح أي سؤال عليّ بخصوص خبراتي المهنية، أو مشاريعي، أو مهاراتي، أو شهاداتي. كيف يمكنني مساعدتك اليوم؟"
+            response: "مرحباً بك! أنا المساعد الذكي الخاص بعبد الرحمن. يمكنك سؤالي عن أي شيء. كيف يمكنني مساعدتك؟"
           }
         ]
       }
@@ -1620,6 +1653,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const langKB = KB[lang] || KB.en;
       let bestIntent = null;
       let maxScore = 0;
+
+      // Conversational context check: if user asks for continuation/pronoun
+      const isContextQuery = (lang === 'ar') 
+        ? ["المزيد", "تفاصيل", "اخبرني", "هذا", "ذلك", "هناك", "اكمل"].some(w => normalizedQuery.includes(w))
+        : ["more", "detail", "tell me", "that", "it", "this", "there", "continue"].some(w => normalizedQuery.includes(w));
 
       for (const intent of langKB.intents) {
         let score = 0;
@@ -1646,8 +1684,20 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (maxScore >= 2 && bestIntent) {
+        lastIntentName = bestIntent.name;
         return bestIntent.response;
       }
+
+      // Contextual fallback: if score is low but it's a context query and we have a last intent, reuse it
+      if (isContextQuery && lastIntentName) {
+        const matchingIntent = langKB.intents.find(i => i.name === lastIntentName);
+        if (matchingIntent) {
+          return (lang === 'ar') 
+            ? `إليك المزيد من التفاصيل بخصوص ذلك:<br>${matchingIntent.response}`
+            : `Here are more details about that:<br>${matchingIntent.response}`;
+        }
+      }
+
       return langKB.defaultResponse;
     };
 
