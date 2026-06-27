@@ -1466,32 +1466,32 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "experience",
             keywords: ["experience", "work", "job", "career", "history", "employer", "employ", "company", "role", "concentrix", "tabby", "fine stone", "resala", "خبرة", "عمل", "وظيفة", "وظائف", "سابق", "خبرات"],
-            response: "I have over 4 years of experience in digital marketing and retention:<br>• <strong>Concentrix (Boost Mobile):</strong> Customer Retention & Sales Specialist (2025-Present) - 1st Enterprise Loyalty Award.<br>• <strong>Tabby (Fintech):</strong> Customer Service Ambassador (2025) - Mapped user behavior and reduced repeat support contacts.<br>• <strong>New Direction Academy:</strong> Digital Marketer (2020-2022) - Launch strategy and monthly campaigns.<br>• <strong>Fine Stone (UnionAire):</strong> Website Editor & Content Coordinator (2019-2020) - Odoo CMS optimization."
+            response: "I have over 4 years of experience in digital marketing and customer retention:<br>• <strong>Concentrix (Boost Mobile account):</strong> Customer Service Ambassador (Aug 2025-Present) - Awarded the 1st Enterprise Loyalty Award (2026) for excellence in customer retention.<br>• <strong>Tabby Technologies Egypt (Fintech/BNPL):</strong> Customer Service Ambassador (Apr 2025-Aug 2025) - Restructured FAQ support guides and analyzed digital buyer behavior.<br>• <strong>New Direction Academy (EdTech):</strong> Digital Marketer (Sep 2020-May 2022) - Led brand launch strategy, Facebook/Instagram campaigns, and SWOT analysis.<br>• <strong>Fine Stone (UnionAire Group):</strong> Website Editor & Digital Content Coordinator (Jul 2019-Feb 2020) - Landing page optimizations on Odoo CMS and SEO metrics tracking."
           },
           {
             name: "concentrix",
             keywords: ["concentrix", "loyalty", "retention", "boost mobile", "dish", "كونسنتريكس", "ولاء"],
-            response: "At Concentrix (handling Boost Mobile by Dish Technologies), I consult high-risk accounts, resolve critical customer issues, and design retention plays. I was awarded the <strong>1st Enterprise Loyalty Award (2026)</strong> for my outstanding performance in reducing customer churn."
+            response: "At Concentrix (handling the Boost Mobile account by Dish Technologies from Aug 2025-Present), I resolve critical billing, technical, and mobile plan issues. I was awarded the <strong>1st Enterprise Loyalty Award (2026)</strong> for my outstanding performance in customer retention, churn reduction, and maintaining high customer satisfaction metrics."
           },
           {
             name: "tabby",
             keywords: ["tabby", "fintech", "bnpl", "customer service", "ambassador", "تابي"],
-            response: "At Tabby Technologies (BNPL Fintech startup), I mapped and analyzed digital buyer behaviors, restructured self-service support guides, and resolved merchant issues, which systematically decreased support contact recurrence."
+            response: "At Tabby Technologies Egypt (BNPL Fintech startup located at The Greek Campus, Cairo from Apr 2025-Aug 2025), I supported customers through BNPL payment journeys, mapped user support friction points, and restructured self-service guides to systematically decrease support contact recurrence."
           },
           {
             name: "projects",
             keywords: ["project", "portfolio", "case", "study", "studies", "kyoko", "gifts", "new direction", "hosting", "hostingwdomain", "مشاريع", "مشروع", "اعمال", "موقع"],
-            response: "I have executed several major projects:<br>• <strong>Kyoko Gifts:</strong> A comprehensive e-commerce marketing strategy (SWOT, SMART Goals, Buyer Personas, KPI frameworks).<br>• <strong>New Direction Academy:</strong> Complete launch strategy and visual positioning from scratch.<br>• <strong>HostingWDomain:</strong> Detailed UX and Content Audit for a SaaS provider to optimize landing page conversion rates."
+            response: "I have executed several major projects:<br>• <strong>Kyoko Gifts (2026):</strong> A comprehensive marketing strategy covering Business Model Canvas, brand identity, dual SWOT, 5 SMART goals, Blue Ocean strategy, and a 6-category KPI framework.<br>• <strong>New Direction Academy:</strong> Complete brand launch package (competitor pricing, buyer persona, customer journey mapping).<br>• <strong>HostingWDomain:</strong> Detailed UX and Content Audit for a SaaS provider with a 6-point execution roadmap."
           },
           {
             name: "kyoko",
             keywords: ["kyoko", "gifts", "gifting", "e-commerce", "كيوكو", "هدايا"],
-            response: "<strong>Kyoko Gifts</strong> is an e-commerce brand. I built their full marketing playbook, outlining the customer journey, content pillars, Blue Ocean market differentiation, double SWOT analysis, 5 SMART goals, and a 6-category KPI measurement framework."
+            response: "<strong>Kyoko Gifts (2026)</strong> is an e-commerce brand. I built their full marketing playbook, outlining the customer journey, content pillars, Blue Ocean market differentiation, double SWOT analysis, 5 SMART goals, and a 6-category KPI measurement framework."
           },
           {
             name: "new_direction",
             keywords: ["new direction", "academy", "english", "edtech", "نيو دايركشن", "اكاديمية"],
-            response: "For <strong>New Direction Academy</strong> (EdTech), I directed the brand launch from zero, establishing their logo direction, brand voice, positioning, and launching monthly Facebook and Instagram campaigns that successfully drove early student acquisition."
+            response: "For <strong>New Direction Academy</strong> (EdTech, Sep 2020-May 2022), I directed the brand launch from zero, establishing their logo direction, brand voice, positioning, and launching monthly Facebook and Instagram campaigns that successfully drove early student acquisition."
           },
           {
             name: "hosting",
@@ -1506,7 +1506,17 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "certifications",
             keywords: ["certif", "accredit", "diploma", "course", "fwd", "udacity", "degree", "education", "school", "zagazig", "cct", "ibrahim elfiky", "شهادات", "كورسات", "دبلوم"],
-            response: "My top certifications include:<br>• <strong>Professional Diploma in Digital Marketing</strong> from BSA Academy (40+ hours).<br>• <strong>Certified Corporate Trainer (CCT)</strong> from the Canadian Center (CTCHD / Dr. Ibrahim Elfiky).<br>• <strong>Digital Marketing Challenger Track</strong> from Udacity & Egypt FWD (ITIDA).<br>• Zagazig University graduate."
+            response: "My top certifications include:<br>• <strong>Professional Diploma in Digital Marketing</strong> from BSA Academy (40+ hours, 2026).<br>• <strong>Certified Corporate Trainer (CCT)</strong> from the Canadian Center / Dr. Ibrahim Elfiky (2024).<br>• <strong>Digital Marketing Challenger Track</strong> from Udacity & Egypt FWD (ITIDA, 2020).<br>• <strong>European Computer Driving Licence (ECDL)</strong> & Microsoft Office Specialist (score 97/100, 2022).<br>• <strong>Space Sciences & Satellite Technologies Course</strong> from Egyptian Space Agency (EgSA, 2022)."
+          },
+          {
+            name: "education",
+            keywords: ["education", "degree", "university", "faculty", "science", "astronomy", "meteorology", "al-azhar", "graduat", "دراسة", "تعليم", "جامعة"],
+            response: "I graduated with a **Bachelor of Science in Astronomy, Meteorology & Space Science** (2019-2023) from Al-Azhar University, Faculty of Science in Cairo, Egypt. Grade: Good (68.71%). This quantitative background strongly supports my data-driven approach to marketing campaigns and measurement loops."
+          },
+          {
+            name: "volunteer",
+            keywords: ["volunteer", "charity", "resala", "team lead", "anwar", "zagazig", "عمل تطوعي", "جمعية", "رسالة"],
+            response: "I served as a **Marketing Team Lead** (May 2019 - Oct 2022) at Anwar Resala Zagazig (Resala Charity). I led a team of 8+ members, built awareness campaigns for community initiatives, trained members on content creation, and won the **Presentation & Public Speaking Competition Award**."
           },
           {
             name: "services",
@@ -1558,32 +1568,32 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "experience",
             keywords: ["خبرة", "عمل", "وظيفة", "تاريخ", "سيرة", "شركة", "دور", "كونسنتريكس", "تابي", "فاين ستون", "رسالة", "experience", "work", "job"],
-            response: "لدي أكثر من 4 سنوات من الخبرة في التسويق الرقمي والاحتفاظ بالعملاء (Retention):<br>• <strong>كونسنتريكس (Boost Mobile):</strong> أخصائي الاحتفاظ بالعملاء والمبيعات (٢٠٢٥-الآن) - حصلت على جائزة الولاء الأولى على مستوى المؤسسة.<br>• <strong>تابي (التقنية المالية):</strong> ممثل خدمة العملاء (٢٠٢٥) - قمت بتحليل سلوكيات المستخدمين وتقليل تكرار الشكاوى.<br>• <strong>أكاديمية نيو دايركشن:</strong> مسوق رقمي (٢٠٢٠-٢٠٢٢) - خطة الإطلاق والحملات الشهرية.<br>• <strong>فاين ستون (يونيون إير):</strong> محرر موقع ومنسق محتوى (٢٠١٩-٢٠٢٠) - تحسين محتوى نظام إدارة المحتوى Odoo."
+            response: "لدي أكثر من 4 سنوات من الخبرة المهنية في التسويق الرقمي والاحتفاظ بالعملاء (Retention):<br>• <strong>كونسنتريكس (Boost Mobile):</strong> ممثل خدمة العملاء (أغسطس ٢٠٢٥ - الآن) - حصلت على جائزة الولاء الأولى على مستوى المؤسسة (2026).<br>• <strong>تابي (التقنية المالية):</strong> ممثل خدمة العملاء (أبريل ٢٠٢٥ - أغسطس ٢٠٢٥) - قمت بتحليل سلوكيات المستخدمين وتطوير أدلة الدعم.<br>• <strong>أكاديمية نيو دايركشن:</strong> مسوق رقمي (سبتمبر ٢٠٢٠ - مايو ٢٠٢٢) - خطة الإطلاق والهوية الكاملة للمشروع والحملات الإعلانية.<br>• <strong>فاين ستون (يونيون إير):</strong> محرر موقع ومنسق محتوى (يوليو ٢٠١٩ - فبراير ٢٠٢٠) - تحسين محتوى Odoo CMS وتتبع السيو."
           },
           {
             name: "concentrix",
             keywords: ["كونسنتريكس", "ولاء", "احتفاظ", "خدمة", "مبيعات", "جوائز", "جائزة", "concentrix", "loyalty"],
-            response: "في شركة كونسنتريكس (إمساك حساب بوست موبايل التابع لشركة ديش تكنولوجيز)، أقوم بتقديم الاستشارات للحسابات المعرضة للإلغاء وحل المشكلات الحرجة. حصلت على <strong>جائزة الولاء الأولى على مستوى المؤسسة (٢٠٢٦)</strong> لتميزي في خفض معدلات تسرب العملاء."
+            response: "في شركة كونسنتريكس (إدارة حساب بوست موبايل التابع لشركة ديش تكنولوجيز من أغسطس ٢٠٢٥ حتى الآن)، أقوم بحل مشكلات الحسابات المعرضة للإلغاء. حصلت على <strong>جائزة الولاء الأولى على مستوى المؤسسة (٢٠٢٦)</strong> لتميزي في خفض معدلات تسرب العملاء والاحتفاظ بهم."
           },
           {
             name: "tabby",
             keywords: ["تابي", "تقنية", "مالية", "تقسيط", "فنتك", "عملاء", "دعم", "tabby"],
-            response: "في شركة تابي (رائدة التقنية المالية والشراء الآن والدفع لاحقاً)، قمت بتحليل سلوكيات المشترين الرقميين وإعادة هيكلة أدلة الدعم الذاتي، مما أدى إلى خفض ملموس في تكرار استفسارات الدعم."
+            response: "في شركة تابي مصر (رائدة التقنية المالية والشراء الآن والدفع لاحقاً في الحرم اليوناني بالقاهرة من أبريل ٢٠٢٥ إلى أغسطس ٢٠٢٥)، قمت بمساعدة العملاء خلال رحلات الدفع وإعادة تنظيم أدلة المساعدة الذاتية لتقليل استفسارات الدعم."
           },
           {
             name: "projects",
             keywords: ["مشاريع", "مشروع", "اعمال", "حالة", "دراسة", "كيوكو", "هدايا", "دايركشن", "استضافة", "هوستنج", "projects", "kyoko"],
-            response: "أشرفت على تنفيذ عدة مشاريع استراتيجية رئيسية:<br>• <strong>هدايا كيوكو:</strong> خطة تسويقية متكاملة للتجارة الإلكترونية (تحليل SWOT، الأهداف الذكية، شخصيات المشترين، ومؤشرات الأداء).<br>• <strong>أكاديمية نيو دايركشن:</strong> خطة الإطلاق وتحديد التموضع البصري والهوية الكاملة للمشروع.<br>• <strong>هوستنج و دومين:</strong> تدقيق شامل لتجربة المستخدم (UX) والمحتوى لرفع معدلات التحويل للمبيعات."
+            response: "أشرفت على تنفيذ عدة مشاريع استراتيجية رئيسية:<br>• <strong>هدايا كيوكو (2026):</strong> خطة تسويقية متكاملة للتجارة الإلكترونية تشمل مخطط نموذج العمل، المزيج التسويقي، واستراتيجية المحيط الأزرق.<br>• <strong>أكاديمية نيو دايركشن:</strong> خطة الإطلاق وتحديد التموضع التنافسي والهوية الكاملة للأكاديمية.<br>• <strong>هوستنج و دومين:</strong> تدقيق شامل لتجربة المستخدم (UX) والمحتوى لرفع المبيعات."
           },
           {
             name: "kyoko",
             keywords: ["كيوكو", "هدايا", "تجارة", "الكترونية", "هدية", "kyoko", "gifts"],
-            response: "<strong>هدايا كيوكو</strong> هي علامة تجارية رائدة في التجارة الإلكترونية. قمت ببناء دليلها التسويقي الكامل، ورسم خريطة رحلة العميل، وتحديد ركائز المحتوى، وتطبيق استراتيجية المحيط الأزرق مع وضع نظام قياس الأداء المكون من 6 تصنيفات."
+            response: "<strong>هدايا كيوكو (2026)</strong> هي علامة تجارية رائدة في التجارة الإلكترونية. قمت ببناء دليلها التسويقي الكامل، ورسم خريطة رحلة العميل، وتحديد ركائز المحتوى، وتطبيق استراتيجية المحيط الأزرق مع وضع نظام قياس الأداء المكون من 6 تصنيفات."
           },
           {
             name: "new_direction",
             keywords: ["دايركشن", "اتجاه", "جديد", "أكاديمية", "انجليزي", "تعليم", "new direction"],
-            response: "لصالح <strong>أكاديمية نيو دايركشن</strong> لتعليم اللغة الإنجليزية، توليت إدارة استراتيجية الإطلاق من الصفر، وحددت نبرة الصوت وهوية العلامة التجارية، وأطلقت حملات الاستحواذ الناجحة عبر فيسبوك وإنستجرام."
+            response: "لصالح <strong>أكاديمية نيو دايركشن</strong> لتعليم اللغة الإنجليزية (من سبتمبر ٢٠٢٠ إلى مايو ٢٠٢٢)، توليت إدارة استراتيجية الإطلاق من الصفر، وحددت نبرة الصوت وهوية العلامة التجارية، وأطلقت حملات الاستحواذ الناجحة عبر فيسبوك وإنستجرام."
           },
           {
             name: "hosting",
@@ -1598,7 +1608,17 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "certifications",
             keywords: ["شهادة", "شهادات", "دبلومة", "كورس", "دورة", "تعليم", "جامعة", "المركز الكندي", "ابراهيم الفقي", "certifications"],
-            response: "أبرز شهاداتي المهنية تشمل:<br>• <strong>الدبلوم المهني في التسويق الرقمي</strong> من أكاديمية BSA (أكثر من 40 ساعة تدريبية).<br>• <strong>مدرب شركات معتمد (CCT)</strong> من المركز الكندي (الدكتور إبراهيم الفقي).<br>• <strong>مسار تحدي التسويق الرقمي</strong> من Udacity ومبادرة FWD المصرية.<br>• خريج جامعة الزقازيق."
+            response: "أبرز شهاداتي المهنية تشمل:<br>• <strong>الدبلوم المهني في التسويق الرقمي</strong> من أكاديمية BSA (أكثر من 40 ساعة تدريبية، 2026).<br>• <strong>مدرب شركات معتمد (CCT)</strong> من المركز الكندي (الدكتور إبراهيم الفقي، 2024).<br>• <strong>مسار تحدي التسويق الرقمي</strong> من Udacity ومبادرة FWD المصرية (2020).<br>• <strong>الرخصة الدولية لقيادة الحاسب الآلي (ECDL)</strong> وأخصائي مايكروسوفت أوفيس (2022/2019).<br>• <strong>دورة تكنولوجيا الفضاء والأقمار الصناعية</strong> من وكالة الفضاء المصرية (2022)."
+          },
+          {
+            name: "education",
+            keywords: ["دراسة", "تعليم", "جامعة", "شهادتي", "كلية", "علوم", "الازهر", "فلك", "تخصص", "education", "degree"],
+            response: "تخرجت من **كلية العلوم بجامعة الأزهر في القاهرة** وحصلت على **بكالوريوس العلوم في الفلك والأرصاد الجوية وعلوم الفضاء** (2019-2023) بتقدير عام جيد (68.71%). تعزز هذه الخلفية العلمية قدرتي الكبيرة على التحليل الكمي وتفسير البيانات لقياس وتطوير أداء حملات التسويق الرقمية."
+          },
+          {
+            name: "volunteer",
+            keywords: ["تطوع", "خيري", "رسالة", "قائد", "انوار", "الزقازيق", "volunteer", "charity"],
+            response: "عملت كـ **قائد لفريق التسويق** (مايو ٢٠١٩ - أكتوبر ٢٠٢٢) في نشاط أنوار رسالة الزقازيق (جمعية رسالة للأعمال الخيرية). قمت بقيادة وتدريب فريق من 8 أفراد على كتابة المحتوى، وإطلاق حملات التوعية، وحصلت على جائزة التقديم والإلقاء من الجمعية."
           },
           {
             name: "services",
@@ -1613,7 +1633,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "location",
             keywords: ["مكان", "موقع", "بلد", "مصر", "القاهرة", "أكتوبر", "remote", "عن بعد", "عنوان"],
-            response: "أقيم حالياً في <strong>مدينة السادس من أكتوبر، Giza، جمهورية مصر العربية</strong>. أنا متاح للعمل الميداني في القاهرة، زايد، القرية الذكية، والمعادي، أو العمل عن بعد مع كافة الدول."
+            response: "أقيم حالياً في <strong>مدينة السادس من أكتوبر، الجيزة، جمهورية مصر العربية</strong>. أنا متاح للعمل الميداني في القاهرة، زايد، القرية الذكية، والمعادي، أو العمل عن بعد مع كافة الدول."
           },
           {
             name: "thanks",

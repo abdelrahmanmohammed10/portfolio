@@ -1529,10 +1529,15 @@
   <!-- Cosmic AI Chatbot Assistant -->
   <div id="astro-chat-widget" class="chat-widget-container" aria-label="AI Assistant Chat">
     <!-- Pulsing Chat Trigger Button -->
-    <button id="chat-trigger-btn" class="chat-trigger-btn magnetic-button" aria-label="Open AI Chatbot">
+        <button id="chat-trigger-btn" class="chat-trigger-btn magnetic-button" aria-label="Open AI Chatbot">
       <div class="bot-orb-pulse"></div>
-      <svg class="chat-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      <svg class="chat-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="7" y="9" width="10" height="9" rx="2" />
+        <path d="M9 12h6" />
+        <circle cx="10" cy="11.5" r="0.8" fill="currentColor" />
+        <circle cx="14" cy="11.5" r="0.8" fill="currentColor" />
+        <path d="M12 6v3M10 6h4" />
+        <circle cx="12" cy="12" r="10.5" stroke="var(--color-cyan)" stroke-opacity="0.3" stroke-width="1" />
       </svg>
       <svg class="close-icon-svg hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
@@ -1541,9 +1546,17 @@
 
     <!-- Chat Window Panel -->
     <div id="chat-window-panel" class="chat-window-panel hidden" role="dialog" aria-modal="true">
-      <div class="chat-header">
+            <div class="chat-header">
         <div class="chat-header-info">
-          <div class="chat-avatar-orb"></div>
+          <div class="chat-avatar-orb">
+            <svg class="bot-avatar-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="7" y="9" width="10" height="9" rx="2" />
+              <path d="M9 12h6" />
+              <circle cx="10" cy="11.5" r="0.8" fill="currentColor" />
+              <circle cx="14" cy="11.5" r="0.8" fill="currentColor" />
+              <path d="M12 6v3M10 6h4" />
+            </svg>
+          </div>
           <div>
             <h4 class="chat-title lang-en">Astro-Bot</h4>
             <h4 class="chat-title lang-ar">مساعد كوني ذكي</h4>

@@ -4101,6 +4101,16 @@ html[lang="ar"] .chat-window-panel {
   background: linear-gradient(135deg, var(--color-cyan), var(--color-violet));
   box-shadow: 0 0 12px rgba(46, 196, 182, 0.6);
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+
+.chat-avatar-orb svg {
+  width: 20px;
+  height: 20px;
+  display: block;
 }
 
 .chat-avatar-orb::after {
