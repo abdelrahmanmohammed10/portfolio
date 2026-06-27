@@ -1481,7 +1481,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "projects",
             keywords: ["project", "portfolio", "case", "study", "studies", "kyoko", "gifts", "new direction", "hosting", "hostingwdomain", "مشاريع", "مشروع", "اعمال", "موقع"],
-            response: "I have executed several major projects:<br>• <strong>Kyoko Gifts (2026):</strong> A comprehensive marketing playbook covering Business Model Canvas, brand identity, dual SWOT, 5 SMART goals, Blue Ocean strategy, and a 6-category KPI framework.<br>• <strong>New Direction Academy:</strong> Complete brand launch package (competitor pricing, buyer persona, customer journey mapping).<br>• <strong>HostingWDomain:</strong> Detailed UX and Content Audit for a SaaS provider with a 6-point execution roadmap."
+            response: "I have executed several major projects:<br>• <strong>Kyoko Gifts (2026):</strong> A comprehensive marketing playbook covering Business Model Canvas, brand identity, dual SWOT, 5 SMART goals, 2 buyer personas, 4Ps, competitor analysis, Blue Ocean strategy, and a 6-category KPI framework.<br>• <strong>New Direction Academy:</strong> Complete brand launch package (competitor pricing, buyer persona, customer journey mapping).<br>• <strong>HostingWDomain:</strong> Detailed UX and Content Audit for a SaaS provider with a 6-point execution roadmap."
           },
           {
             name: "kyoko",
@@ -1542,6 +1542,11 @@ document.addEventListener('DOMContentLoaded', () => {
             name: "abilities",
             keywords: ["what can you do", "help", "capabilities", "do", "how to use", "questions", "ماذا تفعل", "مساعدة", "خدماتك"],
             response: "I can answer questions about Abdelrahman's professional details. Try asking: <br>• 'Tell me about your experience at Tabby/Concentrix'<br>• 'What projects have you worked on?'<br>• 'How can I download your CV?'<br>• 'What are your contact details?'"
+          },
+          {
+            name: "why_hire",
+            keywords: ["why", "hire", "recruit", "why you", "results", "fit", "value", "benefits", "choose you"],
+            response: "Abdelrahman is a battle-tested Digital Marketing Strategist with a proven record of driving growth and retention. He has over 4 years of experience delivering end-to-end B2C campaigns and was awarded the Concentrix 1st Enterprise Loyalty Award (2026) for ranking #1 in customer retention. He brings analytical precision, bilingual copywriting excellence (AR/EN), and platform fluency to help launch your next campaign successfully!"
           },
           {
             name: "marketing_info",
@@ -1658,7 +1663,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             name: "location",
             keywords: ["مكان", "موقع", "بلد", "مصر", "القاهرة", "أكتوبر", "remote", "عن بعد", "عنوان"],
-            response: "أقيم حالياً في <strong>مدينة السادس من أكتوبر، الجيزة، جمهورية مصر العربية</strong>. أنا متاح للعمل الميداني في القاهرة، زايد، القرية الذكية، والمعادي، أو العمل عن بعد مع كافة الدول."
+            response: "أقيم حالياً في <strong>مدينة السادس من أكتوبر، Giza، جمهورية مصر العربية</strong>. أنا متاح للعمل الميداني في القاهرة، زايد، القرية الذكية، والمعادي، أو العمل عن بعد مع كافة الدول."
           },
           {
             name: "thanks",
@@ -1669,6 +1674,11 @@ document.addEventListener('DOMContentLoaded', () => {
             name: "abilities",
             keywords: ["ماذا تفعل", "مساعدة", "من أنت", "قدراتك", "كيف استعملك", "help", "do"],
             response: "يمكنني الإجابة عن أي استفسار يخص الحياة المهنية لعبد الرحمن. جرب أن تسألني عن:<br>• خبراته في شركتي تابي وكونسنتريكس<br>• تفاصيل مشاريعه التسويقية (مثل هدايا كيوكو)<br>• كيفية تحميل سيرته الذاتية (CV)<br>• قنوات التواصل المباشر معه"
+          },
+          {
+            name: "why_hire",
+            keywords: ["توظيف", "لماذا", "توظف", "تعيين", "مميزات", "لماذا نوظفك", "نتائج", "فائدة"],
+            response: "يتميز عبد الرحمن بخبرة تتجاوز 5 سنوات كمخطط استراتيجي للتسويق الرقمي مع سجل حافل في زيادة المبيعات والاحتفاظ بالعملاء. حصل على جائزة الولاء الأولى على مستوى مؤسسة كونسنتريكس (2026) لتحقيقه المركز الأول في مبيعات الاستبقاء. يجمع بين التفكير التحليلي، والمهارة العالية في كتابة النصوص الإعلانية ثنائية اللغة (AR/EN)، والخبرة العملية بالأدوات لمساعدتك في تحقيق أهدافك الاستراتيجية بنجاح!"
           },
           {
             name: "marketing_info",
@@ -1780,15 +1790,15 @@ document.addEventListener('DOMContentLoaded', () => {
       if (lang === 'ar') {
         return [
           "ما هو التسويق الرقمي؟",
+          "لماذا يجب أن نقوم بتوظيفك؟",
           "ما هي خبراتك المهنية؟",
-          "أخبرني عن دراستك للفلك",
           "كيف يمكنني التواصل معك؟"
         ];
       } else {
         return [
           "What is digital marketing?",
+          "Why should we hire you?",
           "What is your experience?",
-          "Tell me about your astronomy degree",
           "How can I contact you?"
         ];
       }

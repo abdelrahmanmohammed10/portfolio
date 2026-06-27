@@ -4,6 +4,19 @@
 
 /* ----- 1. CUSTOM PROPERTIES ----- */
 :root {
+  /* Astro SVG Icon variables - Dark Theme (Aurora Emerald cyan/teal line art) */
+  --astro-border: #2EC4B6;
+  --astro-helmet-bg: #0D1321;
+  --astro-visor-border: #FF9F1C;
+  --astro-visor-bg: rgba(46, 196, 182, 0.08);
+  --astro-visor-reflect: #F8F9FA;
+  --astro-ear-bg: #274C77;
+  --astro-suit-bg: #0D1321;
+  --astro-collar-bg: #274C77;
+  --astro-console-bg: rgba(255, 159, 28, 0.1);
+  --astro-button-1: #FF9F1C;
+  --astro-button-2: #2EC4B6;
+  --astro-button-3: #F8F9FA;
   /* Space Weather Palette */
   --bg-primary: #000000;
   --bg-card: rgba(39, 76, 119, 0.1);
@@ -3531,6 +3544,19 @@ html[lang="ar"] .project-card-peek {
 
 /* ----- CUSTOM PROPERTIES ----- */
 html[data-theme="light"] {
+  /* Astro SVG Icon variables - Light Theme (Deep slate blue line art) */
+  --astro-border: #274C77;
+  --astro-helmet-bg: #FFFFFF;
+  --astro-visor-border: #FF9F1C;
+  --astro-visor-bg: rgba(39, 76, 119, 0.05);
+  --astro-visor-reflect: #274C77;
+  --astro-ear-bg: #F1F5F9;
+  --astro-suit-bg: #FFFFFF;
+  --astro-collar-bg: #E2E8F0;
+  --astro-console-bg: #F1F5F9;
+  --astro-button-1: #FF9F1C;
+  --astro-button-2: #2EC4B6;
+  --astro-button-3: #274C77;
   --bg-primary: #f4f7fa;          /* Softer, desaturated slate-blue-sky base */
   --bg-card: rgba(255, 255, 255, 0.96); /* Clean surface backdrop */
   --bg-card-hover: rgba(255, 255, 255, 1.0);
