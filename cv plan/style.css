@@ -730,16 +730,7 @@ button, input, textarea {
   transition: width 0.1s ease-out;
 }
 
-@keyframes logoReveal {
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
 
-@keyframes barProgress {
-  to { width: 100%; }
-}
 
 /* Hide Preloader class */
 #preloader.loaded {
@@ -2393,6 +2384,7 @@ button, input, textarea {
   pointer-events: none;
   overflow: hidden;
   display: block;
+  will-change: transform;
 }
 
 /* ----- 13. FOOTER ----- */
@@ -5005,4 +4997,10 @@ html[data-theme="light"] .chat-close-btn:hover {
 }
 .explanation-usecase strong {
   color: var(--color-cyan);
+}
+
+/* ----- 13. PERFORMANCE RENDERING OPTIMIZATIONS ----- */
+#journey, #credentials, #contact {
+  content-visibility: auto;
+  contain-intrinsic-size: 800px;
 }
