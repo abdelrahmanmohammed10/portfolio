@@ -245,25 +245,178 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-  /* ----- 6. INTERSECTION OBSERVER REVEALS ----- */
-  // Add class 'reveal' dynamically to section content elements
-  document.querySelectorAll('.content-section p, .stat-card, .skill-category, .project-glass-card, .campaign-glass-card, .certificate-glass-card, .eyebrow-split').forEach(el => {
-    el.classList.add('reveal');
-  });
+    /* ----- 6. GSAP INTERACTIVE ANIMATION ENGINE (ScrollTrigger) ----- */
+  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
 
-  // Reveal observer for one-time fade-ins
-  const globalRevealObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
+    // 1. Heading slide-reveals
+    document.querySelectorAll('.split-reveal-heading').forEach(heading => {
+      gsap.from(heading, {
+        opacity: 0,
+        y: 35,
+        duration: 0.9,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: heading,
+          start: "top 88%",
+          toggleActions: "play none none none"
+        }
+      });
+    });
+
+    // 2. Staggered card reveals
+    // Skills categories
+    gsap.from(".skills-grid .skill-category", {
+      opacity: 0,
+      y: 40,
+      duration: 0.8,
+      stagger: 0.12,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: ".skills-grid",
+        start: "top 88%",
+        toggleActions: "play none none none"
       }
     });
-  }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
 
-  document.querySelectorAll('.reveal-paragraph, .reveal-card, .split-reveal-heading, .reveal').forEach(el => {
-    globalRevealObserver.observe(el);
-  });
+    // Timeline items
+    gsap.from(".timeline-items .timeline-item", {
+      opacity: 0,
+      x: -30,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: ".timeline-items",
+        start: "top 85%",
+        toggleActions: "play none none none"
+      }
+    });
+
+    // Projects
+    gsap.from(".projects-stack .project-glass-card", {
+      opacity: 0,
+      y: 50,
+      duration: 0.9,
+      stagger: 0.15,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: ".projects-stack",
+        start: "top 85%",
+        toggleActions: "play none none none"
+      }
+    });
+
+    // Campaigns
+    gsap.from(".campaigns-grid .campaign-glass-card", {
+      opacity: 0,
+      y: 50,
+      duration: 0.9,
+      stagger: 0.15,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: ".campaigns-grid",
+        start: "top 85%",
+        toggleActions: "play none none none"
+      }
+    });
+
+    // Credentials
+    gsap.from(".certificates-grid .certificate-glass-card", {
+      opacity: 0,
+      y: 35,
+      duration: 0.7,
+      stagger: 0.1,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: ".certificates-grid",
+        start: "top 85%",
+        toggleActions: "play none none none"
+      }
+    });
+
+    // 3. GSAP Count-up animations
+    document.querySelectorAll('.stat-num').forEach(num => {
+      const limit = parseInt(num.getAttribute('data-val')) || 0;
+      gsap.from(num, {
+        textContent: 0,
+        duration: 1.6,
+        ease: "power2.out",
+        snap: { textContent: 1 },
+        scrollTrigger: {
+          trigger: num,
+          start: "top 88%",
+          toggleActions: "play none none none"
+        }
+      });
+    });
+
+    // 4. Timeline Spine Progress line filling animation
+    if (document.querySelector('.timeline-container') && document.querySelector('.spine-progress')) {
+      gsap.to(".spine-progress", {
+        height: "100%",
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".timeline-container",
+          start: "top center",
+          end: "bottom center",
+          scrub: true
+        }
+      });
+    }
+
+  } else {
+    /* ----- 6b. GRACEFUL FALLBACK (Intersection Observer) ----- */
+    document.querySelectorAll('.content-section p, .stat-card, .skill-category, .project-glass-card, .campaign-glass-card, .certificate-glass-card, .eyebrow-split').forEach(el => {
+      el.classList.add('reveal');
+    });
+
+    const globalRevealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+    document.querySelectorAll('.reveal-paragraph, .reveal-card, .split-reveal-heading, .reveal').forEach(el => {
+      globalRevealObserver.observe(el);
+    });
+
+    /* ----- 7b. FALLBACK NUMBERS COUNT-UP ----- */
+    const statNums = document.querySelectorAll('.stat-num');
+    let statsTriggered = false;
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !statsTriggered) {
+        statsTriggered = true;
+        statNums.forEach(num => {
+          const limit = parseInt(num.getAttribute('data-val'));
+          const duration = 1200; // ms
+          let startTime = null;
+
+          function updateCount(timestamp) {
+            if (!startTime) startTime = timestamp;
+            const progress = timestamp - startTime;
+            const current = Math.min(limit, Math.floor((progress / duration) * limit));
+            num.textContent = current;
+            if (progress < duration) {
+              requestAnimationFrame(updateCount);
+            } else {
+              num.textContent = limit;
+            }
+          }
+          requestAnimationFrame(updateCount);
+        });
+      }
+    }, { threshold: 0.5 });
+
+    const statsGrid = document.querySelector('.stats-grid');
+    if (statsGrid) {
+      statsObserver.observe(statsGrid);
+    }
+  }
 
   // Timeline active dot glow observer (toggles dynamically on scroll)
   const timelineObserver = new IntersectionObserver((entries) => {
@@ -280,39 +433,6 @@ document.addEventListener('DOMContentLoaded', () => {
     timelineObserver.observe(el);
   });
 
-
-  /* ----- 7. NUMBERS COUNT-UP ----- */
-  const statNums = document.querySelectorAll('.stat-num');
-  let statsTriggered = false;
-
-  const statsObserver = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting && !statsTriggered) {
-      statsTriggered = true;
-      statNums.forEach(num => {
-        const limit = parseInt(num.getAttribute('data-val'));
-        const duration = 1200; // ms
-        let startTime = null;
-
-        function updateCount(timestamp) {
-          if (!startTime) startTime = timestamp;
-          const progress = timestamp - startTime;
-          const current = Math.min(limit, Math.floor((progress / duration) * limit));
-          num.textContent = current;
-          if (progress < duration) {
-            requestAnimationFrame(updateCount);
-          } else {
-            num.textContent = limit;
-          }
-        }
-        requestAnimationFrame(updateCount);
-      });
-    }
-  }, { threshold: 0.5 });
-
-  const statsGrid = document.querySelector('.stats-grid');
-  if (statsGrid) {
-    statsObserver.observe(statsGrid);
-  }
 
 
   /* ----- 8. ACTIVE NAV LINK TRACKING & BACKGROUND PLANETS ----- */
@@ -492,12 +612,14 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         }
 
-        // 3. Spine timeline progress drawing
+        // 3. Spine timeline progress drawing (Fallback only)
         if (timeline && spineProgress) {
-          const startTrigger = window.innerHeight / 2;
-          const scrolled = (scrollTop + startTrigger) - cachedTimelineTop;
-          const percent = Math.min(Math.max((scrolled / cachedTimelineHeight) * 100, 0), 100);
-          spineProgress.style.height = percent + '%';
+          if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+            const startTrigger = window.innerHeight / 2;
+            const scrolled = (scrollTop + startTrigger) - cachedTimelineTop;
+            const percent = Math.min(Math.max((scrolled / cachedTimelineHeight) * 100, 0), 100);
+            spineProgress.style.height = percent + '%';
+          }
         }
 
         // 4. Scroll to Top Button Visibility
