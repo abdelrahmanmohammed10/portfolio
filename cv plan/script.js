@@ -242,6 +242,11 @@ document.addEventListener('DOMContentLoaded', () => {
   if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
 
+    // Force base CSS states to opacity: 1 so GSAP from() tweens can animate to full visibility
+    document.querySelectorAll('.reveal, .reveal-card, .reveal-paragraph, .split-reveal-heading').forEach(el => {
+      el.classList.add('visible');
+    });
+
     // 1. Heading slide-reveals
     document.querySelectorAll('.split-reveal-heading').forEach(heading => {
       gsap.from(heading, {
