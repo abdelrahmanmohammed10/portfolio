@@ -5004,3 +5004,31 @@ html[data-theme="light"] .chat-close-btn:hover {
   content-visibility: auto;
   contain-intrinsic-size: 800px;
 }
+
+/* ----- 12d. CHATBOT SUGGESTIONS TOGGLE BUTTON ----- */
+.chat-suggestions-toggle {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+.chat-suggestions-toggle:hover,
+.chat-suggestions-toggle.active {
+  color: var(--color-cyan) !important;
+  transform: scale(1.1);
+}
+.chat-suggestions-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Hide suggestions container */
+.chat-suggestions-container.hidden {
+  display: none !important;
+}

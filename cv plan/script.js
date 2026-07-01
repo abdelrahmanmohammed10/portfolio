@@ -213,39 +213,32 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ----- 4. (Removed 3D Background) ----- */
 
 
-  /* ----- 5. MAGNETIC HOVER EFFECT ----- */
+  /* ----- 5. MAGNETIC HOVER EFFECT (GSAP Physics) ----- */
   const magneticButtons = document.querySelectorAll('.magnetic-button');
   magneticButtons.forEach(btn => {
     btn.addEventListener('mousemove', (e) => {
-      if (window.innerWidth <= 1024) return; // Disable on mobile
+      if (window.innerWidth <= 1024) return;
       const rect = btn.getBoundingClientRect();
       const x = e.clientX - rect.left - rect.width / 2;
       const y = e.clientY - rect.top - rect.height / 2;
       
-      btn.style.transition = 'none';
+      gsap.to(btn, { x: x * 0.35, y: y * 0.35, duration: 0.3, ease: "power2.out", overwrite: "auto" });
       const innerSpan = btn.querySelector('span');
-      if (innerSpan) innerSpan.style.transition = 'none';
-
-      // Pull button towards cursor by 35% of offset
-      btn.style.transform = `translate(${x * 0.35}px, ${y * 0.35}px)`;
       if (innerSpan) {
-        innerSpan.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+        gsap.to(innerSpan, { x: x * 0.15, y: y * 0.15, duration: 0.3, ease: "power2.out", overwrite: "auto" });
       }
     });
 
     btn.addEventListener('mouseleave', () => {
-      btn.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
-      btn.style.transform = 'translate(0px, 0px)';
+      gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: "elastic.out(1.1, 0.6)", overwrite: "auto" });
       const innerSpan = btn.querySelector('span');
       if (innerSpan) {
-        innerSpan.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
-        innerSpan.style.transform = 'translate(0px, 0px)';
+        gsap.to(innerSpan, { x: 0, y: 0, duration: 0.6, ease: "elastic.out(1.1, 0.6)", overwrite: "auto" });
       }
     });
   });
 
-
-    /* ----- 6. GSAP INTERACTIVE ANIMATION ENGINE (ScrollTrigger) ----- */
+  /* ----- 6. GSAP INTERACTIVE ANIMATION ENGINE (ScrollTrigger) ----- */
   if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
 
@@ -698,19 +691,57 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  /* ----- 10. PROJECT DRAWERS ----- */
+  /* ----- 10. PROJECT DRAWERS (GSAP Accelerated Slide-ins) ----- */
   const projectCards = document.querySelectorAll('.project-glass-card, .skill-category');
   const drawers = document.querySelectorAll('.project-drawer');
 
-  // Initialize inert attribute on closed drawers to prevent tab navigation of hidden focusable elements
   drawers.forEach(drawer => {
     if (!drawer.classList.contains('active')) {
       drawer.setAttribute('inert', '');
     }
   });
 
+  const openDrawer = (drawer) => {
+    activeTriggerElement = document.activeElement;
+    drawer.removeAttribute('inert');
+    drawer.classList.add('active');
+    drawer.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+
+    const panel = drawer.querySelector('.drawer-panel');
+    const overlay = drawer.querySelector('.drawer-overlay');
+
+    const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
+    const startX = isRtl ? "-100%" : "100%";
+
+    gsap.fromTo(panel, { x: startX }, { x: "0%", duration: 0.55, ease: "power3.out" });
+    gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.4 });
+
+    const closeBtn = drawer.querySelector('.drawer-close');
+    if (closeBtn) closeBtn.focus();
+  };
+
+  const closeDrawer = (drawer) => {
+    const panel = drawer.querySelector('.drawer-panel');
+    const overlay = drawer.querySelector('.drawer-overlay');
+
+    const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
+    const endX = isRtl ? "-100%" : "100%";
+
+    gsap.to(panel, { x: endX, duration: 0.45, ease: "power3.in", onComplete: () => {
+      drawer.classList.remove('active');
+      drawer.setAttribute('aria-hidden', 'true');
+      drawer.setAttribute('inert', '');
+      document.body.style.overflow = '';
+      if (activeTriggerElement) {
+        activeTriggerElement.focus();
+        activeTriggerElement = null;
+      }
+    }});
+    gsap.to(overlay, { opacity: 0, duration: 0.35 });
+  };
+
   projectCards.forEach(card => {
-    // Add keyboard interaction
     card.setAttribute('tabindex', '0');
     card.setAttribute('role', 'button');
     card.addEventListener('keydown', (e) => {
@@ -720,17 +751,18 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    card.addEventListener('click', () => {
-      activeTriggerElement = card;
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.tag')) return; // let tag listener handle it
       const drawerId = card.getAttribute('data-drawer');
       const targetDrawer = document.getElementById(drawerId);
       if (targetDrawer) {
-        targetDrawer.removeAttribute('inert'); // Enable interaction
-        targetDrawer.classList.add('active');
-        targetDrawer.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden'; // prevent scroll behind
-        const closeBtn = targetDrawer.querySelector('.drawer-close');
-        if (closeBtn) closeBtn.focus();
+        // Reset selections
+        const expBox = targetDrawer.querySelector('.skill-explanation-box');
+        if (expBox) expBox.classList.remove('visible');
+        const chips = targetDrawer.querySelectorAll('.drawer-skill-chip');
+        chips.forEach(c => c.classList.remove('active'));
+
+        openDrawer(targetDrawer);
       }
     });
   });
@@ -741,68 +773,52 @@ document.addEventListener('DOMContentLoaded', () => {
     const panel = drawer.querySelector('.drawer-panel');
     setupFocusTrap(drawer);
 
-    const closeDrawer = () => {
-      drawer.classList.remove('active');
-      drawer.setAttribute('aria-hidden', 'true');
-      drawer.setAttribute('inert', ''); // Disable interaction
-      document.body.style.overflow = '';
-      if (activeTriggerElement) {
-        activeTriggerElement.focus();
-        activeTriggerElement = null;
-      }
-    };
+    const closeFn = () => closeDrawer(drawer);
 
-    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
-    if (overlay) overlay.addEventListener('click', closeDrawer);
+    if (closeBtn) closeBtn.addEventListener('click', closeFn);
+    if (overlay) overlay.addEventListener('click', closeFn);
 
-    // Prepend a drag handle to drawer panels for visual cue on mobile bottom sheets
     if (panel) {
       const handle = document.createElement('div');
       handle.className = 'drawer-handle';
       panel.insertBefore(handle, panel.firstChild);
     }
 
-    // Touch Swipe-to-Close Gestures (Horizontal for desktop drawers, vertical down for mobile bottom sheets)
+    // Touch Swipe-to-Close Gestures
     let startX = 0;
     let startY = 0;
     let currentX = 0;
     let currentY = 0;
 
-    if (panel) {
-      panel.addEventListener('touchstart', (e) => {
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
-        currentX = startX;
-        currentY = startY;
-      }, { passive: true });
+    drawer.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: true });
 
-      panel.addEventListener('touchmove', (e) => {
-        currentX = e.touches[0].clientX;
-        currentY = e.touches[0].clientY;
-      }, { passive: true });
+    drawer.addEventListener('touchmove', (e) => {
+      currentX = e.touches[0].clientX;
+      currentY = e.touches[0].clientY;
+    }, { passive: true });
 
-      panel.addEventListener('touchend', () => {
-        const diffX = currentX - startX;
-        const diffY = currentY - startY;
-        const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
-        const swipeThreshold = 80; // px
+    drawer.addEventListener('touchend', () => {
+      if (!startX || !startY || !currentX || !currentY) return;
+      const diffX = currentX - startX;
+      const diffY = currentY - startY;
+      const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
+      const swipeThreshold = 80;
 
-        if (window.innerWidth <= 768) {
-          // Mobile bottom sheet: swipe down to close
-          if (diffY > swipeThreshold) {
-            closeDrawer();
-          }
-        } else {
-          // Table/Desktop side drawer: swipe horizontally out to close
-          if ((!isRtl && diffX > swipeThreshold) || (isRtl && diffX < -swipeThreshold)) {
-            closeDrawer();
-          }
+      if (window.innerWidth <= 768) {
+        if (diffY > swipeThreshold) {
+          closeFn();
         }
-        startX = startY = currentX = currentY = 0;
-      }, { passive: true });
-    }
+      } else {
+        if ((!isRtl && diffX > swipeThreshold) || (isRtl && diffX < -swipeThreshold)) {
+          closeFn();
+        }
+      }
+      startX = startY = currentX = currentY = 0;
+    }, { passive: true });
   });
-
 
   /* ----- 10b. CERTIFICATE LIGHTBOX ----- */
   const certCards = document.querySelectorAll('.certificate-glass-card');
@@ -904,7 +920,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  /* ----- 12. GLASS CARDS mouse tracking (3D TILT EFFECT) ----- */
+  /* ----- 12. GLASS CARDS mouse tracking (3D GSAP TILT EFFECT) ----- */
   const glassCards = document.querySelectorAll('.project-glass-card, .certificate-glass-card, .campaign-glass-card');
   
   glassCards.forEach(card => {
@@ -916,8 +932,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     card.addEventListener('mousemove', (e) => {
-      if (window.innerWidth <= 1024) return; // Disable tilt on mobile/tablets for smooth scrolling
-      if (!rect) rect = card.getBoundingClientRect(); // Fallback if enter didn't fire properly
+      if (window.innerWidth <= 1024) return;
+      if (!rect) rect = card.getBoundingClientRect();
 
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
@@ -925,23 +941,29 @@ document.addEventListener('DOMContentLoaded', () => {
       card.style.setProperty('--mouse-x', `${x}px`);
       card.style.setProperty('--mouse-y', `${y}px`);
 
-      // 3D Parallax Tilt Calculation
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
-      const tiltX = (centerY - y) / centerY * 6; // max 6 degrees tilt
-      const tiltY = (x - centerX) / centerX * 6;
+      const tiltX = (centerY - y) / centerY * 6.5;
+      const tiltY = (x - centerX) / centerX * 6.5;
 
-      card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-5px)`;
+      gsap.to(card, {
+        transform: `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-5px)`,
+        duration: 0.35,
+        ease: "power2.out",
+        overwrite: "auto"
+      });
     });
 
-    card.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, background 0.3s ease';
-
     card.addEventListener('mouseleave', () => {
-      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+      gsap.to(card, {
+        transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)',
+        duration: 0.6,
+        ease: "power2.out",
+        overwrite: "auto"
+      });
       rect = null;
     });
   });
-
 
   /* ----- 13. SCROLL TO TOP CLICK FUNCTIONALITY ----- */
   if (scrollTopBtn) {
@@ -2128,7 +2150,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const drawer = document.getElementById(drawerId);
           if (drawer) {
             // Open drawer
-            openDrawerHelper(drawer);
+            openDrawer(drawer);
             // Select skill and scroll to it
             setTimeout(() => {
               selectSkillInDrawer(drawer, skillId);
@@ -2143,7 +2165,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const drawerId = card.getAttribute('data-drawer');
         const drawer = document.getElementById(drawerId);
         if (drawer) {
-          openDrawerHelper(drawer);
+          openDrawer(drawer);
           // Hide any previous active selection
           const expBox = drawer.querySelector('.skill-explanation-box');
           if (expBox) expBox.classList.remove('visible');
@@ -2154,7 +2176,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Helper to open drawer
-    const openDrawerHelper = (drawer) => {
+    // Deprecated openDrawerHelper
+    const openDrawerHelper_deprecated = (drawer) => {
       drawer.classList.add('visible');
       drawer.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
@@ -2282,25 +2305,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const systemPrompt = `You are Astro-Bot, the smart cosmic AI assistant for Abdelrahman's marketing portfolio website.
 Abdelrahman's profile:
 - Role: Digital Marketing Strategist & Brand Planner.
-- Location: 6th of October City, Giza, Egypt.
+- Location: Giza, Egypt.
 - Contact Details: WhatsApp: +201157265599, Email: abdelrahman.abdelhafez10@gmail.com, LinkedIn: https://www.linkedin.com/in/abdelrahman-abdelhafez-994932167/
-- Professional Experience:
-  1. Concentrix (Boost Mobile Account) (Aug 2025 - Present) - Sales & Retention Consultant. Won the 1st Enterprise Loyalty Award (2026) for ranking #1 in retaining accounts and reducing churn.
-  2. Tabby (BNPL Fintech) (Apr 2025 - Aug 2025) - E-commerce Experience Specialist. Restructured FAQ guides and mapped buyer support journeys.
-  3. New Direction English Academy (Sep 2020 - May 2022) - Brand launch strategy, SWOT, social ads.
-  4. Fine Stone (Jul 2019 - Feb 2020) - Odoo CMS website coordinator & SEO copywriting.
-- Major Projects:
-  - Kyoko Gifts (2026): A detailed e-commerce playbook (BMC, buyer personas, competitors, Blue Ocean strategy, 6-category KPI framework).
+- Experience:
+  1. Concentrix (Boost Mobile Account) (Aug 2025 - Present) - Sales & Retention Consultant. Won the 1st Enterprise Loyalty Award (2026) for ranking #1 in customer retention.
+  2. Tabby (Fintech / BNPL) (Apr 2025 - Aug 2025) - E-commerce Experience Specialist. Restructured FAQ guides and customer support journeys.
+  3. New Direction English Academy (Sep 2020 - May 2022) - Brand launch strategy, SWOT, Facebook/Instagram campaigns.
+  4. Fine Stone (Jul 2019 - Feb 2020) - Odoo CMS website coordinator & SEO product descriptions.
+- Projects:
+  - Kyoko Gifts (2026): A detailed e-commerce playbook (SWOT, 5 SMART goals, 2 buyer personas, Blue Ocean strategy, 6-category KPI framework).
   - New Direction Academy: Brand launch setup, pricing, customer journey.
   - HostingWDomain: SaaS UX and content audit.
 
 Your Response Guidelines:
 1. Respond in the user's language (Arabic or English).
-2. Keep responses brief, professional, and friendly (under 3 sentences/lines) so they fit nicely in a chat bubble.
-3. If the user asks about a business, marketing, or strategy concept (e.g. 'What is Blue Ocean Strategy?', 'What is SWOT?', 'How does CRO work?', 'Explain Buyer Persona', 'What is SEO?', etc.):
-   - Explain the concept briefly in 1 sentence.
-   - Connect it to Abdelrahman's work (e.g., 'Abdelrahman applied Blue Ocean Strategy in his Kyoko Gifts playbook to differentiate the brand...').
-   - Tell the user how Abdelrahman can utilize this concept to help their brand succeed.
+2. Keep responses brief, professional, and friendly (under 4 sentences/lines) so they fit nicely in a chat bubble.
+3. If the user asks about a business, marketing, or strategy concept (e.g. 'What is Blue Ocean?', 'What is SWOT?', 'How does CRO work?', 'Explain Buyer Persona', 'What is SEO?', etc.):
+   You MUST structure your response into three short, bulleted sections:
+   - **What it is:** (Brief 1-sentence definition of the concept)
+   - **Connection to My Work:** (Explain how Abdelrahman applied this concept in his portfolio, e.g., 'Abdelrahman applied Blue Ocean Strategy in his Kyoko Gifts playbook to differentiate the brand...')
+   - **How I Can Utilize It For You:** (Explain how Abdelrahman can deploy this strategy to grow your specific business/marketing results)
 4. Keep the tone helpful, polite, and advocate for hiring Abdelrahman. Do not mention certifications or claim false years of experience.`;
 
     // Local fallback response generator
@@ -2364,6 +2388,8 @@ Your Response Guidelines:
       }
     };
 
+    const chatSuggestionsToggle = document.getElementById('chat-suggestions-toggle');
+
     const getSuggestions = (lang) => {
       if (lang === 'ar') {
         return [
@@ -2396,10 +2422,32 @@ Your Response Guidelines:
       });
     };
 
+    // Toggle button click listener
+    if (chatSuggestionsToggle) {
+      chatSuggestionsToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isHidden = chatSuggestionsContainer.classList.contains('hidden');
+        if (isHidden) {
+          chatSuggestionsContainer.classList.remove('hidden');
+          chatSuggestionsToggle.classList.add('active');
+        } else {
+          chatSuggestionsContainer.classList.add('hidden');
+          chatSuggestionsToggle.classList.remove('active');
+        }
+      });
+    }
+
     const addMessageBubble = (text, sender) => {
       const bubble = document.createElement('div');
       bubble.className = `chat-msg ${sender}`;
-      bubble.innerHTML = text.replace(/\n/g, '<br>');
+      // Clean up markdown formatting from LLM (bold, list items) for clean HTML rendering
+      let htmlText = text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/- (.*?)\n/g, '• $1<br>')
+        .replace(/- (.*?)$/g, '• $1')
+        .replace(/\n/g, '<br>');
+      bubble.innerHTML = htmlText;
       chatMessagesContainer.appendChild(bubble);
       chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
     };
@@ -2424,6 +2472,12 @@ Your Response Guidelines:
       const lang = document.documentElement.getAttribute('lang') || 'en';
       addMessageBubble(text, 'user');
       showTypingIndicator();
+
+      // Automatically hide suggestions container upon sending/clicking message
+      chatSuggestionsContainer.classList.add('hidden');
+      if (chatSuggestionsToggle) {
+        chatSuggestionsToggle.classList.remove('active');
+      }
       
       const botResponse = await fetchGeminiResponse(text, lang);
       removeTypingIndicator();
@@ -2432,7 +2486,7 @@ Your Response Guidelines:
 
     const openChat = () => {
       chatWindowPanel.classList.remove('hidden');
-      chatTriggerBtn.classList.add('hidden'); // Hide floating trigger button when open
+      chatTriggerBtn.classList.add('hidden');
       
       if (chatMessagesContainer.children.length === 0) {
         const lang = document.documentElement.getAttribute('lang') || 'en';
