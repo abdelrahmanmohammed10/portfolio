@@ -1495,7 +1495,9 @@ document.addEventListener('DOMContentLoaded', () => {
           ctx.stroke();
         }
       }
-    }\n\n    class CloudParticle {
+    }
+
+    class CloudParticle {
       constructor() {
         this.reset(true);
       }
@@ -1671,7 +1673,9 @@ document.addEventListener('DOMContentLoaded', () => {
           ctx.restore();
         }
       }
-    }\n\n    function init() {
+    }
+
+    function init() {
       // Clean up old GSAP tweens on stars and clouds if GSAP is available
       if (typeof gsap !== 'undefined') {
         stars.forEach(star => {
@@ -1698,7 +1702,9 @@ document.addEventListener('DOMContentLoaded', () => {
       for (let i = 0; i < numClouds; i++) {
         clouds.push(new CloudParticle());
       }
-    }\n\n    let isTabVisible = true;
+    }
+
+    let isTabVisible = true;
     document.addEventListener('visibilitychange', () => {
       isTabVisible = !document.hidden;
       if (isTabVisible) {
