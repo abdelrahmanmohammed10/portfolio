@@ -5032,3 +5032,10 @@ html[data-theme="light"] .chat-close-btn:hover {
 .chat-suggestions-container.hidden {
   display: none !important;
 }
+
+/* PERFORMANCE OPTIMIZATION: Disable full-screen filter animations on mobile to prevent paint lags in Light Mode */
+@media (max-width: 1024px) {
+  html[data-theme="light"] .gradient-mesh {
+    animation: none !important;
+  }
+}

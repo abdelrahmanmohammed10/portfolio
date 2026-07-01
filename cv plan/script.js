@@ -851,23 +851,34 @@ document.addEventListener('DOMContentLoaded', () => {
         lightbox.classList.add('active');
         lightbox.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
+        
+        // GSAP zoom & fade transition
+        const overlay = lightbox.querySelector('.lightbox-overlay');
+        const box = lightbox.querySelector('.lightbox-content-box');
+        gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.35, overwrite: "auto" });
+        gsap.fromTo(box, { scale: 0.75, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(1.5)", overwrite: "auto" });
+        
         const closeBtn = lightbox.querySelector('.lightbox-close');
         if (closeBtn) closeBtn.focus();
       });
     });
 
     const closeLightbox = () => {
-      lightbox.classList.remove('active');
-      lightbox.setAttribute('aria-hidden', 'true');
-      lightbox.setAttribute('inert', ''); // Disable interaction
-      document.body.style.overflow = '';
-      setTimeout(() => {
+      const overlay = lightbox.querySelector('.lightbox-overlay');
+      const box = lightbox.querySelector('.lightbox-content-box');
+      
+      gsap.to(box, { scale: 0.75, opacity: 0, duration: 0.35, ease: "power2.in", overwrite: "auto" });
+      gsap.to(overlay, { opacity: 0, duration: 0.35, overwrite: "auto", onComplete: () => {
+        lightbox.classList.remove('active');
+        lightbox.setAttribute('aria-hidden', 'true');
+        lightbox.setAttribute('inert', ''); // Disable interaction
+        document.body.style.overflow = '';
         lightboxImg.src = '';
-      }, 500);
-      if (activeTriggerElement) {
-        activeTriggerElement.focus();
-        activeTriggerElement = null;
-      }
+        if (activeTriggerElement) {
+          activeTriggerElement.focus();
+          activeTriggerElement = null;
+        }
+      }});
     };
 
     const closeBtn = lightbox.querySelector('.lightbox-close');
@@ -898,6 +909,14 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileNav.classList.add('active');
         mobileNav.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
+        
+        // GSAP animate mobile nav slide down and link staggers
+        gsap.fromTo(mobileNav, { y: "-100%" }, { y: "0%", duration: 0.5, ease: "power3.out", overwrite: "auto" });
+        gsap.fromTo(".mobile-menu .mob-link", 
+          { opacity: 0, y: -15 }, 
+          { opacity: 1, y: 0, duration: 0.35, stagger: 0.07, ease: "power2.out", delay: 0.18, overwrite: "auto" }
+        );
+        
         const closeBtn = document.getElementById('mobile-close');
         if (closeBtn) closeBtn.focus();
       }
@@ -906,13 +925,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeMobileNav = () => {
       burger.classList.remove('active');
       document.body.classList.remove('menu-open');
-      mobileNav.classList.remove('active');
-      mobileNav.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-      if (activeTriggerElement) {
-        activeTriggerElement.focus();
-        activeTriggerElement = null;
-      }
+      
+      gsap.to(mobileNav, { y: "-100%", duration: 0.45, ease: "power3.in", overwrite: "auto", onComplete: () => {
+        mobileNav.classList.remove('active');
+        mobileNav.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        if (activeTriggerElement) {
+          activeTriggerElement.focus();
+          activeTriggerElement = null;
+        }
+      }});
     };
 
     if (mobileClose) mobileClose.addEventListener('click', closeMobileNav);
@@ -1159,7 +1181,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let stars = [];
     let clouds = [];
     const numStars = window.innerWidth > 768 ? 400 : 150;
-    const numClouds = window.innerWidth > 768 ? 48 : 12; // Scaled down cloud count on mobile to prevent overdraw lag
+    const numClouds = window.innerWidth > 768 ? 20 : 0; // Set to 0 on mobile to completely prevent overdraw scroll lag in Light Theme
 
     // Preload cloud images for light mode
     const cloudImages = [];
