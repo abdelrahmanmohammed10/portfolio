@@ -3896,21 +3896,21 @@ html[data-theme="light"] {
   --astro-button-1: #FF9F1C;
   --astro-button-2: #2EC4B6;
   --astro-button-3: #274C77;
-  --bg-primary: #f4f7fa;          /* Softer, desaturated slate-blue-sky base */
-  --bg-card: rgba(255, 255, 255, 0.96); /* Clean surface backdrop */
-  --bg-card-hover: rgba(255, 255, 255, 1.0);
-  --border-color: rgba(30, 61, 97, 0.12); /* Softer, defined border */
-  --border-hover: rgba(0, 77, 90, 0.45);
-  --color-gold: #361d00;          /* Darker Solar Gold/Amber (WCAG AAA >= 9.5:1) */
-  --color-cyan: #00252c;          /* Darker Aurora Teal (WCAG AAA >= 9.8:1) */
-  --color-cyan-rgb: 0, 37, 44;
-  --color-purple: #10213b;        /* Deep Space Purple/Indigo */
-  --color-violet: #3b135c;        /* Deep Violet */
-  --color-violet-rgb: 59, 19, 92;
-  --text-primary: #000000;        /* Midnight Charcoal/Navy (WCAG AAA >= 16:1) */
-  --text-muted: #111827;          /* Slate-800 Muted Text (WCAG AAA >= 11:1) */
-  --text-dark: #000000;           /* Pure Black */
-  scrollbar-color: #10213b #f4f7fa;
+  --bg-primary: #f8fafc;          /* Clean slate base */
+  --bg-card: rgba(255, 255, 255, 0.92); /* Glassmorphic card surfaces */
+  --bg-card-hover: rgba(255, 255, 255, 0.98);
+  --border-color: rgba(15, 23, 42, 0.08); /* Softer, elegant borders */
+  --border-hover: rgba(15, 23, 42, 0.2);
+  --color-gold: #b45309;          /* Softer warm Amber (WCAG AA >= 4.5:1) */
+  --color-cyan: #0f766e;          /* Softer teal (WCAG AA >= 4.5:1) */
+  --color-cyan-rgb: 15, 118, 110;
+  --color-purple: #4f46e5;        /* Royal Indigo */
+  --color-violet: #7c3aed;        /* Violet */
+  --color-violet-rgb: 124, 58, 237;
+  --text-primary: #0f172a;        /* Soft Slate-900 (WCAG AAA >= 16:1) */
+  --text-muted: #334155;          /* Slate-700 Muted Text (WCAG AAA >= 7:1) */
+  --text-dark: #0f172a;           /* Soft Dark */
+  scrollbar-color: #4f46e5 #f8fafc;
 }
 
 /* SCROLLBAR */
@@ -3925,11 +3925,11 @@ html[data-theme="light"] ::selection { background-color: rgba(30, 58, 138, 0.2);
 html[data-theme="light"] .gradient-mesh {
   background: linear-gradient(
     180deg,
-    #d1e1f0 0%,   /* Soft, desaturated slate-blue zenith */
-    #e4edf7 30%,  /* Extremely soft pale blue transition */
-    #edf3fa 60%,  /* Faintest slate-blue ambient fill */
-    #fffcf7 85%,  /* Very soft cream horizon scattering glow */
-    #ffffff 100%  /* Clean white horizon base */
+    #cbdcf0 0%,   /* Softer slate-blue zenith */
+    #deebf7 30%,
+    #eef4fc 60%,
+    #fcf6eb 85%,  /* Warm cream horizon */
+    #ffffff 100%
   );
   opacity: 1;
   animation: skyBreath 20s ease-in-out infinite alternate;
@@ -3942,7 +3942,7 @@ html[data-theme="light"] .gradient-mesh::after {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.48); /* Soft white filter overlay to lighten background and maximize contrast */
+  background: rgba(255, 255, 255, 0.28); /* Reduced glare filter overlay */
   pointer-events: none;
   z-index: 1;
 }

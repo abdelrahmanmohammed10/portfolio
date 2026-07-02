@@ -1192,7 +1192,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let stars = [];
     let clouds = [];
     const numStars = window.innerWidth > 768 ? 250 : 120;
-    const numClouds = window.innerWidth > 768 ? 20 : 0; // Set to 0 on mobile to completely prevent overdraw scroll lag in Light Theme
+    const numClouds = window.innerWidth > 768 ? 16 : 8; // Set to 0 on mobile to completely prevent overdraw scroll lag in Light Theme
 
     // Preload cloud images for light mode
     const cloudImages = [];
@@ -1467,9 +1467,9 @@ document.addEventListener('DOMContentLoaded', () => {
           let dist = Math.sqrt(distSq);
           if (dist > 0) {
             let force = (maxDist - dist) / maxDist;
-            // Accelerate away from mouse
-            ax += (dx / dist) * force * 3.5 * (1.2 - this.z * 0.6);
-            ay += (dy / dist) * force * 3.5 * (1.2 - this.z * 0.6);
+            // Gravity attraction: pull towards mouse!
+            ax -= (dx / dist) * force * 3.2 * (1.2 - this.z * 0.6);
+            ay -= (dy / dist) * force * 3.2 * (1.2 - this.z * 0.6);
             this.alpha = Math.min(1.0, this.baseAlpha + force * 0.4);
           }
         } else {
@@ -1684,6 +1684,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (img && img.complete && img.naturalWidth > 0) {
           ctx.save();
           ctx.globalAlpha = finalAlpha;
+          // Apply soft ambient drop-shadow filter to preloaded WebP images
+          ctx.filter = 'drop-shadow(0px 8px 16px rgba(30, 61, 97, 0.06))';
           ctx.drawImage(img, drawX, drawY, drawW, drawH);
           ctx.restore();
         } else {
@@ -1691,14 +1693,18 @@ document.addEventListener('DOMContentLoaded', () => {
           ctx.save();
           ctx.globalAlpha = finalAlpha * 0.75; // slightly softer fallback
           
+          // Apply soft ambient drop-shadow filter to procedural canvas puffs
+          ctx.filter = 'drop-shadow(0px 6px 12px rgba(30, 61, 97, 0.05))';
+          
           const cx = drawX + drawW / 2;
           const cy = drawY + drawH / 2;
           
-          // Soft radial glow representing the cloud body
-          const grad = ctx.createRadialGradient(cx, cy - drawH * 0.1, 5, cx, cy, drawW * 0.5);
-          grad.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
-          grad.addColorStop(0.55, 'rgba(235, 243, 255, 0.78)');
-          grad.addColorStop(1, 'rgba(220, 232, 248, 0)');
+          // Volumetric 3D radial gradient shading representing the cloud body
+          const grad = ctx.createRadialGradient(cx, cy - drawH * 0.12, 5, cx, cy, drawW * 0.5);
+          grad.addColorStop(0, 'rgba(255, 255, 255, 1.0)');       # Pure bright center
+          grad.addColorStop(0.7, 'rgba(224, 238, 254, 0.85)');     # Soft light-blue volume
+          grad.addColorStop(0.9, 'rgba(191, 219, 254, 0.45)');     # Blue-grey boundary shadow
+          grad.addColorStop(1.0, 'rgba(191, 219, 254, 0)');
           
           ctx.fillStyle = grad;
           ctx.beginPath();
