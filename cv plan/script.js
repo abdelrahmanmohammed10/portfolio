@@ -523,17 +523,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Run initial geometry caching
-  cacheTimelineGeometry();
-  cacheSectionsGeometry();
-  cacheDocHeight();
-  cacheSpineDotOffsets();
-
-  // Set initial line position after dynamic offsets render
-  setTimeout(() => {
+  // Defer initial geometry caching to window 'load' event to eliminate forced synchronous layouts (reflows)
+  window.addEventListener('load', () => {
+    cacheTimelineGeometry();
+    cacheSectionsGeometry();
+    cacheDocHeight();
     cacheSpineDotOffsets();
     updateSpineActiveLine();
-  }, 200);
+  });
 
   let tickingScroll = false;
   window.addEventListener('scroll', () => {
