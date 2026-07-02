@@ -4072,7 +4072,16 @@ html[data-theme="light"] .hero-name { color: var(--text-primary); }
 html[data-theme="light"] .hero-name em { color: var(--color-cyan); }
 html[data-theme="light"] .hero-title { color: var(--text-muted); }
 html[data-theme="light"] .hero-bio { color: var(--text-primary); font-weight: 500; }
-html[data-theme="light"] .badge-status { background: rgba(var(--color-cyan-rgb),0.12); border-color: rgba(var(--color-cyan-rgb),0.35); color: var(--color-cyan); }
+html[data-theme="light"] .badge-status {
+  background: rgba(15, 118, 110, 0.12) !important;
+  border-color: rgba(15, 118, 110, 0.35) !important;
+  color: #0d665f !important;
+}
+html[data-theme="light"] .badge-status span.lang-en,
+html[data-theme="light"] .badge-status span.lang-ar {
+  color: #0d665f !important;
+  font-weight: 600;
+}
 html[data-theme="light"] .status-dot { background-color: var(--color-cyan); box-shadow: 0 0 8px rgba(2,105,122,0.5); }
 html[data-theme="light"] .hero-social-links a { border-color: rgba(30,61,97,0.25); background: rgba(255,255,255,0.75); color: var(--text-muted); }
 html[data-theme="light"] .hero-social-links a:hover { color: var(--color-cyan); border-color: var(--color-cyan); background: rgba(var(--color-cyan-rgb),0.08); box-shadow: 0 0 12px rgba(var(--color-cyan-rgb),0.2); }
