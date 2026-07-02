@@ -267,75 +267,85 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 2. Staggered card reveals
-    // Skills categories
-    gsap.from(".skills-grid .skill-category", {
-      opacity: 0,
-      y: 40,
-      duration: 0.8,
-      stagger: 0.12,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: ".skills-grid",
-        start: "top 88%",
-        toggleActions: "play none none none"
-      }
-    });
+    // Skills categories (Guarded for existense on subpages)
+    if (document.querySelector('.skills-grid')) {
+      gsap.from(".skills-grid .skill-category", {
+        opacity: 0,
+        y: 40,
+        duration: 0.8,
+        stagger: 0.12,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".skills-grid",
+          start: "top 88%",
+          toggleActions: "play none none none"
+        }
+      });
+    }
 
-    // Timeline items
-    gsap.from(".timeline-items .timeline-item", {
-      opacity: 0,
-      x: -30,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: ".timeline-items",
-        start: "top 85%",
-        toggleActions: "play none none none"
-      }
-    });
+    // Timeline items (Guarded for existence on subpages)
+    if (document.querySelector('.timeline-items')) {
+      gsap.from(".timeline-items .timeline-item", {
+        opacity: 0,
+        x: -30,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".timeline-items",
+          start: "top 85%",
+          toggleActions: "play none none none"
+        }
+      });
+    }
 
-    // Projects
-    gsap.from(".projects-stack .project-glass-card", {
-      opacity: 0,
-      y: 50,
-      duration: 0.9,
-      stagger: 0.15,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: ".projects-stack",
-        start: "top 85%",
-        toggleActions: "play none none none"
-      }
-    });
+    // Projects (Guarded for existence on subpages)
+    if (document.querySelector('.projects-stack')) {
+      gsap.from(".projects-stack .project-glass-card", {
+        opacity: 0,
+        y: 50,
+        duration: 0.9,
+        stagger: 0.15,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".projects-stack",
+          start: "top 85%",
+          toggleActions: "play none none none"
+        }
+      });
+    }
 
-    // Campaigns
-    gsap.from(".campaigns-grid .campaign-glass-card", {
-      opacity: 0,
-      y: 50,
-      duration: 0.9,
-      stagger: 0.15,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: ".campaigns-grid",
-        start: "top 85%",
-        toggleActions: "play none none none"
-      }
-    });
+    // Campaigns (Guarded for existence on subpages)
+    if (document.querySelector('.campaigns-grid')) {
+      gsap.from(".campaigns-grid .campaign-glass-card", {
+        opacity: 0,
+        y: 50,
+        duration: 0.9,
+        stagger: 0.15,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".campaigns-grid",
+          start: "top 85%",
+          toggleActions: "play none none none"
+        }
+      });
+    }
 
-    // Credentials
-    gsap.from(".certificates-grid .certificate-glass-card", {
-      opacity: 0,
-      y: 35,
-      duration: 0.7,
-      stagger: 0.1,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: ".certificates-grid",
-        start: "top 85%",
-        toggleActions: "play none none none"
-      }
-    });
+    // Credentials (Guarded for existence on subpages)
+    if (document.querySelector('.certificates-grid')) {
+      gsap.from(".certificates-grid .certificate-glass-card", {
+        opacity: 0,
+        y: 35,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".certificates-grid",
+          start: "top 85%",
+          toggleActions: "play none none none"
+        }
+      });
+    }
 
     // 3. GSAP Count-up animations
     document.querySelectorAll('.stat-num').forEach(num => {
